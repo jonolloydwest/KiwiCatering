@@ -1,7 +1,135 @@
 .related-products {
   display: block;
+  --related-products-gap: 1.875rem;
+  --related-products-gap-mobile: 0.9375rem;
+  --related-products-card-gap: 0.75rem;
+  --related-products-title-font: 1rem;
+  --related-products-title-font-mobile: 0.875rem;
+  --related-products-title-line-height: 1.35;
+  --related-products-price-font: 1rem;
+  --related-products-price-font-tablet: 0.875rem;
+  --related-products-price-font-mobile: 0.875rem;
+  --related-products-price-compare-font: 0.75rem;
+  --related-products-price-gap: 0.3125rem;
+  --price-primary-font-size: var(--related-products-price-font);
+  --price-primary-letter-spacing: 0;
+  --price-primary-font-weight: 600;
+  --price-primary-line-height: 1.2;
+  --price-compare-font-size: var(--related-products-price-compare-font);
+  --price-compare-letter-spacing: 0;
+  --price-compare-font-weight: 400;
+  --price-compare-color: rgba(var(--color-foreground), 0.65);
+  --spacing-2xs: var(--related-products-price-gap);
+  --product-card-text-alignment: center;
+  --product-card-corner-radius: 0;
+  --product-card-border-width: 0;
+  --product-card-border-opacity: 0;
+  --product-card-shadow-horizontal-offset: 0;
+  --product-card-shadow-vertical-offset: 0;
+  --product-card-shadow-blur-radius: 0;
+  --product-card-shadow-opacity: 0;
+  --product-card-shadow-visible: 0;
+  --product-card-image-padding: 0;
+}
+
+.related-products__grid--dev {
+  gap: var(--related-products-gap);
+  align-items: stretch;
+}
+
+.related-products__grid--dev > .grid__item {
+  display: flex;
+}
+
+.related-products__grid--dev > .grid__item > .card {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.related-products__grid--dev > .grid__item > .card .card__content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--related-products-card-gap);
+  padding: 1.5rem 1.25rem 1.75rem;
+}
+
+.related-products__grid--dev > .grid__item > .card .card__information,
+.related-products__grid--dev > .grid__item > .card .card-information {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--related-products-card-gap);
+  padding: 0;
+}
+
+.related-products__grid--dev > .grid__item > .card :is(.card__title, .card__heading) {
+  margin: 0;
+  font-size: var(--related-products-title-font);
+  line-height: var(--related-products-title-line-height);
+  text-transform: capitalize;
+}
+
+.related-products__grid--dev > .grid__item > .card :is(.card__title, .card__heading) a {
+  letter-spacing: normal;
+}
+
+.related-products__grid--dev > .grid__item > .card :is(.card__price, .price) {
+  margin-top: 0;
+  text-align: inherit;
+}
+
+.related-products__grid--dev > .grid__item > .card :is(.card__price, .price) .price-item {
+  margin: 0;
+}
+
+.related-products__grid--dev > .grid__item > .card
+  :is(.card__price, .price)
+  :is(.price__compare, .price-item--regular.variant-item__old-price, s) {
+  font-size: var(--related-products-price-compare-font);
+  font-weight: 400;
 }
 
 .related-products__heading {
   margin: 0 0 3rem;
+}
+
+@media screen and (max-width: 1199px) {
+  .related-products {
+    --price-primary-font-size: var(--related-products-price-font-tablet);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .related-products {
+    --related-products-gap: var(--related-products-gap-mobile);
+    --related-products-title-font: var(--related-products-title-font-mobile);
+    --price-primary-font-size: var(--related-products-price-font-mobile);
+  }
+
+  .related-products__grid--dev > .grid__item > .card .card__content {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .related-products__grid--dev > .grid__item > .card :is(.card__price, .price) {
+    text-align: left;
+  }
+
+  .related-products__grid--dev > .grid__item > .card :is(.card__price, .price) .price__container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--related-products-price-gap);
+  }
+
+  .related-products__grid--dev > .grid__item > .card
+    :is(.card__price, .price)
+    :is(.price__compare, .price-item--regular.variant-item__old-price, s) {
+    margin-top: 0.3125rem;
+    display: inline-block;
+  }
 }
