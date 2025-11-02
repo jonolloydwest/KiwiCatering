@@ -8,6 +8,21 @@
     opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
   }
 
+  .email-signup-banner__inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .email-signup-banner__inner .newsletter__eyebrow {
+    display: inline-block;
+    font-size: 1.2rem;
+    letter-spacing: 0.28rem;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), 0.6);
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+  }
   {%- if section.settings.image_height == 'adapt-image' and section.settings.image != blank -%}
     @media screen and (max-width: 749px) {
       #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
@@ -59,10 +74,16 @@
     </div>
   {%- endif -%}
   <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width">
-    <div class="email-signup-banner__box banner__box newsletter newsletter__wrapper isolate{% if section.settings.show_background_image == false %} email-signup-banner__box--no-image{% endif %} content-container color-{{ section.settings.color_scheme }} gradient content-container--full-width-mobile">
+    <div class="email-signup-banner__box banner__box newsletter newsletter__wrapper isolate email-signup-banner__inner{% if section.settings.show_background_image == false %} email-signup-banner__box--no-image{% endif %} content-container color-{{ section.settings.color_scheme }} gradient content-container--full-width-mobile">
+      {%- if section.settings.description != blank -%}
+        <div class="newsletter__description rte">{{ section.settings.description }}</div>
+      {%- endif -%}
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
+            {%- if section.settings.eyebrow_text != blank -%}
+              <span class="newsletter__eyebrow">{{ section.settings.eyebrow_text | escape }}</span>
+            {%- endif -%}
             <h2 class="email-signup-banner__heading {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
               {{ block.settings.heading | escape }}
             </h2>
@@ -154,6 +175,16 @@
     {
       "type": "paragraph",
       "content": "t:sections.email-signup-banner.settings.paragraph.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
     },
     {
       "type": "checkbox",
