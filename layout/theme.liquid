@@ -42,33 +42,56 @@
     {{ content_for_header }}
 
     {%- liquid
-      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
-      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+      assign brand_body_font = settings.brand_body_font | default: settings.type_body_font
+      assign brand_heading_font = settings.brand_heading_font | default: settings.type_header_font
+
+      assign body_font_bold = brand_body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = brand_body_font | font_modify: 'style', 'italic'
       assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+      assign heading_font_bold = brand_heading_font | font_modify: 'weight', 'bold'
+
+      assign brand_primary = settings.brand_primary_color | default: '#208125'
+      assign brand_primary_accent = settings.brand_primary_accent_color | default: '#52B357'
+      assign brand_on_primary = settings.brand_on_primary_color | default: '#FFFFFF'
+      assign brand_secondary = settings.brand_secondary_color | default: '#333333'
+      assign brand_surface = settings.brand_surface_color | default: '#F3F7F2'
+      assign brand_on_surface = settings.brand_on_surface_color | default: '#0B1D12'
+      assign brand_surface_muted = brand_surface | color_mix: '#FFFFFF', 85
+      assign brand_border = brand_primary | color_darken: 12
+      assign brand_surface_border = brand_surface | color_darken: 8
+      assign brand_focus = brand_primary | color_lighten: 12
     %}
 
     {% style %}
-      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ brand_body_font | font_face: font_display: 'swap' }}
       {{ body_font_bold | font_face: font_display: 'swap' }}
       {{ body_font_italic | font_face: font_display: 'swap' }}
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+      {{ brand_heading_font | font_face: font_display: 'swap' }}
+      {{ heading_font_bold | font_face: font_display: 'swap' }}
 
       {% for scheme in settings.color_schemes -%}
         {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
-        {% if forloop.index == 1 -%}
-          :root,
-        {%- endif %}
-        .color-{{ scheme.id }} {
-          --color-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
-        {% if scheme.settings.background_gradient != empty %}
-          --gradient-background: {{ scheme.settings.background_gradient }};
-        {% else %}
-          --gradient-background: {{ scheme.settings.background }};
-        {% endif %}
-
         {% liquid
-          assign background_color = scheme.settings.background
+          assign local_background = scheme.settings.background
+          assign local_background_gradient = scheme.settings.background_gradient
+          assign local_text = scheme.settings.text
+          assign local_button = scheme.settings.button
+          assign local_button_label = scheme.settings.button_label
+          assign local_secondary_button_label = scheme.settings.secondary_button_label
+          assign local_shadow = scheme.settings.shadow
+          assign local_link = scheme.settings.secondary_button_label
+          if forloop.index == 1
+            assign local_background = brand_surface
+            assign local_background_gradient = brand_surface
+            assign local_text = brand_secondary
+            assign local_button = brand_primary
+            assign local_button_label = brand_on_primary
+            assign local_secondary_button_label = brand_on_surface
+            assign local_shadow = brand_border
+            assign local_link = brand_primary
+          endif
+          assign background_color = local_background
           assign background_color_brightness = background_color | color_brightness
           if background_color_brightness <= 26
             assign background_color_contrast = background_color | color_lighten: 50
@@ -78,19 +101,29 @@
             assign background_color_contrast = background_color | color_darken: 25
           endif
         %}
+        {% if forloop.index == 1 -%}
+          :root,
+        {%- endif %}
+        .color-{{ scheme.id }} {
+          --color-background: {{ local_background.red }},{{ local_background.green }},{{ local_background.blue }};
+        {% if local_background_gradient != empty %}
+          --gradient-background: {{ local_background_gradient }};
+        {% else %}
+          --gradient-background: {{ local_background }};
+        {% endif %}
 
-        --color-foreground: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
+        --color-foreground: {{ local_text.red }},{{ local_text.green }},{{ local_text.blue }};
         --color-background-contrast: {{ background_color_contrast.red }},{{ background_color_contrast.green }},{{ background_color_contrast.blue }};
-        --color-shadow: {{ scheme.settings.shadow.red }},{{ scheme.settings.shadow.green }},{{ scheme.settings.shadow.blue }};
-        --color-button: {{ scheme.settings.button.red }},{{ scheme.settings.button.green }},{{ scheme.settings.button.blue }};
-        --color-button-text: {{ scheme.settings.button_label.red }},{{ scheme.settings.button_label.green }},{{ scheme.settings.button_label.blue }};
-        --color-secondary-button: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
-        --color-secondary-button-text: {{ scheme.settings.secondary_button_label.red }},{{ scheme.settings.secondary_button_label.green }},{{ scheme.settings.secondary_button_label.blue }};
-        --color-link: {{ scheme.settings.secondary_button_label.red }},{{ scheme.settings.secondary_button_label.green }},{{ scheme.settings.secondary_button_label.blue }};
-        --color-badge-foreground: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
-        --color-badge-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
-        --color-badge-border: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
-        --payment-terms-background-color: rgb({{ scheme.settings.background.rgb }});
+        --color-shadow: {{ local_shadow.red }},{{ local_shadow.green }},{{ local_shadow.blue }};
+        --color-button: {{ local_button.red }},{{ local_button.green }},{{ local_button.blue }};
+        --color-button-text: {{ local_button_label.red }},{{ local_button_label.green }},{{ local_button_label.blue }};
+        --color-secondary-button: {{ local_background.red }},{{ local_background.green }},{{ local_background.blue }};
+        --color-secondary-button-text: {{ local_secondary_button_label.red }},{{ local_secondary_button_label.green }},{{ local_secondary_button_label.blue }};
+        --color-link: {{ local_link.red }},{{ local_link.green }},{{ local_link.blue }};
+        --color-badge-foreground: {{ local_text.red }},{{ local_text.green }},{{ local_text.blue }};
+        --color-badge-background: {{ local_background.red }},{{ local_background.green }},{{ local_background.blue }};
+        --color-badge-border: {{ local_text.red }},{{ local_text.green }},{{ local_text.blue }};
+        --payment-terms-background-color: rgb({{ local_background.rgb }});
       }
       {% endfor %}
 
@@ -100,17 +133,67 @@
       }
 
       :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-        --font-body-style: {{ settings.type_body_font.style }};
-        --font-body-weight: {{ settings.type_body_font.weight }};
-        --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
+        --brand-color-primary: {{ brand_primary.red }},{{ brand_primary.green }},{{ brand_primary.blue }};
+        --brand-color-primary-contrast: {{ brand_on_primary.red }},{{ brand_on_primary.green }},{{ brand_on_primary.blue }};
+        --brand-color-primary-accent: {{ brand_primary_accent.red }},{{ brand_primary_accent.green }},{{ brand_primary_accent.blue }};
+        --brand-color-primary-border: {{ brand_border.red }},{{ brand_border.green }},{{ brand_border.blue }};
+        --brand-color-secondary: {{ brand_secondary.red }},{{ brand_secondary.green }},{{ brand_secondary.blue }};
+        --brand-color-secondary-contrast: {{ brand_on_surface.red }},{{ brand_on_surface.green }},{{ brand_on_surface.blue }};
+        --brand-color-surface: {{ brand_surface.red }},{{ brand_surface.green }},{{ brand_surface.blue }};
+        --brand-color-surface-contrast: {{ brand_on_surface.red }},{{ brand_on_surface.green }},{{ brand_on_surface.blue }};
+        --brand-color-surface-muted: {{ brand_surface_muted.red }},{{ brand_surface_muted.green }},{{ brand_surface_muted.blue }};
+        --brand-color-surface-border: {{ brand_surface_border.red }},{{ brand_surface_border.green }},{{ brand_surface_border.blue }};
+        --brand-color-focus: {{ brand_focus.red }},{{ brand_focus.green }},{{ brand_focus.blue }};
 
-        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-        --font-heading-style: {{ settings.type_header_font.style }};
-        --font-heading-weight: {{ settings.type_header_font.weight }};
+        --font-brand-body-family: {{ brand_body_font.family }}, {{ brand_body_font.fallback_families }};
+        --font-brand-body-style: {{ brand_body_font.style }};
+        --font-brand-body-weight: {{ brand_body_font.weight }};
+        --font-brand-body-weight-bold: {{ body_font_bold.weight }};
+
+        --font-brand-heading-family: {{ brand_heading_font.family }}, {{ brand_heading_font.fallback_families }};
+        --font-brand-heading-style: {{ brand_heading_font.style }};
+        --font-brand-heading-weight: {{ brand_heading_font.weight }};
+        --font-brand-heading-weight-bold: {{ heading_font_bold.weight }};
+
+        --font-body-family: {{ brand_body_font.family }}, {{ brand_body_font.fallback_families }};
+        --font-body-style: {{ brand_body_font.style }};
+        --font-body-weight: {{ brand_body_font.weight }};
+        --font-body-weight-bold: {{ body_font_bold.weight }};
+
+        --font-heading-family: {{ brand_heading_font.family }}, {{ brand_heading_font.fallback_families }};
+        --font-heading-style: {{ brand_heading_font.style }};
+        --font-heading-weight: {{ brand_heading_font.weight }};
+        --font-heading-weight-bold: {{ heading_font_bold.weight }};
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+
+        --space-brand-2xs: 0.4rem;
+        --space-brand-xs: 0.8rem;
+        --space-brand-sm: 1.2rem;
+        --space-brand-md: 1.6rem;
+        --space-brand-lg: 2.4rem;
+        --space-brand-xl: 3.2rem;
+        --space-brand-2xl: 4.8rem;
+        --space-brand-section-mobile: var(--spacing-sections-mobile);
+        --space-brand-section-desktop: var(--spacing-sections-desktop);
+        --space-brand-grid-horizontal: {{ settings.spacing_grid_horizontal | divided_by: 10.0 }}rem;
+        --space-brand-grid-vertical: {{ settings.spacing_grid_vertical | divided_by: 10.0 }}rem;
+
+        --color-background: {{ brand_surface.red }},{{ brand_surface.green }},{{ brand_surface.blue }};
+        --gradient-background: {{ brand_surface }};
+        --color-background-contrast: {{ brand_on_surface.red }},{{ brand_on_surface.green }},{{ brand_on_surface.blue }};
+        --color-foreground: {{ brand_secondary.red }},{{ brand_secondary.green }},{{ brand_secondary.blue }};
+        --color-shadow: {{ brand_border.red }},{{ brand_border.green }},{{ brand_border.blue }};
+        --color-button: var(--brand-color-primary);
+        --color-button-text: var(--brand-color-primary-contrast);
+        --color-secondary-button: var(--brand-color-surface);
+        --color-secondary-button-text: var(--brand-color-surface-contrast);
+        --color-link: var(--brand-color-primary);
+        --color-badge-foreground: var(--brand-color-primary-contrast);
+        --color-badge-background: var(--brand-color-primary-accent);
+        --color-badge-border: var(--brand-color-primary);
+        --payment-terms-background-color: rgb({{ brand_surface.red }},{{ brand_surface.green }},{{ brand_surface.blue }});
 
         --media-padding: {{ settings.media_padding }}px;
         --media-border-opacity: {{ settings.media_border_opacity | divided_by: 100.0 }};

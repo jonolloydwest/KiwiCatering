@@ -3,9 +3,36 @@
   --alpha-button-border: 1;
   --alpha-link: 0.85;
   --alpha-badge-border: 0.1;
-  --focused-base-outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  --focused-base-outline: 0.2rem solid rgba(var(--brand-color-focus), 0.65);
   --focused-base-outline-offset: 0.3rem;
-  --focused-base-box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0.5rem 0.4rem rgba(var(--color-foreground), 0.3);
+  --focused-base-box-shadow: 0 0 0 0.3rem rgb(var(--color-background)),
+    0 0 0.5rem 0.4rem rgba(var(--brand-color-focus), 0.35);
+  --brand-color-primary: 32, 129, 37;
+  --brand-color-primary-contrast: 255, 255, 255;
+  --brand-color-primary-accent: 82, 179, 87;
+  --brand-color-primary-border: 26, 106, 30;
+  --brand-color-secondary: 51, 51, 51;
+  --brand-color-secondary-contrast: 255, 255, 255;
+  --brand-color-surface: 243, 247, 242;
+  --brand-color-surface-contrast: 11, 29, 18;
+  --brand-color-surface-muted: 249, 251, 248;
+  --brand-color-surface-border: 206, 212, 205;
+  --brand-color-focus: 69, 163, 74;
+  --font-brand-body-family: 'Poppins', sans-serif;
+  --font-brand-body-style: normal;
+  --font-brand-body-weight: 400;
+  --font-brand-body-weight-bold: 700;
+  --font-brand-heading-family: 'Poppins', sans-serif;
+  --font-brand-heading-style: normal;
+  --font-brand-heading-weight: 600;
+  --font-brand-heading-weight-bold: 700;
+  --space-brand-2xs: 0.4rem;
+  --space-brand-xs: 0.8rem;
+  --space-brand-sm: 1.2rem;
+  --space-brand-md: 1.6rem;
+  --space-brand-lg: 2.4rem;
+  --space-brand-xl: 3.2rem;
+  --space-brand-2xl: 4.8rem;
 }
 
 .product-card-wrapper .card,
@@ -147,12 +174,12 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
 }
 
 .section + .section {
-  margin-top: var(--spacing-sections-mobile);
+  margin-top: var(--space-brand-section-mobile);
 }
 
 @media screen and (min-width: 750px) {
   .section + .section {
-    margin-top: var(--spacing-sections-desktop);
+    margin-top: var(--space-brand-section-desktop);
   }
 }
 
@@ -235,7 +262,8 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
 }
 
 ::selection {
-  background-color: rgba(var(--color-foreground), 0.2);
+  background-color: rgba(var(--brand-color-primary), 0.25);
+  color: rgb(var(--brand-color-primary-contrast));
 }
 
 .text-body {
@@ -645,6 +673,54 @@ h3 .icon-arrow,
 .svg-wrapper > svg {
   height: 100%;
   width: 100%;
+}
+
+/* brand utility helpers */
+.text-brand-primary {
+  color: rgb(var(--brand-color-primary));
+}
+
+.text-brand-secondary {
+  color: rgb(var(--brand-color-secondary));
+}
+
+.bg-brand-primary {
+  background-color: rgb(var(--brand-color-primary));
+  color: rgb(var(--brand-color-primary-contrast));
+}
+
+.bg-brand-accent {
+  background-color: rgb(var(--brand-color-primary-accent));
+  color: rgb(var(--brand-color-primary-contrast));
+}
+
+.bg-brand-surface {
+  background-color: rgb(var(--brand-color-surface));
+  color: rgb(var(--brand-color-surface-contrast));
+}
+
+.border-brand {
+  border-color: rgb(var(--brand-color-primary-border));
+}
+
+.border-brand-surface {
+  border-color: rgb(var(--brand-color-surface-border));
+}
+
+.fill-brand {
+  fill: rgb(var(--brand-color-primary));
+}
+
+.font-brand-heading {
+  font-family: var(--font-brand-heading-family);
+  font-style: var(--font-brand-heading-style);
+  font-weight: var(--font-brand-heading-weight);
+}
+
+.font-brand-body {
+  font-family: var(--font-brand-body-family);
+  font-style: var(--font-brand-body-style);
+  font-weight: var(--font-brand-body-weight);
 }
 
 /* base-details-summary */

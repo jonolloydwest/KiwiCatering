@@ -147,6 +147,43 @@
     ]
   },
   {
+    "name": "Brand Options",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Manage global brand colors and typography for Kiwi Catering."
+      },
+      {
+        "type": "color",
+        "id": "brand_primary_color",
+        "label": "Primary brand color",
+        "default": "#52B357",
+        "info": "Legacy Kiwi Catering green used for key actions and highlights."
+      },
+      {
+        "type": "color",
+        "id": "brand_secondary_color",
+        "label": "Secondary brand color",
+        "default": "#333333",
+        "info": "Legacy neutral tone applied to body copy and supporting UI elements."
+      },
+      {
+        "type": "font_picker",
+        "id": "brand_heading_font",
+        "label": "Heading font",
+        "default": "poppins_n6",
+        "info": "Select the display font for headings; defaults to Poppins SemiBold from the legacy theme."
+      },
+      {
+        "type": "font_picker",
+        "id": "brand_body_font",
+        "label": "Body font",
+        "default": "poppins_n4",
+        "info": "Select the body copy font; defaults to Poppins Regular from the legacy theme."
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.layout.name",
     "settings": [
       {
