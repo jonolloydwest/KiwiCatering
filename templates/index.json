@@ -39,6 +39,48 @@
         "show_text_below": false
       }
     },
+    "value_props": {
+      "type": "multicolumn",
+      "blocks": {
+        "value_props_block_1": {
+          "type": "column",
+          "settings": {
+            "title": "Wholesale-ready essentials",
+            "text": "<p>Curated cookware, utensils, and prep tools engineered for high-volume, back-of-house workflows.</p>"
+          }
+        },
+        "value_props_block_2": {
+          "type": "column",
+          "settings": {
+            "title": "Reliable nationwide delivery",
+            "text": "<p>Same-day dispatch from our Auckland hub with tracking updates tailored to your purchasing team.</p>"
+          }
+        },
+        "value_props_block_3": {
+          "type": "column",
+          "settings": {
+            "title": "Certified sustainable packaging",
+            "text": "<p>Compostable trays, liners, and serviceware that meet NZ ecolabel requirements without sacrificing durability.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "value_props_block_1",
+        "value_props_block_2",
+        "value_props_block_3"
+      ],
+      "settings": {
+        "title": "Why kitchens rely on Kiwi Catering Supply",
+        "heading_size": "h2",
+        "column_alignment": "left",
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "background_style": "none",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 24
+      }
+    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
@@ -66,10 +108,365 @@
         "padding_top": 44,
         "padding_bottom": 36
       }
+    },
+    "collection_tiles": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_tiles_block_1": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cream-chargers"
+          }
+        },
+        "collection_tiles_block_2": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cream-dispensers"
+          }
+        },
+        "collection_tiles_block_3": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "palm-leaf-plates"
+          }
+        },
+        "collection_tiles_block_4": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "birch-cutlery-1"
+          }
+        }
+      },
+      "block_order": [
+        "collection_tiles_block_1",
+        "collection_tiles_block_2",
+        "collection_tiles_block_3",
+        "collection_tiles_block_4"
+      ],
+      "settings": {
+        "title": "Shop by supply range",
+        "heading_size": "h2",
+        "image_ratio": "square",
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "show_view_all": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 44
+      }
+    },
+    "hero_product": {
+      "type": "featured-product",
+      "blocks": {
+        "hero_product_text": {
+          "type": "text",
+          "settings": {
+            "text": "Supply spotlight",
+            "text_style": "uppercase"
+          }
+        },
+        "hero_product_title": {
+          "type": "title",
+          "settings": {}
+        },
+        "hero_product_price": {
+          "type": "price",
+          "settings": {}
+        },
+        "hero_product_variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "hero_product_quantity": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "hero_product_buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "hero_product_share": {
+          "type": "share",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "hero_product_text",
+        "hero_product_title",
+        "hero_product_price",
+        "hero_product_variant_picker",
+        "hero_product_quantity",
+        "hero_product_buy_buttons",
+        "hero_product_share"
+      ],
+      "settings": {
+        "product": "premium-whipped-cream-dispenser-0-5l-stainless-steel",
+        "color_scheme": "scheme-2",
+        "media_size": "large",
+        "media_fit": "cover",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "story_section": {
+      "type": "image-with-text",
+      "blocks": {
+        "story_heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Built for commercial kitchens",
+            "heading_size": "h2"
+          }
+        },
+        "story_caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Our supply promise",
+            "text_style": "subtitle",
+            "text_size": "medium"
+          }
+        },
+        "story_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>We stock chef-tested cookware, GN pans, and compostable packaging so your team can run smoother services with lighter environmental impact.</p>",
+            "text_style": "body"
+          }
+        },
+        "story_button": {
+          "type": "button",
+          "settings": {
+            "button_label": "About Kiwi Catering",
+            "button_link": "/pages/about-us",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "story_heading",
+        "story_caption",
+        "story_text",
+        "story_button"
+      ],
+      "settings": {
+        "image": null,
+        "height": "medium",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-1",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "brand_video": {
+      "type": "video",
+      "settings": {
+        "heading": "Take a tour of our supply hub",
+        "heading_size": "h2",
+        "enable_video_looping": false,
+        "video": null,
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "cover_image": null,
+        "description": "",
+        "full_width": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "lifestyle_collage": {
+      "type": "collage",
+      "blocks": {
+        "lifestyle_collage_block_image": {
+          "type": "image",
+          "settings": {
+            "image": null
+          }
+        },
+        "lifestyle_collage_block_product": {
+          "type": "product",
+          "settings": {
+            "product": "10-kiwi-catering-supplies-cream-chargers",
+            "second_image": false
+          }
+        },
+        "lifestyle_collage_block_collection": {
+          "type": "collection",
+          "settings": {
+            "collection": "cream-chargers"
+          }
+        }
+      },
+      "block_order": [
+        "lifestyle_collage_block_image",
+        "lifestyle_collage_block_product",
+        "lifestyle_collage_block_collection"
+      ],
+      "settings": {
+        "heading": "Outfit every workstation",
+        "heading_size": "h2",
+        "desktop_layout": "left",
+        "mobile_layout": "collage",
+        "card_styles": "product-card-wrapper",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "testimonials": {
+      "type": "multirow",
+      "blocks": {
+        "testimonial_row_1": {
+          "type": "row",
+          "settings": {
+            "caption": "Head chef, Wellington",
+            "heading": "\u201cStocked and ready every weekend.\u201d",
+            "text": "<p>\u201cSwitching to Kiwi Catering Supply means our mise en place bins, ladles, and lids arrive together, labelled, and on time.\u201d</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "testimonial_row_2": {
+          "type": "row",
+          "settings": {
+            "caption": "Procurement lead, hospitality group",
+            "heading": "\u201cTransparent wholesale pricing.\u201d",
+            "text": "<p>\u201cTheir portal keeps our branches aligned on order cut-offs, backorders, and sustainability reporting.\u201d</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "testimonial_row_3": {
+          "type": "row",
+          "settings": {
+            "caption": "Catering distributor",
+            "heading": "\u201cCustomers love the compostables.\u201d",
+            "text": "<p>\u201cThe sugarcane platter range is sturdy, branded, and ships in recyclable outers\u2014perfect for our retail partners.\u201d</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_row_1",
+        "testimonial_row_2",
+        "testimonial_row_3"
+      ],
+      "settings": {
+        "image_height": "medium",
+        "desktop_image_width": "small",
+        "image_layout": "alternate-left",
+        "heading_size": "h2",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-1",
+        "row_color_scheme": "scheme-2",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "journal": {
+      "type": "featured-blog",
+      "settings": {
+        "blog": "",
+        "post_limit": 3,
+        "heading": "Insights from the supply bench",
+        "heading_size": "h2",
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "subscribe": {
+      "type": "newsletter",
+      "blocks": {
+        "subscribe_heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Stay ahead of kitchen demand",
+            "heading_size": "h2"
+          }
+        },
+        "subscribe_paragraph": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Be first to hear about new prepware lines, eco-packaging releases, and lead-time updates.</p>"
+          }
+        },
+        "subscribe_form": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "subscribe_heading",
+        "subscribe_paragraph",
+        "subscribe_form"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "closing_statement": {
+      "type": "rich-text",
+      "blocks": {
+        "closing_heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Ready to resupply smarter?",
+            "heading_size": "h2"
+          }
+        },
+        "closing_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>From bulk serveware to compostable travel-ready kits, our team helps you forecast and fulfil every menu rollout.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "closing_heading",
+        "closing_text"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
     "image_banner",
-    "featured_collection"
+    "value_props",
+    "featured_collection",
+    "collection_tiles",
+    "hero_product",
+    "story_section",
+    "brand_video",
+    "lifestyle_collage",
+    "testimonials",
+    "journal",
+    "subscribe",
+    "closing_statement"
   ]
 }
