@@ -84,6 +84,9 @@
           class="product__info-container{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
         >
           {%- assign product_form_id = 'product-form-' | append: section.id -%}
+          {%- assign trust_badge_blocks = section.blocks | where: 'type', 'trust_badge' -%}
+          {%- assign collected_detail_items = '' -%}
+          {%- assign trust_badges_rendered = 'false' -%}
 
           {%- for block in section.blocks -%}
             {%- case block.type -%}
@@ -209,6 +212,24 @@
                 </p>
               {%- when 'custom_liquid' -%}
                 {{ block.settings.custom_liquid }}
+              {%- when 'detail_item' -%}
+                {%- capture collected_detail_items -%}
+                  {{ collected_detail_items }}
+                  <details class="pdp-detail-item" {{ block.shopify_attributes }}>
+                    <summary class="pdp-detail-item__summary">
+                      <span class="pdp-detail-item__title">
+                        {{- block.settings.title | default: 'Details' | escape -}}
+                      </span>
+                      <span class="pdp-detail-item__icon" aria-hidden="true">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </span>
+                    </summary>
+                    <div class="pdp-detail-item__content rte">
+                      {{ block.settings.content }}
+                    </div>
+                  </details>
+                {%- endcapture -%}
+                {%- continue -%}
               {%- when 'collapsible_tab' -%}
                 <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
                   <details id="Details-{{ block.id }}-{{ section.id }}">
@@ -477,7 +498,38 @@
 
               {%- when 'variant_picker' -%}
                 {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+              {%- when 'trust_badge' -%}
+                {%- continue -%}
               {%- when 'buy_buttons' -%}
+                {%- if trust_badge_blocks.size > 0 and trust_badges_rendered == 'false' -%}
+                  <div class="pdp-trust-badges">
+                    {%- for badge_block in trust_badge_blocks -%}
+                      {%- assign badge_image = badge_block.settings.image -%}
+                      {%- assign badge_alt = badge_block.settings.alt_text | default: badge_image.alt | default: '' -%}
+                      <div class="pdp-trust-badge" {{ badge_block.shopify_attributes }}>
+                        {%- if badge_image != blank -%}
+                          <div class="pdp-trust-badge__media">
+                            <img
+                              src="{{ badge_image | image_url: width: 320 }}"
+                              srcset="{{ badge_image | image_url: width: 160 }} 160w, {{ badge_image | image_url: width: 240 }} 240w, {{ badge_image | image_url: width: 320 }} 320w"
+                              sizes="(min-width: 750px) 200px, calc(100vw - 6rem)"
+                              loading="lazy"
+                              width="{{ badge_image.width }}"
+                              height="{{ badge_image.height }}"
+                              alt="{{ badge_alt | escape }}"
+                            >
+                          </div>
+                        {%- endif -%}
+                        {%- if badge_block.settings.text != blank -%}
+                          <p class="pdp-trust-badge__text">
+                            {{ badge_block.settings.text }}
+                          </p>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                  {%- assign trust_badges_rendered = 'true' -%}
+                {%- endif -%}
                 {%- render 'buy-buttons',
                   block: block,
                   product: product,
@@ -676,6 +728,11 @@
                 {% render 'icon-with-text', block: block %}
             {%- endcase -%}
           {%- endfor -%}
+          {%- if collected_detail_items != '' -%}
+            <div class="pdp-detail-items">
+              {{- collected_detail_items -}}
+            </div>
+          {%- endif -%}
           <a href="{{ product.url }}" class="link product__view-details animate-arrow">
             {{ 'products.product.view_full_details' | t }}
             {{- 'icon-arrow.svg' | inline_asset_content -}}
@@ -929,6 +986,28 @@
       ]
     },
     {
+      "type": "trust_badge",
+      "name": "Trust badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Image alt text"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Secure checkout"
+        }
+      ]
+    },
+    {
       "type": "description",
       "name": "t:sections.main-product.blocks.description.name",
       "limit": 1
@@ -1161,6 +1240,24 @@
           "type": "page",
           "id": "page",
           "label": "t:sections.main-product.blocks.collapsible_tab.settings.page.label"
+        }
+      ]
+    },
+    {
+      "type": "detail_item",
+      "name": "Detail item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Detail heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Share supporting detail here.</p>"
         }
       ]
     },
