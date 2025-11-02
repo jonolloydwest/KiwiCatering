@@ -1,7 +1,7 @@
 /* Header styling aligned to brand spacing and typography tokens */
 .section-header {
   padding: var(--spacing-sm, var(--space-brand-sm, 1.2rem)) var(--spacing-md, var(--space-brand-md, 1.6rem));
-  background-color: rgb(var(--brand-color-surface, 243, 247, 242));
+  background-color: transparent;
 }
 
 .section-header .header {

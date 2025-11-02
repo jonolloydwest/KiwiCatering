@@ -146,19 +146,21 @@
                   {%- assign icon_src = block.settings.icon_url | strip -%}
                   {%- if icon_src contains '/files/' -%}
                     {%- assign icon_file_handle = icon_src | split: '/files/' | last | split: '?' | first -%}
-                    {%- assign icon_src = icon_file_handle | file_img_url: '144x' -%}
+                    {%- assign icon_src = icon_file_handle | file_url -%}
                   {%- endif -%}
-                  {%- assign icon_markup = icon_src
-                    | image_tag:
-                      alt: icon_alt_text,
-                      loading: 'lazy',
-                      width: 72,
-                      height: 72,
-                      class: 'multicolumn-card__icon-image'
-                  -%}
+                  {%- capture icon_markup -%}
+                    <img
+                      src="{{ icon_src | escape }}"
+                      alt="{{ icon_alt_text }}"
+                      loading="lazy"
+                      width="72"
+                      height="72"
+                      class="multicolumn-card__icon-image"
+                    >
+                  {%- endcapture -%}
                 {%- endif -%}
                 <div class="multicolumn-card__icon multicolumn-card__icon--top">
-                  {{ icon_markup }}
+                  {{ icon_markup | strip }}
                 </div>
               {%- endif -%}
               <div class="multicolumn-card__info">

@@ -113,14 +113,17 @@
           <div class="footer__grid legacy-footer__blocks grid">
             <div class="footer__grid-item footer__grid-item--brand footer__brand-info" data-footer-brand="true">
               {%- liquid
+                assign fallback_logo_file = 'Logo_Green_Words_Only_1_1.png'
+                assign fallback_logo_width = 220
+                assign fallback_logo_height = 80
                 assign footer_logo = settings.brand_image
-                assign footer_logo_width = settings.brand_image_width | default: 220
+                assign footer_logo_width = settings.brand_image_width | default: fallback_logo_width
                 assign footer_logo_is_image = false
                 if footer_logo != blank
                   assign footer_logo_is_image = true
                 elsif settings.logo != blank
                   assign footer_logo = settings.logo
-                  assign footer_logo_width = settings.logo_width | default: 180
+                  assign footer_logo_width = settings.logo_width | default: fallback_logo_width
                   assign footer_logo_is_image = true
                 endif
               -%}
@@ -143,6 +146,20 @@
                       width: footer_logo_width,
                       alt: shop.name | escape
                   }}
+                </div>
+              {%- elsif fallback_logo_file != blank -%}
+                <div
+                  class="footer-block__image-wrapper footer__logo"
+                  data-footer-logo="true"
+                  style="max-width: min(100%, {{ fallback_logo_width }}px);"
+                >
+                  <img
+                    src="{{ fallback_logo_file | file_img_url: '440x' }}"
+                    alt="{{ shop.name | escape }}"
+                    loading="lazy"
+                    width="{{ fallback_logo_width }}"
+                    height="{{ fallback_logo_height }}"
+                  >
                 </div>
               {%- else -%}
                 <div class="footer__logo footer__logo--placeholder" data-footer-logo="true">

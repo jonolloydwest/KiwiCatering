@@ -4,7 +4,7 @@
     assign placeholder = true
   endif
   assign featured_product_glass_class = ''
-  if section.id == 'hero_product' and request.page_type == 'index'
+  if request.page_type == 'index' and section.id contains 'hero_product'
     assign featured_product_glass_class = ' featured-product--glass'
   endif
 -%}

@@ -2099,6 +2099,11 @@ details[open] > .share-button__fallback {
   width: 2.5rem;
 }
 
+:root {
+  --inputs-border-width: 0px;
+  --inputs-border-opacity: 0;
+}
+
 .field__input:-webkit-autofill ~ .field__button,
 .field__input:-webkit-autofill ~ .field__label,
 .customer .field input:-webkit-autofill ~ label {
@@ -2731,7 +2736,23 @@ input[type='checkbox'] {
 .header-wrapper {
   display: block;
   position: relative;
-  background-color: rgb(var(--color-background));
+  background: rgba(var(--brand-color-surface, 255, 255, 255), 0.72);
+  background-image: none;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 1.2rem 3.6rem rgba(var(--brand-color-primary-dark, 6, 26, 12), 0.12);
+  border-bottom: 1px solid rgba(var(--brand-color-primary, 82, 179, 87), 0.14);
+  border-radius: 0 0 var(--brand-radius-glass, 2.4rem) var(--brand-radius-glass, 2.4rem);
+}
+
+.header-wrapper.color-scheme-1,
+.header-wrapper.color-scheme-1.gradient {
+  background: rgba(var(--brand-color-surface, 255, 255, 255), 0.72) !important;
+  background-image: none !important;
+}
+
+.header-wrapper.color-scheme-1.header-wrapper--border-bottom {
+  border-bottom: 1px solid rgba(var(--brand-color-primary, 82, 179, 87), 0.14);
 }
 
 .header-wrapper--border-bottom {
@@ -3323,6 +3344,15 @@ details-disclosure > details {
   background: rgb(var(--color-background));
   background: var(--gradient-background);
   background-attachment: fixed;
+}
+
+.color-scheme-2 {
+  background-color: transparent;
+}
+
+.color-scheme-2.gradient {
+  background: transparent;
+  background-image: none;
 }
 
 @media screen and (forced-colors: active) {

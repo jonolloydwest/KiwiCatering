@@ -165,11 +165,7 @@
 -%}
 
 {% liquid
-  assign header_tag = 'div'
-
-  if section.settings.sticky_header_type != 'none'
-    assign header_tag = 'sticky-header'
-  endif
+  assign header_tag = 'sticky-header'
 %}
 
 {%- liquid
@@ -183,6 +179,7 @@
   elsif settings.logo != blank and settings.logo.height
     assign base_logo_height = settings.logo.height
   endif
+  assign fallback_logo_file = 'Logo_Green_Words_Only_1_1.png'
   assign header_logo_max_width_setting = section.settings.logo_max_width
   if header_logo_max_width_setting == blank or header_logo_max_width_setting == 0
     assign header_logo_max_width_setting = blank
@@ -251,9 +248,7 @@
 -%}
 
 <{{ header_tag }}
-  {% if header_tag == 'sticky-header' %}
-    data-sticky-type="{{ section.settings.sticky_header_type }}"
-  {% endif %}
+  data-sticky-type="always"
   class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
 >
   {%- liquid
@@ -301,12 +296,15 @@
             }}
           </div>
         {%- else -%}
+          {%- assign fallback_logo_width = header_logo_max_width_setting | default: 220 -%}
+          {%- assign fallback_logo_height = header_logo_max_height_setting | default: 80 -%}
+          {%- assign fallback_logo_src = fallback_logo_file | file_img_url: '400x' -%}
           <div class="header__heading-logo-wrapper"{% if header_logo_wrapper_style != blank %} style="{{ header_logo_wrapper_style | strip }}"{% endif %}>
             <img
-              src="https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Logo_Green_Words_Only_1_1.png?v=1695725960"
+              src="{{ fallback_logo_src }}"
               alt="{{ shop.name | escape }}"
-              width="{{ computed_logo_width }}"
-              height="{{ computed_logo_height }}"
+              width="{{ fallback_logo_width }}"
+              height="{{ fallback_logo_height }}"
               style="{{ header_logo_image_style }}"
               loading="eager"
             >
@@ -350,12 +348,15 @@
             }}
           </div>
         {%- else -%}
+          {%- assign fallback_logo_width = header_logo_max_width_setting | default: 220 -%}
+          {%- assign fallback_logo_height = header_logo_max_height_setting | default: 80 -%}
+          {%- assign fallback_logo_src = fallback_logo_file | file_img_url: '400x' -%}
           <div class="header__heading-logo-wrapper"{% if header_logo_wrapper_style != blank %} style="{{ header_logo_wrapper_style | strip }}"{% endif %}>
             <img
-              src="https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Logo_Green_Words_Only_1_1.png?v=1695725960"
+              src="{{ fallback_logo_src }}"
               alt="{{ shop.name | escape }}"
-              width="{{ computed_logo_width }}"
-              height="{{ computed_logo_height }}"
+              width="{{ fallback_logo_width }}"
+              height="{{ fallback_logo_height }}"
               style="{{ header_logo_image_style }}"
               loading="eager"
             >
