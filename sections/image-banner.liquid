@@ -26,6 +26,7 @@
 {%- liquid
   assign content_width_setting = section.settings.content_width | default: 'default'
 -%}
+{%- assign text_alignment_setting = section.settings.text_alignment | default: 'left' -%}
 {%- style -%}
   #Banner-{{ section.id }}::after,
   #Banner-{{ section.id }} .banner__media::after {
@@ -42,6 +43,84 @@
     transition: opacity 0.3s ease;
   }
 
+  #Banner-{{ section.id }} .banner__content {
+    padding-inline: clamp(2rem, 6vw, 6rem);
+  }
+
+  #Banner-{{ section.id }} .banner__content-inner {
+    display: flex;
+    justify-content: {% if text_alignment_setting == 'left' %}flex-start{% elsif text_alignment_setting == 'center' %}center{% else %}flex-end{% endif %};
+  }
+
+  #Banner-{{ section.id }} .banner__hero {
+    display: grid;
+    gap: clamp(1.2rem, 2vw, 1.8rem);
+    position: relative;
+    z-index: 3;
+    text-align: {% if text_alignment_setting == 'left' %}left{% elsif text_alignment_setting == 'center' %}center{% else %}right{% endif %};
+  }
+
+  #Banner-{{ section.id }} .banner__eyebrow {
+    font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-weight: 300;
+    color: {{ section.settings.eyebrow_color | default: '#ffffff' }};
+    margin: 0;
+  }
+
+  #Banner-{{ section.id }} .banner__heading {
+    font-family: var(--font-heading, var(--font-heading-family));
+    font-weight: 600;
+    line-height: 1.05;
+    font-size: clamp(3.6rem, 6vw, 7.2rem);
+    color: {{ section.settings.heading_color | default: '#ffffff' }};
+    margin: 0;
+  }
+
+  #Banner-{{ section.id }} .banner__heading span {
+    display: block;
+    margin-top: clamp(0.8rem, 1.5vw, 1.2rem);
+  }
+
+  #Banner-{{ section.id }} .banner__text {
+    font-size: clamp(1.6rem, 2.5vw, 2rem);
+    font-weight: 300;
+    color: {{ section.settings.text_color | default: 'rgba(255,255,255,0.85)' }};
+    margin: 0;
+  }
+
+  #Banner-{{ section.id }} .banner__buttons {
+    display: flex;
+    gap: clamp(1rem, 2vw, 1.6rem);
+    justify-content: {% if text_alignment_setting == 'left' %}flex-start{% elsif text_alignment_setting == 'center' %}center{% else %}flex-end{% endif %};
+  }
+
+  #Banner-{{ section.id }} .banner__buttons .button {
+    min-width: 14rem;
+  }
+
+  #Banner-{{ section.id }} .banner__content-inner::before {
+    content: '';
+    position: absolute;
+    inset: clamp(2rem, 6vw, 4rem) clamp(2rem, 8vw, 6rem);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: clamp(1rem, 3vw, 2rem);
+    backdrop-filter: blur(14px);
+    pointer-events: none;
+    opacity: {{ section.settings.frosted_frame_opacity | divided_by: 100.0 }};
+  }
+
+  @media screen and (max-width: 749px) {
+    #Banner-{{ section.id }} .banner__content {
+      padding-inline: clamp(1.6rem, 5vw, 2.4rem);
+    }
+
+    #Banner-{{ section.id }} .banner__content-inner::before {
+      inset: clamp(1.2rem, 5vw, 2.4rem);
+    }
+  }
+
   {%- if section.settings.full_width_content -%}
     #Banner-{{ section.id }} .banner__content {
       padding-left: 0;
@@ -52,11 +131,11 @@
   {%- case content_width_setting -%}
     {%- when 'narrow' -%}
       #Banner-{{ section.id }} .banner__box {
-        max-width: 40rem;
+        max-width: 48rem;
       }
     {%- when 'wide' -%}
       #Banner-{{ section.id }} .banner__box {
-        max-width: 82rem;
+        max-width: 72rem;
       }
     {%- when 'full' -%}
       #Banner-{{ section.id }} .banner__box {
@@ -155,7 +234,8 @@
   {%- endif -%}
   <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% unless section.settings.full_width_content %} page-width{% endunless %}{% if section.settings.full_width_content %} banner__content--full-bleed{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
     <div class="banner__content-inner{% if content_width_setting != 'default' %} banner__content-inner--{{ content_width_setting }}{% endif %}" data-banner-content="inner">
-      <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient" data-banner-box>
+      <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient legacy-hero {{ section.settings.text_block_style }}" data-banner-box>
+        <div class="banner__hero">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
@@ -170,7 +250,7 @@
             {%- endif -%}
           {%- when 'text' -%}
             {%- if block.settings.text != blank -%}
-              <div class="banner__text rte {{ block.settings.text_style }}" data-banner-block="text" {{ block.shopify_attributes }}>
+              <div class="banner__text rte {{ block.settings.text_style }} legacy-hero__text" data-banner-block="text" {{ block.shopify_attributes }}>
                 {{ block.settings.text }}
               </div>
             {%- endif -%}
@@ -207,6 +287,7 @@
             </div>
         {%- endcase -%}
       {%- endfor -%}
+        </div>
       </div>
     </div>
   </div>
