@@ -21,6 +21,11 @@
   if section.settings.swipe_on_mobile and section.blocks.size > columns_mobile_int
     assign show_mobile_slider = true
   endif
+
+  assign wrap_value_props_heading = false
+  if section.id == 'value_props' and request.page_type == 'index'
+    assign wrap_value_props_heading = true
+  endif
 -%}
 
 <div class="multicolumn color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}" data-section-id="{{ section.id }}">
@@ -31,16 +36,22 @@
     {% endif %}
   >
     {%- unless section.settings.title == blank -%}
-      <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width">
-        <h2 class="title inline-richtext h2{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-          {{ section.settings.title }}
-        </h2>
-        {%- if section.settings.button_label != blank and show_mobile_slider -%}
-          <a href="{{ section.settings.button_link }}" class="link underlined-link large-up-hide">
-            {{- section.settings.button_label | escape -}}
-          </a>
-        {%- endif -%}
-      </div>
+      {%- if wrap_value_props_heading -%}
+        <div class="collection collection--dev-home collection--dev-home--multicolumn-heading">
+      {%- endif -%}
+        <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width">
+          <h2 class="title inline-richtext h2{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.title }}
+          </h2>
+          {%- if section.settings.button_label != blank and show_mobile_slider -%}
+            <a href="{{ section.settings.button_link }}" class="link underlined-link large-up-hide">
+              {{- section.settings.button_label | escape -}}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- if wrap_value_props_heading -%}
+        </div>
+      {%- endif -%}
     {%- endunless -%}
     <slider-component class="slider-mobile-gutter">
       <ul
@@ -118,13 +129,36 @@
                   </div>
                 </div>
               {%- endif -%}
-              {%- if block.settings.icon_url != blank -%}
+              {%- assign icon_image = block.settings.image -%}
+              {%- assign icon_alt_text = block.settings.icon_alt | default: block.settings.title | strip_html | escape -%}
+              {%- if icon_image != blank or block.settings.icon_url != blank -%}
+                {%- if icon_image != blank -%}
+                  {%- assign icon_markup = icon_image
+                    | image_url: width: 144
+                    | image_tag:
+                      alt: icon_alt_text,
+                      loading: 'lazy',
+                      sizes: '72px',
+                      widths: '72, 96, 144',
+                      class: 'multicolumn-card__icon-image'
+                  -%}
+                {%- else -%}
+                  {%- assign icon_src = block.settings.icon_url | strip -%}
+                  {%- if icon_src contains '/files/' -%}
+                    {%- assign icon_file_handle = icon_src | split: '/files/' | last | split: '?' | first -%}
+                    {%- assign icon_src = icon_file_handle | file_img_url: '144x' -%}
+                  {%- endif -%}
+                  {%- assign icon_markup = icon_src
+                    | image_tag:
+                      alt: icon_alt_text,
+                      loading: 'lazy',
+                      width: 72,
+                      height: 72,
+                      class: 'multicolumn-card__icon-image'
+                  -%}
+                {%- endif -%}
                 <div class="multicolumn-card__icon multicolumn-card__icon--top">
-                  <img
-                    src="{{ block.settings.icon_url | escape }}"
-                    alt="{{ block.settings.icon_alt | default: block.settings.title | strip_html | escape }}"
-                    loading="lazy"
-                  >
+                  {{ icon_markup }}
                 </div>
               {%- endif -%}
               <div class="multicolumn-card__info">

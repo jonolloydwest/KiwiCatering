@@ -19,12 +19,9 @@
 
 {%- assign modified_markup = cart_drawer_markup | replace: default_heading, new_heading -%}
 
-{%- capture cart_items_open -%}
-<div id="CartDrawer-CartItems" class="drawer__contents js-contents">
-{%- endcapture -%}
-
-{%- assign cart_items_with_helper = cart_items_open | append: helper_markup -%}
-{%- assign modified_markup = modified_markup | replace: cart_items_open, cart_items_with_helper -%}
+{%- assign cart_items_token = 'id="CartDrawer-CartItems" class="drawer__contents js-contents">' -%}
+{%- assign cart_items_with_helper = cart_items_token | append: helper_markup -%}
+{%- assign modified_markup = modified_markup | replace_first: cart_items_token, cart_items_with_helper -%}
 
 {{- modified_markup -}}
 

@@ -3,6 +3,10 @@
   if product == null
     assign placeholder = true
   endif
+  assign featured_product_glass_class = ''
+  if section.id == 'hero_product' and request.page_type == 'index'
+    assign featured_product_glass_class = ' featured-product--glass'
+  endif
 -%}
 
 <product-info
@@ -70,7 +74,10 @@
 
   <section class="color-{{ section.settings.color_scheme }} {% if section.settings.secondary_background %}background-secondary{% else %}gradient{% endif %}">
     <div class="page-width section-{{ section.id }}-padding{% if section.settings.secondary_background %} isolate{% endif %}">
-      <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or section.settings.product == blank %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+      <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or section.settings.product == blank %}grid--2-col-tablet{% else %}product--no-media{% endif %}{{ featured_product_glass_class }}" data-section-id="{{ section.id }}">
+        {%- if featured_product_glass_class != '' -%}
+          <span class="featured-product__glass-overlay" aria-hidden="true"></span>
+        {%- endif -%}
         <div class="grid__item product__media-wrapper">
           {%- unless placeholder -%}
             {% render 'product-media-gallery', product: product, variant_images: variant_images, limit: 1 %}
@@ -482,14 +489,6 @@
     </script>
     <script src="{{ 'product-model.js' | asset_url }}" defer></script>
   {%- endif -%}
-
-  {%- liquid
-    if product.selected_or_first_available_variant.featured_media
-      assign seo_media = product.selected_or_first_available_variant.featured_media
-    else
-      assign seo_media = product.featured_media
-    endif
-  -%}
 
   <script type="application/ld+json">
     {{ product | structured_data }}

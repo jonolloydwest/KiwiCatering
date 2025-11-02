@@ -533,8 +533,8 @@
   "order": [
     "collection_stories_home",
     "image_banner",
-    "value_props",
     "featured_collection",
+    "value_props",
     "collection_tiles",
     "hero_product",
     "journal",

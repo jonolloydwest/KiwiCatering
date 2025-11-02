@@ -113,7 +113,6 @@
           <div class="footer__grid legacy-footer__blocks grid">
             <div class="footer__grid-item footer__grid-item--brand footer__brand-info" data-footer-brand="true">
               {%- liquid
-                assign remote_logo_url = 'https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Logo_Green_Words_Only.png?v=1626308830'
                 assign footer_logo = settings.brand_image
                 assign footer_logo_width = settings.brand_image_width | default: 220
                 assign footer_logo_is_image = false
@@ -123,10 +122,6 @@
                   assign footer_logo = settings.logo
                   assign footer_logo_width = settings.logo_width | default: 180
                   assign footer_logo_is_image = true
-                endif
-                assign footer_logo_external_url = ''
-                if footer_logo_is_image == false
-                  assign footer_logo_external_url = remote_logo_url
                 endif
               -%}
               {%- if footer_logo_is_image -%}
@@ -148,20 +143,6 @@
                       width: footer_logo_width,
                       alt: shop.name | escape
                   }}
-                </div>
-              {%- elsif footer_logo_external_url != '' -%}
-                <div
-                  class="footer-block__image-wrapper footer__logo"
-                  data-footer-logo="true"
-                  style="max-width: min(100%, 220px);"
-                >
-                  <img
-                    src="{{ footer_logo_external_url }}"
-                    alt="{{ shop.name | escape }}"
-                    loading="lazy"
-                    width="220"
-                    height="80"
-                  >
                 </div>
               {%- else -%}
                 <div class="footer__logo footer__logo--placeholder" data-footer-logo="true">

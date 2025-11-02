@@ -14,21 +14,6 @@
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
-    <link
-      rel="preload"
-      href="{{ 'fonts/poppins-semibold.woff2' | asset_url }}"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    >
-    <link
-      rel="preload"
-      href="{{ 'fonts/poppins-regular.woff2' | asset_url }}"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    >
-
     <title>
       {{ page_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
@@ -84,6 +69,7 @@
       {{ brand_heading_font | font_face: font_display: 'swap' }}
       {{ heading_font_bold | font_face: font_display: 'swap' }}
 
+      {% assign scheme_classes = '' %}
       {% for scheme in settings.color_schemes -%}
         {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
         {% liquid
@@ -141,10 +127,12 @@
       }
       {% endfor %}
 
-      {{ scheme_classes | prepend: 'body' }} {
-        color: rgba(var(--color-foreground), 0.75);
-        background-color: rgb(var(--color-background));
-      }
+      {% if scheme_classes != '' %}
+        {{ scheme_classes | prepend: 'body' }} {
+          color: rgba(var(--color-foreground), 0.75);
+          background-color: rgb(var(--color-background));
+        }
+      {% endif %}
 
       :root {
         --brand-color-primary: {{ brand_primary.red }},{{ brand_primary.green }},{{ brand_primary.blue }};

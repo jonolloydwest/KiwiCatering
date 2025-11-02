@@ -26,7 +26,6 @@
 {%- liquid
   assign content_width_setting = section.settings.content_width | default: 'default'
 -%}
-{%- assign text_alignment_setting = section.settings.text_alignment | default: 'left' -%}
 {%- assign banner_home_class = '' -%}
 {%- if request.page_type == 'index' -%}
   {%- assign banner_home_class = 'banner--dev-home' -%}

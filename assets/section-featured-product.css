@@ -40,6 +40,41 @@
   display: table;
 }
 
+.featured-product--glass {
+  position: relative;
+  background-color: #ffffff;
+  background: rgba(var(--brand-surface-glass, 255, 255, 255), 0.94) !important;
+  background-image: none !important;
+  border-radius: var(--brand-radius-glass, 2.4rem);
+  border: 1px solid rgba(var(--brand-surface-glass, 255, 255, 255), var(--brand-surface-glass-border-alpha, 0.55));
+  box-shadow: 0 2.8rem 4.8rem -2rem rgba(var(--brand-surface-glass-shadow, 16, 40, 24), var(--brand-surface-glass-shadow-alpha, 0.22));
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  padding: clamp(2.4rem, 3vw, 3.6rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.featured-product--glass.gradient,
+.featured-product--glass.color-scheme-2 {
+  background: rgba(var(--brand-surface-glass, 255, 255, 255), 0.94) !important;
+  background-image: none !important;
+}
+
+.featured-product--glass .featured-product__glass-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.04));
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 0;
+}
+
+.featured-product--glass > *:not(.featured-product__glass-overlay) {
+  position: relative;
+  z-index: 1;
+}
+
 @media screen and (min-width: 750px) {
   .featured-product .product__media-item {
     padding-bottom: 0;

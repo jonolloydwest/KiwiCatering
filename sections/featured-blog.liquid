@@ -85,7 +85,8 @@
               {%- endcapture -%}
               {%- assign eyebrow = article.tags | first -%}
               {%- if eyebrow != blank -%}
-                {%- capture eyebrow_markup -%}<span class="article-card__eyebrow">{{ eyebrow }}</span><h3 class="card__heading{%- endcapture -%}
+                {%- assign eyebrow_text = eyebrow | escape -%}
+                {%- assign eyebrow_markup = '<span class="article-card__eyebrow">' | append: eyebrow_text | append: '</span><h3 class="card__heading' -%}
                 {%- assign article_card = article_card | replace_first: '<h3 class="card__heading', eyebrow_markup -%}
               {%- endif -%}
               {%- assign article_card = article_card | replace: 'class="article-card__excerpt rte-width"', 'class="article-card__excerpt rte-width article-card__excerpt--legacy"' -%}
