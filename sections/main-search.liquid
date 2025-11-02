@@ -133,6 +133,9 @@
         {%- endif -%}
       </div>
       {%- if search.performed -%}
+        <h2 class="search__heading">
+          Showing {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for “{{ search.terms | escape }}”
+        </h2>
         {%- unless section.settings.enable_filtering or section.settings.enable_sorting -%}
           {%- if search.results_count > 0 -%}
             <p role="status">
@@ -141,7 +144,12 @@
           {%- endif -%}
         {%- endunless -%}
         {%- if search.results_count == 0 and search.filters == empty -%}
-          <p role="status">{{ 'templates.search.no_results' | t: terms: search.terms }}</p>
+          <div class="search__empty" role="status">
+            <p class="search__empty-heading">No matches for “{{ search.terms | escape }}”</p>
+            <p class="search__empty-copy">
+              We couldn’t find any bites just yet—try another flavour, adjust your spelling, or explore our featured categories below.
+            </p>
+          </div>
         {%- endif -%}
       {%- endif -%}
     </div>

@@ -6,6 +6,9 @@
     | plus: predictive_search.resources.articles.size
   %}
   <div id="predictive-search-results" role="listbox">
+    <p class="visually-hidden search-a11y-instructions">
+      Use ↑ and ↓ to navigate suggestions, Enter to select.
+    </p>
     {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
       <div
         id="predictive-search-results-groups-wrapper"
@@ -22,8 +25,9 @@
         </h2>
         <ul
           id="predictive-search-results-queries-list"
-          class="predictive-search__results-list list-unstyled"
+          class="predictive-search__list predictive-search__results-list list-unstyled"
           role="group"
+          aria-live="polite"
           aria-labelledby="predictive-search-queries"
         >
           {%- for query in predictive_search.resources.queries -%}
@@ -72,8 +76,9 @@
         </h2>
         <ul
           id="predictive-search-results-pages-list-desktop"
-          class="predictive-search__results-list list-unstyled"
+          class="predictive-search__list predictive-search__results-list list-unstyled"
           role="group"
+          aria-live="polite"
           aria-labelledby="predictive-search-pages-desktop"
         >
           {%- for page in predictive_search.resources.pages -%}
@@ -125,8 +130,9 @@
             </h2>
             <ul
               id="predictive-search-results-products-list"
-              class="predictive-search__results-list list-unstyled"
+              class="predictive-search__list predictive-search__results-list list-unstyled"
               role="group"
+              aria-live="polite"
               aria-labelledby="predictive-search-products"
             >
               {%- for product in predictive_search.resources.products -%}
@@ -178,8 +184,9 @@
             </h2>
             <ul
               id="predictive-search-results-pages-list-mobile"
-              class="predictive-search__results-list list-unstyled"
+              class="predictive-search__list predictive-search__results-list list-unstyled"
               role="group"
+              aria-live="polite"
               aria-labelledby="predictive-search-pages-mobile"
             >
               {%- for page in predictive_search.resources.pages -%}
