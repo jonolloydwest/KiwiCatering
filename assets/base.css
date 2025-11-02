@@ -1,3 +1,148 @@
+/* Poppins font-face declarations */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-Thin.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 100;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-ThinItalic.woff2?v=1762061298') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-ExtraLight.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 200;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-ExtraLightItalic.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-Light.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-LightItalic.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-Regular.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-Italic.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-Medium.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-MediumItalic.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-SemiBold.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-SemiBoldItalic.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-Bold.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-BoldItalic.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-ExtraBold.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 800;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-ExtraBoldItalic.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-Black.woff2?v=1762061297') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+  src: url('https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Poppins-BlackItalic.woff2?v=1762061297') format('woff2');
+}
+
 :root {
   --alpha-button-background: 1;
   --alpha-button-border: 1;
