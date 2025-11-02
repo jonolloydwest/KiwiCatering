@@ -11,21 +11,50 @@
 
 <div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
   <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {%- liquid
+      assign eyebrow_text = section.settings.eyebrow_text
+      assign intro_text = ''
+
+      if collection.handle == 'cream-dispensers'
+        assign eyebrow_text = 'KITCHEN ESSENTIALS'
+        assign intro_text = '<p>Whipped cream, desserts and sauces are now faster and easier than ever before with our range of whipped-cream dispensers.</p>'
+      elsif collection.handle == 'flavoured-cream-chargers'
+        assign eyebrow_text = 'KITCHEN ESSENTIALS'
+        assign intro_text = '<p>Explore flavoured cream chargers that infuse vanilla, strawberry, and other aromas into every whip.</p>'
+      elsif collection.handle contains 'cream-charger'
+        assign eyebrow_text = 'KITCHEN ESSENTIALS'
+        assign intro_text = '<p>Keep your beverage and dessert stations stocked with reliable food-grade N2O cream chargers in service-ready pack sizes.</p>'
+      elsif collection.handle contains 'birch-cutlery'
+        assign eyebrow_text = 'ECO TABLEWARE'
+        assign intro_text = '<p>Set the table with durable birch wood knives, forks, and spoons that stay sturdy in service while remaining compostable.</p>'
+      elsif collection.handle contains 'palm-leaf'
+        assign eyebrow_text = 'ECO TABLEWARE'
+        assign intro_text = '<p>Serve canapés, mains, and desserts on naturally compostable palm leaf plates that elevate eco-conscious presentations.</p>'
+      else
+        assign intro_text = '<p>Discover curated {{ collection.title | downcase }} selected to keep your kitchen moving.</p>'
+      endif
+    -%}
     <div class="collection-hero__text-wrapper legacy-collection-hero">
-      {%- if section.settings.eyebrow_text != blank -%}
-        <p class="collection-hero__eyebrow">{{ section.settings.eyebrow_text }}</p>
+      {%- if eyebrow_text != blank -%}
+        <p class="collection-hero__eyebrow">{{ eyebrow_text }}</p>
       {%- endif -%}
       <h1 class="collection-hero__title">
         <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
         {{- collection.title | escape -}}
       </h1>
 
-      {%- if section.settings.intro_text != blank -%}
-        <div class="collection-hero__intro rte">{{ section.settings.intro_text }}</div>
+      {%- if intro_text != blank -%}
+        <div class="collection-hero__intro rte">{{ intro_text }}</div>
       {%- endif -%}
 
       {%- if section.settings.show_collection_description -%}
-        <div class="collection-hero__description rte">{{ collection.description }}</div>
+        {%- assign collection_description = collection.description -%}
+        {%- if collection.handle == 'cream-dispensers' -%}
+          {%- assign collection_description = '' -%}
+        {%- endif -%}
+        {%- if collection_description != blank -%}
+          <div class="collection-hero__description rte">{{ collection_description }}</div>
+        {%- endif -%}
       {%- endif -%}
     </div>
 

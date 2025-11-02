@@ -10,11 +10,23 @@
     "form": {
       "type": "contact-form",
       "settings": {
-        "heading": "",
+        "heading": "Contact our team",
         "heading_size": "h1",
         "color_scheme": "scheme-1",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 36,
+        "eyebrow_text": "Talk to us",
+        "intro_text": "<p>Have a question about our hospitality supplies, trade pricing, or delivery options? Leave us a note and we'll get back to you within one business day.</p>",
+        "phone_label": "Call us",
+        "phone_value": "0800 374 699",
+        "email_label": "Email",
+        "email_value": "sales@kiwicatering.co.nz",
+        "address_label": "CLICK AND COLLECT",
+        "address_value": "41E Morrin Rd\nPanmure\nAuckland 1071",
+        "hours_label": "Service hours",
+        "hours_value": "Mon\u2013Fri: 8:00am \u2013 5:00pm NZST\nAfter hours: On-call for urgent catering needs",
+        "cta_label": "View FAQs",
+        "cta_link": "/pages/faqs"
       }
     }
   },

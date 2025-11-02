@@ -208,29 +208,32 @@
   }
 }
 
-.multicolumn[data-section-id='value_props'] .multicolumn__title {
+body.template-index .multicolumn[data-section-id='value_props'] .collection__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  margin-bottom: clamp(2.4rem, 3.5vw, 3.2rem);
+  gap: clamp(0.8rem, 1.2vw, 1.4rem);
+  margin-bottom: clamp(3rem, 4vw, 3.8rem);
 }
 
-.multicolumn[data-section-id='value_props'] .multicolumn__title .title {
-  display: inline-block;
+body.template-index .multicolumn[data-section-id='value_props'] .collection__title .title {
+  margin: 0;
+  font-size: clamp(2.6rem, 3.8vw, 3.4rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: inherit;
+  color: rgb(var(--color-foreground));
   position: relative;
-  padding-bottom: clamp(1rem, 1.8vw, 1.4rem);
-  margin: 0 auto;
+  line-height: 1.1;
 }
 
-.multicolumn[data-section-id='value_props'] .multicolumn__title .title::after {
+body.template-index .multicolumn[data-section-id='value_props'] .collection__title .title::after {
   content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
+  display: block;
   width: clamp(10rem, 18vw, 14rem);
   height: 0.3rem;
+  margin: clamp(1.4rem, 2.6vw, 2rem) auto 0;
   border-radius: 999px;
   background: linear-gradient(90deg, rgb(var(--brand-color-primary)), rgba(var(--color-foreground), 0.75));
 }

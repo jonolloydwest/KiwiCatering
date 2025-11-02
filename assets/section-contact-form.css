@@ -10,30 +10,195 @@
   margin-top: 0.2rem;
 }
 
+.contact--layout {
+  position: relative;
+}
+
+.contact__wrapper {
+  display: grid;
+  gap: clamp(2.4rem, 4vw, 4.8rem);
+}
+
+@media screen and (min-width: 990px) {
+  .contact__wrapper {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+}
+
+.contact__intro {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.2rem, 2vw, 1.8rem);
+  max-width: 56rem;
+}
+
+.contact__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  background: rgba(var(--brand-color-primary), 0.12);
+  color: rgb(var(--brand-color-primary));
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  width: max-content;
+}
+
+.contact__intro .title {
+  margin: 0;
+  font-size: clamp(3rem, 4vw, 3.6rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.contact__copy {
+  color: rgba(var(--brand-color-ink), 0.8);
+  font-size: 1.6rem;
+  line-height: 1.7;
+  max-width: 46rem;
+}
+
+.contact__details {
+  display: grid;
+  gap: clamp(1.2rem, 2vw, 1.6rem);
+}
+
+.contact-detail {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.4rem;
+  align-items: start;
+  padding: 1.6rem 1.8rem;
+  border-radius: var(--brand-radius-glass, 2.2rem);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 18px 32px -18px rgba(var(--brand-surface-glass-shadow), 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.contact-detail__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 999px;
+  background: rgba(var(--brand-color-primary), 0.12);
+  color: rgb(var(--brand-color-primary));
+}
+
+.contact-detail__icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  fill: currentColor;
+}
+
+.contact-detail__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.contact-detail__label {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(var(--brand-color-ink), 0.65);
+}
+
+.contact-detail__value {
+  font-size: 1.6rem;
+  color: rgba(var(--brand-color-ink), var(--brand-opacity-ink-strong));
+  text-decoration: none;
+}
+
+.contact-detail__value:hover,
+.contact-detail__value:focus-visible {
+  color: rgb(var(--brand-color-primary));
+}
+
+.contact-detail__value--muted {
+  color: rgba(var(--brand-color-ink), 0.75);
+}
+
+.contact__cta {
+  margin-top: 1.2rem;
+  align-self: flex-start;
+  padding-inline: clamp(2.4rem, 4vw, 3.2rem);
+}
+
+.contact__card {
+  position: relative;
+  padding: clamp(2.4rem, 4vw, 3.6rem);
+  border-radius: var(--brand-radius-glass, 3rem);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 28px 48px -20px rgba(var(--brand-surface-glass-shadow), 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
 .contact .field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
-@media screen and (min-width: 750px) {
-  .contact .field {
-    margin-bottom: 2rem;
-  }
+.contact .field__input,
+.contact .text-area {
+  border-radius: 1.4rem;
+  border: 1px solid rgba(var(--brand-color-ink), 0.12);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1.6rem 1.8rem;
+  font-size: 1.5rem;
 }
 
-.contact__button {
-  margin-top: 3rem;
+.contact .field__input:focus,
+.contact .text-area:focus {
+  border-color: rgba(var(--brand-color-primary), 0.45);
+  box-shadow: 0 0 0 0.25rem rgba(var(--brand-color-primary), 0.18);
 }
 
-@media screen and (min-width: 750px) {
-  .contact__button {
-    margin-top: 4rem;
-  }
+.contact__fields {
+  display: grid;
+  gap: 1.6rem;
 }
 
 @media screen and (min-width: 750px) {
   .contact__fields {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-column-gap: 2rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+.contact__field-error .form__message {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.contact__button {
+  margin-top: 1.2rem;
+}
+
+.contact__button .button {
+  width: 100%;
+}
+
+@media screen and (min-width: 750px) {
+  .contact__button .button {
+    width: auto;
+    min-width: 18rem;
   }
 }

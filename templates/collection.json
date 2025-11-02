@@ -36,7 +36,8 @@
         "collection_stories_block_6": {
           "type": "story_item",
           "settings": {
-            "collection": "cream-dispensers"
+            "collection": "cream-dispensers",
+            "highlight_text": "<p>Cream dispensers make whipped cream, desserts, and sauces faster.</p>"
           }
         },
         "collection_stories_block_7": {

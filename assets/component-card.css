@@ -139,8 +139,43 @@
   padding: 1.3rem 1rem;
 }
 
+.product-card-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(1.6rem, 2vw, 2.2rem);
+  border-radius: var(--brand-radius-glass, 2.6rem);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 26px 48px -20px rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-alpha));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: transform var(--duration-short) ease, box-shadow var(--duration-short) ease;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.product-card-wrapper:hover,
+.product-card-wrapper:focus-within {
+  transform: translateY(-0.4rem);
+  box-shadow: 0 32px 52px -24px rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-hover-alpha));
+}
+
 .product-card-wrapper .card {
   --text-alignment: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: inherit;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card-wrapper .card__inner {
+  background: transparent;
+  border-radius: inherit;
 }
 
 .product-card-wrapper .card__information {
