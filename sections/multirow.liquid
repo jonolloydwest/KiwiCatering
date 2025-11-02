@@ -40,9 +40,13 @@
   unless no_content_background and no_content_styles
     assign corners_class = ' collapse-corners'
   endunless
+  assign multirow_home_class = ''
+  if request.page_type == 'index'
+    assign multirow_home_class = 'multirow--dev-home'
+  endif
 -%}
 
-<div class="multirow section-{{ section.id }}-padding gradient color-{{ section.settings.section_color_scheme }}">
+<div class="multirow section-{{ section.id }}-padding gradient color-{{ section.settings.section_color_scheme }}{% if multirow_home_class != blank %} {{ multirow_home_class }}{% endif %}">
   <div class="multirow__inner page-width">
     {%- for block in section.blocks -%}
       <div

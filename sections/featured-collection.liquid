@@ -40,6 +40,10 @@
 
 {%- liquid
   assign products_to_display = section.settings.collection.all_products_count
+  assign collection_home_class = ''
+  if request.page_type == 'index'
+    assign collection_home_class = 'collection--dev-home'
+  endif
 
   if section.settings.collection.all_products_count > section.settings.products_to_show
     assign products_to_display = section.settings.products_to_show
@@ -68,7 +72,7 @@
   class="color-{{ section.settings.color_scheme }} isolate gradient"
 >
   <div
-    class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
+    class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}{% if collection_home_class != blank %} {{ collection_home_class }}{% endif %}"
     id="collection-{{ section.id }}"
     data-id="{{ section.id }}"
   >

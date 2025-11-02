@@ -15,7 +15,12 @@
   }
 {%- endstyle -%}
 
-<div class="newsletter center {% if section.settings.full_width == false %}newsletter--narrow page-width{% endif %}">
+{%- assign newsletter_home_class = '' -%}
+{%- if request.page_type == 'index' -%}
+  {%- assign newsletter_home_class = 'newsletter--dev-home' -%}
+{%- endif -%}
+
+<div class="newsletter center {% if section.settings.full_width == false %}newsletter--narrow page-width{% endif %}{% if newsletter_home_class != blank %} {{ newsletter_home_class }}{% endif %}">
   <div class="newsletter__wrapper color-{{ section.settings.color_scheme }} gradient content-container isolate{% if section.settings.full_width %} content-container--full-width{% endif %} section-{{ section.id }}-padding">
     {%- for block in section.blocks -%}
       {%- case block.type -%}

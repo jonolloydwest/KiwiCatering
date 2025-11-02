@@ -27,13 +27,17 @@
   assign content_width_setting = section.settings.content_width | default: 'default'
 -%}
 {%- assign text_alignment_setting = section.settings.text_alignment | default: 'left' -%}
+{%- assign banner_home_class = '' -%}
+{%- if request.page_type == 'index' -%}
+  {%- assign banner_home_class = 'banner--dev-home' -%}
+{%- endif -%}
 {%- style -%}
   #Banner-{{ section.id }}::after,
   #Banner-{{ section.id }} .banner__media::after {
     content: none;
   }
 
-  #Banner-{{ section.id }} .banner__overlay {
+  #Banner-{{ section.id }}.banner--dev-home .banner__overlay {
     position: absolute;
     inset: 0;
     background: {% if section.settings.overlay_color != blank %}{{ section.settings.overlay_color }}{% else %}#000000{% endif %};
@@ -43,81 +47,114 @@
     transition: opacity 0.3s ease;
   }
 
-  #Banner-{{ section.id }} .banner__content {
-    padding-inline: clamp(2rem, 6vw, 6rem);
+  #Banner-{{ section.id }}.banner--dev-home .banner__content {
+    padding-inline: clamp(2.4rem, 7vw, 9rem);
   }
 
-  #Banner-{{ section.id }} .banner__content-inner {
+  #Banner-{{ section.id }}.banner--dev-home .banner__content-inner {
     display: flex;
     justify-content: {% if text_alignment_setting == 'left' %}flex-start{% elsif text_alignment_setting == 'center' %}center{% else %}flex-end{% endif %};
   }
 
-  #Banner-{{ section.id }} .banner__hero {
+  #Banner-{{ section.id }}.banner--dev-home .banner__hero {
     display: grid;
-    gap: clamp(1.2rem, 2vw, 1.8rem);
+    gap: clamp(1.6rem, 2.4vw, 2.8rem);
     position: relative;
     z-index: 3;
     text-align: {% if text_alignment_setting == 'left' %}left{% elsif text_alignment_setting == 'center' %}center{% else %}right{% endif %};
+    max-width: clamp(32rem, 46vw, 58rem);
   }
 
-  #Banner-{{ section.id }} .banner__eyebrow {
-    font-size: clamp(1.6rem, 2.5vw, 2.4rem);
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
+  #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
+    font-size: clamp(1.8rem, 2.6vw, 3rem);
+    letter-spacing: 0.18em;
     font-weight: 300;
     color: {{ section.settings.eyebrow_color | default: '#ffffff' }};
     margin: 0;
+    text-transform: uppercase;
   }
 
-  #Banner-{{ section.id }} .banner__heading {
+  #Banner-{{ section.id }}.banner--dev-home .banner__heading {
     font-family: var(--font-heading, var(--font-heading-family));
     font-weight: 600;
-    line-height: 1.05;
-    font-size: clamp(3.6rem, 6vw, 7.2rem);
+    line-height: 1.02;
+    font-size: clamp(3.4rem, 6.2vw, 8rem);
     color: {{ section.settings.heading_color | default: '#ffffff' }};
     margin: 0;
   }
 
-  #Banner-{{ section.id }} .banner__heading span {
+  #Banner-{{ section.id }}.banner--dev-home .banner__heading span {
     display: block;
-    margin-top: clamp(0.8rem, 1.5vw, 1.2rem);
+    margin-top: clamp(0.6rem, 1.8vw, 1.4rem);
   }
 
-  #Banner-{{ section.id }} .banner__text {
-    font-size: clamp(1.6rem, 2.5vw, 2rem);
+  #Banner-{{ section.id }}.banner--dev-home .banner__text {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
     font-weight: 300;
     color: {{ section.settings.text_color | default: 'rgba(255,255,255,0.85)' }};
     margin: 0;
+    max-width: clamp(32rem, 45vw, 48rem);
   }
 
-  #Banner-{{ section.id }} .banner__buttons {
+  #Banner-{{ section.id }}.banner--dev-home .banner__buttons {
     display: flex;
-    gap: clamp(1rem, 2vw, 1.6rem);
+    gap: clamp(1.2rem, 2.2vw, 2rem);
     justify-content: {% if text_alignment_setting == 'left' %}flex-start{% elsif text_alignment_setting == 'center' %}center{% else %}flex-end{% endif %};
   }
 
-  #Banner-{{ section.id }} .banner__buttons .button {
-    min-width: 14rem;
+  #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button {
+    min-width: clamp(14rem, 18vw, 18rem);
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: rgb(var(--brand-color-primary));
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: clamp(1.2rem, 1.8vw, 1.6rem) clamp(2rem, 3vw, 2.8rem);
+    border-radius: 6rem;
   }
 
-  #Banner-{{ section.id }} .banner__content-inner::before {
+  #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button:hover,
+  #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button:focus-visible {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: rgb(var(--brand-color-primary));
+  }
+
+  #Banner-{{ section.id }}.banner--dev-home .banner__content-inner::before {
     content: '';
     position: absolute;
-    inset: clamp(2rem, 6vw, 4rem) clamp(2rem, 8vw, 6rem);
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: clamp(1rem, 3vw, 2rem);
-    backdrop-filter: blur(14px);
+    inset: clamp(2.4rem, 6vw, 4.6rem) clamp(2.4rem, 8vw, 7.4rem);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: clamp(1.2rem, 3vw, 2.6rem);
+    backdrop-filter: blur(10px);
     pointer-events: none;
     opacity: {{ section.settings.frosted_frame_opacity | divided_by: 100.0 }};
   }
 
   @media screen and (max-width: 749px) {
-    #Banner-{{ section.id }} .banner__content {
-      padding-inline: clamp(1.6rem, 5vw, 2.4rem);
+    #Banner-{{ section.id }}.banner--dev-home .banner__content {
+      padding-inline: clamp(1.6rem, 6vw, 3.2rem);
     }
 
-    #Banner-{{ section.id }} .banner__content-inner::before {
-      inset: clamp(1.2rem, 5vw, 2.4rem);
+    #Banner-{{ section.id }}.banner--dev-home .banner__content-inner::before {
+      inset: clamp(1.2rem, 5vw, 2.6rem);
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__hero {
+      max-width: none;
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
+      font-size: clamp(1.4rem, 4vw, 1.8rem);
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__heading {
+      font-size: clamp(2.6rem, 10vw, 3.4rem);
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__buttons {
+      justify-content: center;
     }
   }
 
@@ -130,15 +167,15 @@
 
   {%- case content_width_setting -%}
     {%- when 'narrow' -%}
-      #Banner-{{ section.id }} .banner__box {
+      #Banner-{{ section.id }}.banner--dev-home .banner__box {
         max-width: 48rem;
       }
     {%- when 'wide' -%}
-      #Banner-{{ section.id }} .banner__box {
+      #Banner-{{ section.id }}.banner--dev-home .banner__box {
         max-width: 72rem;
       }
     {%- when 'full' -%}
-      #Banner-{{ section.id }} .banner__box {
+      #Banner-{{ section.id }}.banner--dev-home .banner__box {
         max-width: none;
         width: 100%;
       }
@@ -169,7 +206,7 @@
 
 <div
   id="Banner-{{ section.id }}"
-  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if section.settings.full_width_content %} banner--full-width-content{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}{% if section.settings.custom_css_class != blank %} {{ section.settings.custom_css_class | strip | escape }}{% endif %}"
+  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if section.settings.full_width_content %} banner--full-width-content{% endif %}{% if banner_home_class != blank %} {{ banner_home_class }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}{% if section.settings.custom_css_class != blank %} {{ section.settings.custom_css_class | strip | escape }}{% endif %}"
 >
   <div class="banner__overlay" aria-hidden="true"></div>
   {%- if section.settings.image != blank -%}

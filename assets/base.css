@@ -1187,6 +1187,13 @@ summary::-webkit-details-marker {
     max-width: 100%;
   }
 
+  .product-grid .grid__item,
+  .collection-list .collection-list__item {
+    width: calc(50% - var(--grid-mobile-horizontal-spacing) / 2);
+    max-width: calc(50% - var(--grid-mobile-horizontal-spacing) / 2);
+    flex: 0 0 calc(50% - var(--grid-mobile-horizontal-spacing) / 2);
+  }
+
   .slider--tablet.grid--peek {
     margin: 0;
     width: 100%;
@@ -1223,6 +1230,13 @@ summary::-webkit-details-marker {
   .grid--4-col-desktop .grid__item {
     width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
     max-width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+  }
+
+  .product-grid .grid__item,
+  .collection-list .collection-list__item {
+    width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+    max-width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+    flex: 0 0 calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
   }
 
   .grid--3-col-desktop .grid__item {
