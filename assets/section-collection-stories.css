@@ -4,22 +4,26 @@
 }
 
 .collection-stories-section .collection-stories__container {
-  padding-left: var(--spacing-xl, var(--space-brand-xl, 3.2rem));
-  padding-right: var(--spacing-xl, var(--space-brand-xl, 3.2rem));
+  max-width: 120rem;
+  margin: 0 auto;
+  padding-left: 3rem;
+  padding-right: 3rem;
 }
 
 @media (max-width: 749px) {
   .collection-stories-section .collection-stories__container {
-    padding-left: var(--spacing-md, var(--space-brand-md, 1.6rem));
-    padding-right: var(--spacing-md, var(--space-brand-md, 1.6rem));
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
 .collection-stories-section .collection-stories__list {
   display: flex;
-  gap: 2.4rem;
+  flex-wrap: nowrap;
+  gap: 2rem 3.2rem;
   align-items: flex-start;
-  padding-bottom: var(--spacing-3xs, var(--space-brand-3xs, 0.4rem));
+  justify-content: flex-start;
+  padding-bottom: 0.6rem;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -34,11 +38,11 @@
   justify-content: flex-start;
   text-decoration: none;
   color: inherit;
-  gap: var(--spacing-2xs, var(--space-brand-2xs, 0.4rem));
+  gap: 0.8rem;
   transition: transform var(--duration-short) ease;
   scroll-snap-align: start;
   flex: 0 0 auto;
-  min-width: 12rem;
+  min-width: 9.6rem;
 }
 
 .collection-stories-section .collection-stories__item:hover {
@@ -88,9 +92,16 @@
   text-transform: capitalize;
 }
 
-@media (min-width: 990px) {
+@media (min-width: 992px) {
   .collection-stories-section .collection-stories__list {
+    overflow-x: visible;
+    scroll-snap-type: none;
     justify-content: center;
+  }
+
+  .collection-stories-section .collection-stories__item,
+  .collection-stories-section .collection-stories__item--no-link {
+    min-width: 9.6rem;
   }
 }
 
@@ -98,8 +109,27 @@
   display: none;
 }
 
+@media (max-width: 1200px) {
+  .collection-stories-section .collection-stories__item,
+  .collection-stories-section .collection-stories__item--no-link {
+    flex: 0 0 calc(12.5% - 2rem);
+  }
+}
+
+@media (max-width: 991px) {
+  .collection-stories-section .collection-stories__item,
+  .collection-stories-section .collection-stories__item--no-link {
+    flex: 0 0 calc(16.66% - 1.8rem);
+  }
+}
+
 @media (max-width: 767px) {
   .collection-stories-section .collection-stories__list {
-    gap: 1.6rem;
+    gap: 1.6rem 2rem;
+  }
+
+  .collection-stories-section .collection-stories__item,
+  .collection-stories-section .collection-stories__item--no-link {
+    flex: 0 0 calc(25% - 1.5rem);
   }
 }

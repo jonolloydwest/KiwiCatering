@@ -2,33 +2,41 @@
 .email-signup-banner {
   position: relative;
   overflow: hidden;
-  padding: clamp(6rem, 10vw, 18rem) 0;
+  padding: clamp(12rem, 15vw, 18rem) 0;
+  margin-bottom: clamp(5rem, 10vw, 10rem);
 }
 
 .email-signup-banner::before,
 .email-signup-banner::after {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: 2.4rem;
+  border-radius: 2rem;
+  transform-origin: top;
 }
 
 .email-signup-banner::before {
-  background: #f1f1fc;
-  transform: skewY(0deg);
-  width: 98%;
+  z-index: 0;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 99%;
   height: 80%;
   margin: 0 auto;
-  top: 10%;
+  background: #f1f1fc;
+  transform: skewY(0deg) translateY(-50%);
+  pointer-events: none;
 }
 
 .email-signup-banner::after {
-  background: linear-gradient(90deg, #5567ee, #8795ff);
-  transform: skewY(-2deg);
+  z-index: -1;
+  top: 50%;
+  left: 0;
+  right: 0;
   width: 100%;
   height: 80%;
-  top: 10%;
+  background: linear-gradient(90deg, #5567ee, #8795ff);
+  transform: skewY(-2deg) translateY(-50%);
+  pointer-events: none;
 }
 
 .email-signup-banner .banner__content {
@@ -72,7 +80,7 @@
 }
 
 .email-signup-banner__inner .newsletter-form__field-wrapper {
-  width: min(38rem, 100%);
+  width: min(40rem, 100%);
   margin: 0 auto;
 }
 
@@ -85,12 +93,12 @@
 
 .email-signup-banner__inner .field__input {
   background: transparent;
-  padding: 1.8rem 12rem 1.8rem 2.4rem;
+  padding: 2rem 10rem 2rem 2rem;
   color: #111111;
 }
 
 .email-signup-banner__inner .field__button {
-  width: 10.8rem;
+  width: 10rem;
   height: 100%;
   background: #5567ee;
   color: #ffffff;
@@ -105,6 +113,12 @@
   justify-content: center;
 }
 
+@media (min-width: 992px) {
+  .email-signup-banner__inner .newsletter-form__field-wrapper {
+    width: min(40rem, 40%);
+  }
+}
+
 @media (max-width: 991px) {
   .email-signup-banner__inner .email-signup-banner__heading {
     font-size: clamp(2.6rem, 6vw, 4.2rem);
@@ -113,21 +127,29 @@
   .email-signup-banner__inner .newsletter__description {
     font-size: 1.6rem;
   }
+
+  .email-signup-banner__inner .newsletter-form__field-wrapper {
+    width: min(36rem, 55%);
+  }
 }
 
 @media (max-width: 749px) {
   .email-signup-banner {
-    padding: 6rem 0;
+    padding: 8rem 0;
+    margin-bottom: 6rem;
   }
 
   .email-signup-banner::before,
   .email-signup-banner::after {
     height: 88%;
-    top: 6%;
+  }
+
+  .email-signup-banner__inner .newsletter-form__field-wrapper {
+    width: calc(100% - 3rem);
   }
 
   .email-signup-banner__inner .field__input {
-    padding: 1.4rem 10rem 1.4rem 2rem;
+    padding: 1.6rem 9.6rem 1.6rem 2rem;
   }
 
   .email-signup-banner__inner .field__button {

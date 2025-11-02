@@ -3881,3 +3881,26 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* Home heading alignment */
+body.template-index .title-wrapper,
+body.template-index .title-wrapper-with-link,
+body.template-index .collections-list__header,
+body.template-index .collection__title,
+body.template-index .rich-text__heading,
+body.template-index .multicolumn .title-wrapper {
+  text-align: center;
+}
+
+body.template-index .title-wrapper-with-link,
+body.template-index .collections-list__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+body.template-index .title-wrapper-with-link .title,
+body.template-index .collections-list__header .collections-list__title {
+  margin-inline: auto;
+}

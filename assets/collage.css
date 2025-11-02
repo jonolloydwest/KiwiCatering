@@ -200,3 +200,134 @@
   outline: none;
   box-shadow: none;
 }
+
+/* Legacy Dev home collage layout */
+.collage--dev-scale {
+  grid-auto-flow: row;
+  grid-template-columns: 1fr;
+  grid-column-gap: var(--collage-dev-gap-mobile, 2rem);
+  grid-row-gap: var(--collage-dev-gap-mobile, 2rem);
+}
+
+@media screen and (min-width: 750px) {
+  .collage--dev-scale {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    grid-column-gap: var(--collage-dev-gap-desktop, 3.2rem);
+    grid-row-gap: var(--collage-dev-gap-desktop, 3.2rem);
+    align-items: stretch;
+  }
+}
+
+.collage--dev-scale .collage__item {
+  position: relative;
+  display: flex;
+  min-height: clamp(26rem, 36vw, 40rem);
+}
+
+.collage--dev-scale .collage__item > * {
+  flex: 1 1 100%;
+}
+
+.collage--dev-scale .card-wrapper,
+.collage--dev-scale .collage-card,
+.collage--dev-scale .card {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  background: transparent;
+  height: 100%;
+}
+
+.collage--dev-scale .collage-card:after {
+  display: none;
+}
+
+.collage--dev-scale .collage-card .media,
+.collage--dev-scale .card__inner,
+.collage--dev-scale .card__media .media,
+.collage--dev-scale .media {
+  border-radius: 0;
+  height: 100%;
+}
+
+.collage--dev-scale .card__content {
+  position: absolute;
+  inset-inline-start: var(--collage-dev-content-padding, 3.2rem);
+  bottom: var(--collage-dev-content-bottom, 3.2rem);
+  max-width: min(var(--collage-dev-content-max, 32rem), 42%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 0;
+  margin: 0;
+  align-items: flex-start;
+  color: rgb(var(--color-foreground));
+  text-align: left;
+}
+
+.collage--dev-scale .card__content ~ .card__content {
+  display: none;
+}
+
+.collage--dev-scale .card__information {
+  gap: 0.8rem;
+}
+
+.collage--dev-scale .card__heading {
+  margin: 0;
+  font-size: clamp(2.4rem, 3vw, 2.8rem);
+  letter-spacing: 0.07em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.collage--dev-scale .card__heading .icon-wrap {
+  display: none;
+}
+
+.collage--dev-scale .card__caption {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+.collage--dev-scale .collage-card .deferred-media,
+.collage--dev-scale .card-wrapper .deferred-media {
+  height: 100%;
+}
+
+@media screen and (min-width: 990px) {
+  .collage--dev-scale.collage--right .collage__item:last-child .card__content {
+    inset-inline-end: var(--collage-dev-content-padding, 3.2rem);
+    inset-inline-start: auto;
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .collage--dev-scale .collage__item {
+    min-height: clamp(24rem, 52vw, 34rem);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .collage--dev-scale {
+    grid-template-columns: 1fr;
+  }
+
+  .collage--dev-scale .collage__item {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .collage--dev-scale .card__content {
+    position: static;
+    max-width: none;
+    width: 100%;
+    padding-top: 2rem;
+  }
+}
