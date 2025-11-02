@@ -590,20 +590,51 @@ button.facets__button {
 }
 
 span.active-facets__button-inner {
-  color: rgb(var(--color-foreground));
-  box-shadow: 0 0 0 0.1rem rgb(var(--color-foreground));
-  border-radius: 2.6rem;
-  font-size: 1rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 1.8rem;
   min-height: 0;
   min-width: 0;
-  padding: 0.25rem 1.25rem;
-  display: flex;
-  align-items: center;
+  border-radius: var(--brand-radius-glass, 2.4rem);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(var(--brand-color-ink), var(--brand-opacity-ink-strong));
+  background: linear-gradient(135deg, rgba(var(--brand-color-primary), 0.22), rgba(var(--brand-color-primary), 0.12));
+  border: 1px solid rgba(var(--brand-color-primary), 0.48);
+  box-shadow: 0 1.4rem 2.8rem -1.6rem rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-alpha));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background var(--duration-short) ease, color var(--duration-short) ease,
+    border-color var(--duration-short) ease, box-shadow var(--duration-short) ease;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-span.active-facets__button-inner:before,
+span.active-facets__button-inner:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.06));
+  opacity: 0.8;
+  pointer-events: none;
+  transition: opacity var(--duration-short) ease;
+}
+
 span.active-facets__button-inner:after {
-  display: none;
+  content: '';
+  position: absolute;
+  inset: 1px 1px auto 1px;
+  height: 48%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  opacity: 0.9;
+  pointer-events: none;
+  transition: opacity var(--duration-short) ease;
 }
 
 .active-facets__button-wrapper {
@@ -640,8 +671,7 @@ span.active-facets__button-inner:after {
   }
 
   span.active-facets__button-inner {
-    padding-bottom: 0.1rem;
-    padding-top: 0.1rem;
+    padding: 0.35rem 1.6rem;
   }
 
   .active-facets__button-wrapper {
@@ -651,15 +681,28 @@ span.active-facets__button-inner:after {
 }
 
 .active-facets__button:hover .active-facets__button-inner {
-  box-shadow: 0 0 0 0.2rem rgb(var(--color-foreground));
+  background: linear-gradient(135deg, rgba(var(--brand-color-primary), 0.32), rgba(var(--brand-color-primary), 0.2));
+  color: rgb(var(--brand-color-primary-contrast));
+  border-color: rgba(var(--brand-color-primary), 0.7);
+  box-shadow: 0 1.8rem 3.4rem -1.6rem rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-hover-alpha));
+}
+
+.active-facets__button:hover .active-facets__button-inner:before,
+.active-facets__button:hover .active-facets__button-inner:after {
+  opacity: 1;
 }
 
 .active-facets__button--light .active-facets__button-inner {
-  box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.2);
+  background: linear-gradient(135deg, rgba(var(--brand-color-primary), 0.16), rgba(var(--brand-color-primary), 0.08));
+  border-color: rgba(var(--brand-color-primary), 0.35);
+  color: rgba(var(--brand-color-ink), var(--brand-opacity-ink-muted));
+  box-shadow: 0 1.2rem 2.4rem -1.6rem rgba(var(--brand-surface-glass-shadow), 0.18);
 }
 
 .active-facets__button--light:hover .active-facets__button-inner {
-  box-shadow: 0 0 0 0.2rem rgba(var(--color-foreground), 0.4);
+  color: rgb(var(--brand-color-primary-contrast));
+  border-color: rgba(var(--brand-color-primary), 0.65);
+  box-shadow: 0 1.6rem 3.2rem -1.6rem rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-hover-alpha));
 }
 
 a.active-facets__button:focus-visible {
@@ -679,14 +722,16 @@ a.active-facets__button.focused {
 }
 
 a.active-facets__button:focus-visible .active-facets__button-inner {
-  box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.2), 0 0 0 0.2rem rgb(var(--color-background)),
-    0 0 0 0.4rem rgb(var(--color-foreground));
+  border-color: rgba(var(--brand-color-primary), 0.85);
+  box-shadow: 0 0 0 0.25rem rgba(var(--brand-color-primary), 0.2),
+    0 0 0 0.55rem rgba(var(--brand-color-primary), 0.15);
   outline: none;
 }
 
 a.active-facets__button.focused .active-facets__button-inner {
-  box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.2), 0 0 0 0.2rem rgb(var(--color-background)),
-    0 0 0 0.4rem rgb(var(--color-foreground));
+  border-color: rgba(var(--brand-color-primary), 0.85);
+  box-shadow: 0 0 0 0.25rem rgba(var(--brand-color-primary), 0.2),
+    0 0 0 0.55rem rgba(var(--brand-color-primary), 0.15);
   outline: none;
 }
 
