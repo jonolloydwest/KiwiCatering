@@ -1,1 +1,42 @@
-{%- render 'cart-drawer' -%}
+{%- capture cart_drawer_markup -%}
+  {%- render 'cart-drawer' -%}
+{%- endcapture -%}
+
+{%- capture helper_markup -%}
+  {%- if cart != empty and section.settings.helper_text != blank -%}
+    <div class="cart-drawer__helper rte">
+      {{ section.settings.helper_text }}
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture default_heading -%}
+<h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
+{%- endcapture -%}
+{%- capture new_heading -%}
+<h2 class="cart-drawer__title">Your Bag</h2>
+{%- endcapture -%}
+
+{%- assign modified_markup = cart_drawer_markup | replace: default_heading, new_heading -%}
+
+{%- capture cart_items_open -%}
+<div id="CartDrawer-CartItems" class="drawer__contents js-contents">
+{%- endcapture -%}
+
+{%- assign cart_items_with_helper = cart_items_open | append: helper_markup -%}
+{%- assign modified_markup = modified_markup | replace: cart_items_open, cart_items_with_helper -%}
+
+{{- modified_markup -}}
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "helper_text",
+      "label": "Helper text"
+    }
+  ]
+}
+{% endschema %}

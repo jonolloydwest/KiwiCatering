@@ -429,7 +429,7 @@
         {%- endcase -%}
       {%- endfor -%}
 
-      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+      {%- capture cart_icon_markup -%}
         {% if cart == empty %}
           <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
         {% else %}
@@ -444,7 +444,16 @@
             <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
           </div>
         {%- endif -%}
-      </a>
+      {%- endcapture -%}
+      {% if settings.cart_type == 'drawer' %}
+        <button type="button" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+          {{- cart_icon_markup -}}
+        </button>
+      {% else %}
+        <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+          {{- cart_icon_markup -}}
+        </a>
+      {% endif %}
     </div>
   </header>
 </{{ header_tag }}>
