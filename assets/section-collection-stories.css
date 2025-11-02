@@ -1,0 +1,90 @@
+.collection-stories-section {
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+  background-color: rgb(var(--color-background));
+}
+
+.collection-stories-section .collection-stories__container {
+  padding-left: var(--spacing-xl, var(--space-brand-xl, 3.2rem));
+  padding-right: var(--spacing-xl, var(--space-brand-xl, 3.2rem));
+}
+
+@media (max-width: 749px) {
+  .collection-stories-section .collection-stories__container {
+    padding-left: var(--spacing-md, var(--space-brand-md, 1.6rem));
+    padding-right: var(--spacing-md, var(--space-brand-md, 1.6rem));
+  }
+}
+
+.collection-stories-section .collection-stories__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 2.4rem;
+  align-items: start;
+  padding-bottom: var(--spacing-3xs, var(--space-brand-3xs, 0.4rem));
+}
+
+.collection-stories-section .collection-stories__item,
+.collection-stories-section .collection-stories__item--no-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  color: inherit;
+  gap: var(--spacing-2xs, var(--space-brand-2xs, 0.4rem));
+  transition: transform var(--duration-short) ease;
+}
+
+.collection-stories-section .collection-stories__item:hover {
+  transform: translateY(-0.2rem);
+}
+
+.collection-stories-section .collection-stories__item--no-link {
+  cursor: default;
+}
+
+.collection-stories-section .collection-stories__item--no-link:hover {
+  transform: none;
+}
+
+.collection-stories-section .collection-stories__image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--color-foreground), 0.05);
+  background: rgba(var(--color-foreground), 0.04);
+  overflow: hidden;
+}
+
+.collection-stories-section .collection-stories__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.collection-stories-section .collection-stories__placeholder {
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.35);
+}
+
+.collection-stories-section .collection-stories__title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-align: center;
+  max-width: 10rem;
+  line-height: 1.35;
+  text-transform: capitalize;
+}
+
+@media (max-width: 767px) {
+  .collection-stories-section .collection-stories__list {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 1.6rem;
+  }
+}

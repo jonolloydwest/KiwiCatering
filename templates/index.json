@@ -1,5 +1,73 @@
 {
   "sections": {
+    "collection_stories_home": {
+      "type": "collection-stories",
+      "blocks": {
+        "collection_stories_home_block_1": {
+          "type": "story_item",
+          "settings": {
+            "collection": "10-boxes-of-cream-chargers"
+          }
+        },
+        "collection_stories_home_block_2": {
+          "type": "story_item",
+          "settings": {
+            "collection": "24-boxes-of-cream-chargers"
+          }
+        },
+        "collection_stories_home_block_3": {
+          "type": "story_item",
+          "settings": {
+            "collection": "50-boxes-of-cream-chargers"
+          }
+        },
+        "collection_stories_home_block_4": {
+          "type": "story_item",
+          "settings": {
+            "collection": "100-packs-of-cream-chargers-8-5-gram"
+          }
+        },
+        "collection_stories_home_block_5": {
+          "type": "story_item",
+          "settings": {
+            "collection": "flavoured-cream-chargers"
+          }
+        },
+        "collection_stories_home_block_6": {
+          "type": "story_item",
+          "settings": {
+            "collection": "cream-dispensers"
+          }
+        },
+        "collection_stories_home_block_7": {
+          "type": "story_item",
+          "settings": {
+            "collection": "birch-cutlery-1"
+          }
+        },
+        "collection_stories_home_block_8": {
+          "type": "story_item",
+          "settings": {
+            "collection": "palm-leaf-plates"
+          }
+        }
+      },
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 20,
+        "padding_bottom": 20
+      },
+      "block_order": [
+        "collection_stories_home_block_1",
+        "collection_stories_home_block_2",
+        "collection_stories_home_block_3",
+        "collection_stories_home_block_4",
+        "collection_stories_home_block_5",
+        "collection_stories_home_block_6",
+        "collection_stories_home_block_7",
+        "collection_stories_home_block_8"
+      ]
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -456,6 +524,7 @@
     }
   },
   "order": [
+    "collection_stories_home",
     "image_banner",
     "value_props",
     "featured_collection",

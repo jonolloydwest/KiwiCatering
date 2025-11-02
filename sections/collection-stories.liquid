@@ -1,0 +1,150 @@
+{{ 'section-collection-stories.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="color-{{ section.settings.color_scheme }} gradient">
+    <div class="collection-stories-section section-{{ section.id }}-padding">
+      <div class="collection-stories__container page-width">
+        <div class="collection-stories__list">
+          {%- for block in section.blocks -%}
+            {%- assign story_collection = collections[block.settings.collection] -%}
+            {%- if story_collection != blank -%}
+              {%- assign story_title = block.settings.title | default: story_collection.title -%}
+              {%- assign story_link = story_collection.url -%}
+              {%- assign story_image = story_collection.image -%}
+            {%- else -%}
+              {%- assign story_title = block.settings.title | default: 'Collection' -%}
+              {%- assign story_link = '#' -%}
+              {%- assign story_image = blank -%}
+            {%- endif -%}
+
+            {%- if story_link != blank -%}
+              <a class="collection-stories__item" href="{{ story_link }}" {{ block.shopify_attributes }}>
+                <span class="collection-stories__image">
+                  {%- if story_image != blank -%}
+                    {{ story_image
+                      | image_url: width: 148, height: 148, crop: 'center'
+                      | image_tag: width: 74, height: 74, loading: 'lazy', alt: story_title, class: 'collection-stories__img'
+                    }}
+                  {%- else -%}
+                    <span class="collection-stories__placeholder" aria-hidden="true">
+                      {{ story_title | slice: 0, 1 }}
+                    </span>
+                  {%- endif -%}
+                </span>
+                <span class="collection-stories__title">{{ story_title }}</span>
+              </a>
+            {%- else -%}
+              <div class="collection-stories__item collection-stories__item--no-link" {{ block.shopify_attributes }}>
+                <span class="collection-stories__image">
+                  {%- if story_image != blank -%}
+                    {{ story_image
+                      | image_url: width: 148, height: 148, crop: 'center'
+                      | image_tag: width: 74, height: 74, loading: 'lazy', alt: story_title, class: 'collection-stories__img'
+                    }}
+                  {%- else -%}
+                    <span class="collection-stories__placeholder" aria-hidden="true">
+                      {{ story_title | slice: 0, 1 }}
+                    </span>
+                  {%- endif -%}
+                </span>
+                <span class="collection-stories__title">{{ story_title }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection stories",
+  "tag": "section",
+  "class": "section collection-stories-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story_item",
+      "name": "Collection story",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title override",
+          "info": "Leave blank to use the collection title."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection stories",
+      "blocks": [
+        {
+          "type": "story_item"
+        },
+        {
+          "type": "story_item"
+        },
+        {
+          "type": "story_item"
+        },
+        {
+          "type": "story_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
