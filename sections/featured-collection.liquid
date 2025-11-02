@@ -117,6 +117,7 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
+              {% capture featured_card %}
                 {% render 'card-product',
                   card_product: product,
                   media_aspect_ratio: section.settings.image_ratio,
@@ -129,6 +130,13 @@
                   section_id: section.id,
                   quick_add: section.settings.quick_add
                 %}
+              {% endcapture %}
+              {%- liquid
+                assign featured_card = featured_card | replace_first: 'class="card card--', 'class="card card--dev-style card--'
+                assign featured_card = featured_card | replace_first: 'class="card__heading', 'class="card__heading card__title'
+                assign featured_card = featured_card | replace_first: 'class="price', 'class="price card__price-wrap'
+              -%}
+              {{- featured_card -}}
               </li>
               {%- assign skip_card_product_styles = true -%}
             {%- endfor -%}
@@ -152,13 +160,21 @@
                 endcase
               %}
               {%- assign placeholder_image = 'product-apparel-' | append: ridx -%}
-              {% render 'card-product',
-                show_vendor: section.settings.show_vendor,
-                media_aspect_ratio: section.settings.image_ratio,
-                image_shape: section.settings.image_shape,
-                lazy_load: false,
-                placeholder_image: placeholder_image
-              %}
+              {% capture featured_placeholder_card %}
+                {% render 'card-product',
+                  show_vendor: section.settings.show_vendor,
+                  media_aspect_ratio: section.settings.image_ratio,
+                  image_shape: section.settings.image_shape,
+                  lazy_load: false,
+                  placeholder_image: placeholder_image
+                %}
+              {% endcapture %}
+              {%- liquid
+                assign featured_placeholder_card = featured_placeholder_card | replace_first: 'class="card card--', 'class="card card--dev-style card--'
+                assign featured_placeholder_card = featured_placeholder_card | replace_first: 'class="card__heading', 'class="card__heading card__title'
+                assign featured_placeholder_card = featured_placeholder_card | replace_first: 'class="price', 'class="price card__price-wrap'
+              -%}
+              {{- featured_placeholder_card -}}
             </li>
           {%- endfor -%}
         {%- endif -%}
