@@ -1,48 +1,202 @@
-.video-section__media {
+.video-section {
+  position: relative;
+  padding-top: clamp(6rem, 8vw, 10rem);
+  padding-bottom: clamp(6rem, 8vw, 10rem);
+  text-align: center;
+}
+
+.video-section .title-wrapper .title {
+  font-size: clamp(2.4rem, 5vw, 6rem);
+  letter-spacing: 0rem;
+  line-height: 1.05;
+  color: rgb(var(--color-foreground));
+}
+
+.video-section__media-wrapper {
   --ratio-percent: 56.25%;
   position: relative;
   padding-bottom: calc(var(--ratio-percent) - var(--media-border-width));
+  border-radius: 2.4rem;
+  overflow: hidden;
+  box-shadow: 0 2.4rem 4rem -2.4rem rgba(var(--color-foreground), 0.32);
 }
 
-/* Needed for gradient continuity with or without animation so that transparent PNG images come up as we would expect */
-.scroll-trigger:where(.gradient.video-section__media) {
-  background: transparent;
-}
-
-.video-section__media.global-media-settings--full-width {
+.video-section__media-wrapper.global-media-settings--full-width {
   padding-bottom: var(--ratio-percent);
 }
 
-.video-section__media.deferred-media {
-  box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
-    rgba(var(--color-shadow), var(--media-shadow-opacity));
+.video-section__media-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45));
+  opacity: 0;
+  transition: opacity var(--duration-short) ease;
+  pointer-events: none;
 }
 
-.video-section__media.deferred-media:after {
-  content: none;
-}
-
-.video-section__poster.deferred-media__poster:focus {
-  outline-offset: 0.3rem;
-}
-
-.video-section__media iframe {
-  background-color: rgba(var(--color-foreground), 0.03);
-  border: 0;
+.video-section__media-wrapper:hover::before,
+.video-section__media-wrapper:focus-within::before {
+  opacity: 1;
 }
 
 .video-section__poster,
-.video-section__media iframe,
-.video-section__media video {
+.video-section__media-wrapper iframe,
+.video-section__media-wrapper video {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.video-section__media video {
+.video-section__media-wrapper video {
   background: #000000;
+  object-fit: cover;
 }
 
-.video-section__media.media-fit-cover video {
-  object-fit: cover;
+.video-section__overlay {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(6rem, 8vw, 9rem);
+  height: clamp(6rem, 8vw, 9rem);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(4px);
+  transition: transform var(--duration-short) ease, background var(--duration-short) ease;
+}
+
+.video-section__overlay svg {
+  width: 60%;
+  height: 60%;
+  fill: #ffffff;
+}
+
+.video-section__media-wrapper:hover .video-section__overlay,
+.video-section__media-wrapper:focus-within .video-section__overlay {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.video-section .title-wrapper + .video-section__media-wrapper {
+  margin-top: clamp(4rem, 6vw, 6rem);
+}
+
+@media (max-width: 1199px) {
+  .video-section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .video-section .title-wrapper .title {
+    font-size: clamp(2rem, 4vw, 4rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .video-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .video-section .title-wrapper .title {
+    font-size: 2.4rem;
+  }
+
+  .video-section__overlay {
+    width: 6.4rem;
+    height: 6.4rem;
+  }
+}
+
+.video-section {
+  position: relative;
+  padding-top: clamp(6rem, 8vw, 10rem);
+  padding-bottom: clamp(6rem, 8vw, 10rem);
+  text-align: center;
+}
+
+.video-section .title-wrapper .title {
+  font-size: clamp(2.4rem, 5vw, 6rem);
+  letter-spacing: 0rem;
+  line-height: 1.05;
+  color: rgb(var(--color-foreground));
+}
+
+.video-section__media-wrapper {
+  border-radius: 2.4rem;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2.4rem 4rem -2.4rem rgba(var(--color-foreground), 0.32);
+}
+
+.video-section__media-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45));
+  opacity: 0;
+  transition: opacity var(--duration-short) ease;
+  pointer-events: none;
+}
+
+.video-section__media-wrapper:hover::before,
+.video-section__media-wrapper:focus-within::before {
+  opacity: 1;
+}
+
+.video-section__overlay {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(6rem, 8vw, 9rem);
+  height: clamp(6rem, 8vw, 9rem);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(4px);
+  transition: transform var(--duration-short) ease, background var(--duration-short) ease;
+}
+
+.video-section__overlay svg {
+  width: 60%;
+  height: 60%;
+  fill: #ffffff;
+}
+
+.video-section__media-wrapper:hover .video-section__overlay,
+.video-section__media-wrapper:focus-within .video-section__overlay {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.video-section .title-wrapper + .video-section__media-wrapper {
+  margin-top: clamp(4rem, 6vw, 6rem);
+}
+
+@media (max-width: 1199px) {
+  .video-section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .video-section .title-wrapper .title {
+    font-size: clamp(2rem, 4vw, 4rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .video-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .video-section .title-wrapper .title {
+    font-size: 2.4rem;
+  }
+
+  .video-section__overlay {
+    width: 6.4rem;
+    height: 6.4rem;
+  }
 }
