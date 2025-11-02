@@ -37,133 +37,148 @@
     content: none;
   }
 
-  #Banner-{{ section.id }}.banner--dev-home .banner__overlay {
-    position: absolute;
-    inset: 0;
-    background: {% if section.settings.overlay_color != blank %}{{ section.settings.overlay_color }}{% else %}#000000{% endif %};
-    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
-    pointer-events: none;
-    z-index: 1;
-    transition: opacity 0.3s ease;
+  #Banner-{{ section.id }}.banner--dev-home .banner__overlay,
+  #Banner-{{ section.id }}.banner--dev-home .banner__content-inner::before {
+    display: none;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__content {
-    padding-inline: clamp(2.4rem, 7vw, 9rem);
+    padding: 0;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__content-inner {
-    display: flex;
-    justify-content: {% if text_alignment_setting == 'left' %}flex-start{% elsif text_alignment_setting == 'center' %}center{% else %}flex-end{% endif %};
+    justify-content: flex-start;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__hero {
     display: grid;
-    gap: clamp(1.6rem, 2.4vw, 2.8rem);
+    gap: 3rem;
     position: relative;
     z-index: 3;
-    text-align: {% if text_alignment_setting == 'left' %}left{% elsif text_alignment_setting == 'center' %}center{% else %}right{% endif %};
-    max-width: clamp(32rem, 46vw, 58rem);
+    text-align: left;
+    max-width: 52rem;
+    margin-left: 15%;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
-    font-size: clamp(1.8rem, 2.6vw, 3rem);
-    letter-spacing: 0.18em;
+    font-size: 3rem;
+    line-height: 1;
     font-weight: 300;
     color: {{ section.settings.eyebrow_color | default: '#ffffff' }};
     margin: 0;
-    text-transform: uppercase;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__heading {
     font-family: var(--font-heading, var(--font-heading-family));
     font-weight: 600;
-    line-height: 1.02;
-    font-size: clamp(3.4rem, 6.2vw, 8rem);
+    line-height: 1;
+    font-size: 8rem;
     color: {{ section.settings.heading_color | default: '#ffffff' }};
     margin: 0;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__heading span {
     display: block;
-    margin-top: clamp(0.6rem, 1.8vw, 1.4rem);
+    margin-top: 1rem;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__text {
-    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    font-size: 2.4rem;
     font-weight: 300;
     color: {{ section.settings.text_color | default: 'rgba(255,255,255,0.85)' }};
     margin: 0;
-    max-width: clamp(32rem, 45vw, 48rem);
+    max-width: 48rem;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__buttons {
     display: flex;
-    gap: clamp(1.2rem, 2.2vw, 2rem);
-    justify-content: {% if text_alignment_setting == 'left' %}flex-start{% elsif text_alignment_setting == 'center' %}center{% else %}flex-end{% endif %};
+    gap: 1.6rem;
+    justify-content: flex-start;
+    margin-top: 3.5rem;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button {
-    min-width: clamp(14rem, 18vw, 18rem);
+    min-width: 14rem;
     background-color: #ffffff;
-    border-color: #ffffff;
-    color: rgb(var(--brand-color-primary));
+    border: 1px solid #ffffff;
+    color: #0c9e2b;
+    font-size: 1.6rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    line-height: 1;
     text-transform: uppercase;
-    padding: clamp(1.2rem, 1.8vw, 1.6rem) clamp(2rem, 3vw, 2.8rem);
-    border-radius: 6rem;
+    letter-spacing: 0.08em;
+    padding: 1.2rem 3rem;
+    border-radius: 3rem;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button:hover,
   #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button:focus-visible {
     background-color: rgba(255, 255, 255, 0.9);
     border-color: rgba(255, 255, 255, 0.9);
-    color: rgb(var(--brand-color-primary));
+    color: #0c9e2b;
   }
 
-  #Banner-{{ section.id }}.banner--dev-home .banner__content-inner::before {
-    content: '';
-    position: absolute;
-    inset: clamp(2.4rem, 6vw, 4.6rem) clamp(2.4rem, 8vw, 7.4rem);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: clamp(1.2rem, 3vw, 2.6rem);
-    backdrop-filter: blur(10px);
-    pointer-events: none;
-    opacity: {{ section.settings.frosted_frame_opacity | divided_by: 100.0 }};
-  }
-
-  @media screen and (max-width: 749px) {
-    #Banner-{{ section.id }}.banner--dev-home .banner__content {
-      padding-inline: clamp(1.6rem, 6vw, 3.2rem);
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__content-inner::before {
-      inset: clamp(1.2rem, 5vw, 2.6rem);
-    }
-
+  @media screen and (min-width: 1200px) and (max-width: 1599px) {
     #Banner-{{ section.id }}.banner--dev-home .banner__hero {
-      max-width: none;
+      margin-left: 12%;
     }
 
     #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
-      font-size: clamp(1.4rem, 4vw, 1.8rem);
+      font-size: 2.4rem;
     }
 
     #Banner-{{ section.id }}.banner--dev-home .banner__heading {
-      font-size: clamp(2.6rem, 10vw, 3.4rem);
+      font-size: 5rem;
+    }
+  }
+
+  @media screen and (max-width: 1199px) {
+    #Banner-{{ section.id }}.banner--dev-home .banner__hero {
+      margin-left: 8%;
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
+      font-size: 1.8rem;
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__heading {
+      font-size: 4rem;
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__buttons {
+      margin-top: 2.5rem;
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    #Banner-{{ section.id }}.banner--dev-home .banner__heading {
+      font-size: 3rem;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    #Banner-{{ section.id }}.banner--dev-home .banner__content {
+      padding: 0 1.6rem;
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__hero {
+      margin-left: 0;
+      text-align: center;
+      gap: 2.4rem;
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
+      font-size: 1.6rem;
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__heading {
+      font-size: 2.4rem;
     }
 
     #Banner-{{ section.id }}.banner--dev-home .banner__buttons {
       justify-content: center;
     }
   }
-
-  {%- if section.settings.full_width_content -%}
-    #Banner-{{ section.id }} .banner__content {
-      padding-left: 0;
-      padding-right: 0;
-    }
-  {%- endif -%}
 
   {%- case content_width_setting -%}
     {%- when 'narrow' -%}
