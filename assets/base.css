@@ -152,17 +152,19 @@
   --focused-base-outline-offset: 0.3rem;
   --focused-base-box-shadow: 0 0 0 0.3rem rgb(var(--color-background)),
     0 0 0.5rem 0.4rem rgba(var(--brand-color-focus), 0.35);
-  --brand-color-primary: 32, 129, 37;
+  --brand-color-primary: 82, 179, 87;
   --brand-color-primary-contrast: 255, 255, 255;
-  --brand-color-primary-accent: 82, 179, 87;
-  --brand-color-primary-border: 26, 106, 30;
+  --brand-color-primary-accent: 103, 178, 77;
+  --brand-color-primary-border: 12, 158, 43;
+  --brand-color-primary-deep: 32, 129, 37;
+  --brand-color-primary-dark: 6, 26, 12;
   --brand-color-secondary: 51, 51, 51;
   --brand-color-secondary-contrast: 255, 255, 255;
-  --brand-color-surface: 243, 247, 242;
-  --brand-color-surface-contrast: 11, 29, 18;
+  --brand-color-surface: 255, 255, 255;
+  --brand-color-surface-contrast: 34, 34, 34;
   --brand-color-surface-muted: 249, 251, 248;
   --brand-color-surface-border: 206, 212, 205;
-  --brand-color-focus: 69, 163, 74;
+  --brand-color-focus: 82, 179, 87;
   --font-brand-body-family: 'Poppins', sans-serif;
   --font-brand-body-style: normal;
   --font-brand-body-weight: 400;
@@ -178,6 +180,27 @@
   --space-brand-lg: 2.4rem;
   --space-brand-xl: 3.2rem;
   --space-brand-2xl: 4.8rem;
+  --space-brand-section-mobile: 4.4rem;
+  --space-brand-section-desktop: 6rem;
+  --space-brand-section-wide: 7.2rem;
+  --brand-color-ink: 24, 38, 30;
+  --brand-opacity-ink-strong: 0.9;
+  --brand-opacity-ink-muted: 0.65;
+  --brand-surface-glass: 255, 255, 255;
+  --brand-surface-glass-alpha: 0.78;
+  --brand-surface-glass-border-alpha: 0.55;
+  --brand-surface-glass-inner-border-alpha: 0.35;
+  --brand-surface-glass-shadow: 16, 40, 24;
+  --brand-surface-glass-shadow-alpha: 0.22;
+  --brand-surface-glass-shadow-hover-alpha: 0.28;
+  --brand-radius-glass: 2.4rem;
+  --brand-color-hero-gradient-start: 85, 103, 238;
+  --brand-color-hero-gradient-end: 135, 149, 255;
+  --brand-color-hero-accent: 55, 72, 200;
+  --brand-color-hero-text: 17, 17, 17;
+  --brand-color-newsletter-base: 241, 241, 252;
+  --brand-shadow-base: 0, 0, 0;
+  --brand-shadow-base-alpha: 0.25;
 }
 
 .product-card-wrapper .card,

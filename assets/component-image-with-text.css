@@ -445,7 +445,7 @@
 
 .iwt--dev-home .image-with-text__media img {
   border-radius: 0;
-  box-shadow: -15px 15px 0 #52b357;
+  box-shadow: -15px 15px 0 rgb(var(--brand-color-primary));
 }
 
 .iwt--dev-home .image-with-text__content {
@@ -532,7 +532,7 @@
 
 .multirow--dev-home .image-with-text__media img {
   border-radius: 0;
-  box-shadow: -15px 15px 0 #52b357;
+  box-shadow: -15px 15px 0 rgb(var(--brand-color-primary));
 }
 
 .multirow--dev-home .image-with-text__content {

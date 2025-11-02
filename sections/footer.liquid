@@ -213,6 +213,7 @@
             <div class="footer__grid-item footer__grid-item--subscribe">
               <h3 class="footer-block__heading inline-richtext footer__column-title footer__newsletter-title">Subscribe</h3>
               {%- if section.settings.newsletter_enable -%}
+                <p class="footer__subscribe-lede">Stay up to date and claim a welcome discount</p>
                 <div class="footer-block__newsletter footer__newsletter">
                   {%- form 'customer', id: 'ContactFooter', class: 'footer__newsletter newsletter-form' -%}
                     <input type="hidden" name="contact[tags]" value="newsletter">
@@ -278,6 +279,13 @@
                     {%- endif -%}
                   {%- endform -%}
                 </div>
+                <p class="footer__subscribe-location">
+                  Click and Collect from<br>
+                  41E Morrin Rd<br>
+                  Panmure<br>
+                  Auckland 1071<br>
+                  NEW ZEALAND
+                </p>
               {%- endif -%}
               {%- if section.settings.show_social and has_social_icons -%}
                 <div class="footer__social footer__social--subscribe" data-footer-social="true">

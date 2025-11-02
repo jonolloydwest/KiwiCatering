@@ -20,6 +20,12 @@
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
 {% endcomment %}
+{%- liquid
+  assign card_quick_add = quick_add
+  if card_quick_add == blank
+    assign card_quick_add = 'standard'
+  endif
+-%}
 {%- unless skip_styles -%}
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
@@ -206,7 +212,7 @@
 
             {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
             {%- if card_product.quantity_price_breaks_configured? -%}
-              {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
+              {% if card_product.variants_count == 1 and card_quick_add == 'bulk' %}
                 {% liquid
                   assign quantity_rule = card_product.selected_or_first_available_variant.quantity_rule
                   assign has_qty_rules = false
@@ -226,7 +232,7 @@
                   <span class="caption">{{ 'products.product.volume_pricing.note' | t }}</span>
                 </div>
               {% endif %}
-              {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
+              {% if card_product.variants_count == 1 and card_quick_add == 'bulk' %}
                 <div
                   class="global-settings-popup quantity-popover__info"
                   tabindex="-1"
@@ -289,7 +295,7 @@
           </div>
         </div>
         {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
-        {% if quick_add == 'standard' %}
+        {% if card_quick_add == 'standard' %}
           <div class="quick-add no-js-hidden">
             {%- liquid
               assign qty_rules = false
@@ -303,12 +309,12 @@
                   id="{{ product_form_id }}-submit"
                   type="submit"
                   name="add"
-                  class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}"
+                  class="quick-add__submit product-card__quick-add button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}"
                   aria-haspopup="dialog"
                   aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
                   data-product-url="{{ card_product.url }}"
                 >
-                  {{ 'products.product.choose_options' | t }}
+                  {{ 'products.product.add_to_cart' | t }}
                   {%- if horizontal_quick_add -%}
                     <span class="icon-wrap">
                       {{- 'icon-arrow.svg' | inline_asset_content -}}
@@ -358,7 +364,7 @@
                     id="{{ product_form_id }}-submit"
                     type="submit"
                     name="add"
-                    class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
+                    class="quick-add__submit product-card__quick-add button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
                     aria-haspopup="dialog"
                     aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
                     aria-live="polite"
@@ -388,7 +394,7 @@
               </product-form>
             {%- endif -%}
           </div>
-        {% elsif quick_add == 'bulk' %}
+        {% elsif card_quick_add == 'bulk' %}
           {% if card_product.variants_count == 1 %}
             <quick-add-bulk
               data-min="{{ card_product.selected_or_first_available_variant.quantity_rule.min }}"
@@ -401,7 +407,7 @@
                   id="{{ product_form_id }}-submit"
                   type="submit"
                   name="add"
-                  class="quick-add__submit button button--full-width button--secondary"
+                  class="quick-add__submit product-card__quick-add button button--full-width button--secondary"
                   aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
                   data-sold-out-message="true"
                   disabled
@@ -432,12 +438,12 @@
                   id="{{ product_form_id }}-submit"
                   type="submit"
                   name="add"
-                  class="quick-add__submit button button--full-width button--secondary"
+                  class="quick-add__submit product-card__quick-add button button--full-width button--secondary"
                   aria-haspopup="dialog"
                   aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
                   data-product-url="{{ card_product.url }}"
                 >
-                  {{ 'products.product.choose_options' | t }}
+                  {{ 'products.product.add_to_cart' | t }}
                   {%- render 'loading-spinner' -%}
                 </button>
               </modal-opener>

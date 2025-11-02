@@ -171,7 +171,7 @@
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
-        "quick_add": "none",
+        "quick_add": "standard",
         "columns_mobile": "2",
         "padding_top": 44,
         "padding_bottom": 36
@@ -275,7 +275,7 @@
         "hero_product_share"
       ],
       "settings": {
-    "product": "aluminium-whipped-cream-dispenser",
+        "product": "aluminium-whipped-cream-dispenser",
         "color_scheme": "scheme-2",
         "media_size": "large",
         "media_fit": "cover",
@@ -339,7 +339,8 @@
         "color_scheme": "scheme-1",
         "padding_top": 36,
         "padding_bottom": 36
-      }
+      },
+      "disabled": true
     },
     "brand_video": {
       "type": "video",
@@ -355,7 +356,8 @@
         "color_scheme": "scheme-1",
         "padding_top": 40,
         "padding_bottom": 40
-      }
+      },
+      "disabled": true
     },
     "lifestyle_collage": {
       "type": "collage",
@@ -394,7 +396,8 @@
         "color_scheme": "scheme-1",
         "padding_top": 36,
         "padding_bottom": 36
-      }
+      },
+      "disabled": true
     },
     "testimonials": {
       "type": "multirow",
@@ -436,26 +439,22 @@
         "testimonial_row_3"
       ],
       "settings": {
-        "image_height": "medium",
-        "desktop_image_width": "small",
-        "image_layout": "alternate-left",
         "heading_size": "h2",
-        "desktop_content_alignment": "left",
-        "mobile_content_alignment": "left",
         "section_color_scheme": "scheme-1",
         "row_color_scheme": "scheme-2",
         "padding_top": 48,
         "padding_bottom": 48
-      }
+      },
+      "disabled": true
     },
     "journal": {
       "type": "featured-blog",
       "settings": {
-        "blog": "",
-        "post_limit": 3,
-        "heading": "Insights from the supply bench",
+        "blog": "recipes",
+        "post_limit": 4,
+        "heading": "Recipes",
         "heading_size": "h2",
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "show_view_all": true,
         "color_scheme": "scheme-1",
         "padding_top": 36,
@@ -493,7 +492,8 @@
         "full_width": true,
         "padding_top": 40,
         "padding_bottom": 40
-      }
+      },
+      "disabled": true
     },
     "closing_statement": {
       "type": "rich-text",
@@ -520,7 +520,8 @@
         "color_scheme": "scheme-1",
         "padding_top": 40,
         "padding_bottom": 52
-      }
+      },
+      "disabled": true
     }
   },
   "order": [
@@ -530,11 +531,11 @@
     "featured_collection",
     "collection_tiles",
     "hero_product",
+    "journal",
     "story_section",
     "brand_video",
     "lifestyle_collage",
     "testimonials",
-    "journal",
     "subscribe",
     "closing_statement"
   ]

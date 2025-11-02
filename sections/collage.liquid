@@ -3,6 +3,9 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-modal-video.css' | asset_url | stylesheet_tag }}
 {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -114,7 +117,9 @@
                 show_secondary_image: block.settings.second_image,
                 extend_height: true,
                 placeholder_image: placeholder_image,
-                skip_styles: skip_card_product_styles
+                skip_styles: skip_card_product_styles,
+                quick_add: 'standard',
+                section_id: section.id
               %}
               {% assign skip_card_product_styles = true %}
             {%- when 'collection' -%}

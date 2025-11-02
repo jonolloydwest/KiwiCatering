@@ -52,11 +52,16 @@
 .newsletter--dev-home .newsletter__wrapper {
   position: relative;
   padding: clamp(4rem, 6vw, 6.4rem) clamp(2rem, 4vw, 3.6rem);
-  border-radius: 2.4rem;
+  border-radius: var(--brand-radius-glass);
   overflow: hidden;
   isolation: isolate;
-  background: linear-gradient(135deg, rgba(82, 179, 87, 0.92) 0%, rgba(32, 129, 37, 0.85) 45%, rgba(6, 26, 12, 0.9) 100%);
-  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--brand-color-primary), 0.92) 0%,
+    rgba(var(--brand-color-primary-deep), 0.85) 45%,
+    rgba(var(--brand-color-primary-dark), 0.9) 100%
+  );
+  color: rgb(var(--brand-color-primary-contrast));
 }
 
 .newsletter--dev-home .newsletter__wrapper::before,
@@ -64,20 +69,20 @@
   content: '';
   position: absolute;
   inset: clamp(1.2rem, 3vw, 2.4rem);
-  border-radius: 2rem;
+  border-radius: calc(var(--brand-radius-glass) - 0.4rem);
   z-index: -1;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(var(--brand-surface-glass), 0.08);
 }
 
 .newsletter--dev-home .newsletter__wrapper::after {
   inset: clamp(2.4rem, 5vw, 3.6rem);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(var(--brand-surface-glass), 0.06);
   filter: blur(40px);
 }
 
 .newsletter--dev-home .newsletter__wrapper h2,
 .newsletter--dev-home .newsletter__wrapper .newsletter__subheading {
-  color: #fff;
+  color: rgb(var(--brand-color-primary-contrast));
 }
 
 .newsletter--dev-home .newsletter__wrapper h2 {
@@ -100,26 +105,26 @@
 
 .newsletter--dev-home .newsletter-form .field {
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(var(--brand-surface-glass), 0.12);
   padding: 0.6rem 0.6rem 0.6rem 1.6rem;
 }
 
 .newsletter--dev-home .newsletter-form .field__input {
   background: transparent;
-  color: #fff;
+  color: rgb(var(--brand-color-primary-contrast));
   padding: 1.2rem 1.6rem;
 }
 
 .newsletter--dev-home .newsletter-form .field__label {
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(var(--brand-color-primary-contrast), 0.65);
 }
 
 .newsletter--dev-home .newsletter-form .field__input::placeholder {
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(var(--brand-color-primary-contrast), 0.65);
 }
 
 .newsletter--dev-home .newsletter-form__button {
-  background: #fff;
+  background: rgb(var(--brand-color-primary-contrast));
   color: rgb(var(--brand-color-primary));
   border-radius: 999px;
   width: clamp(4.6rem, 5.5vw, 5.8rem);
@@ -132,5 +137,5 @@
 
 .newsletter--dev-home .newsletter-form__button:hover,
 .newsletter--dev-home .newsletter-form__button:focus-visible {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(var(--brand-color-primary-contrast), 0.9);
 }
