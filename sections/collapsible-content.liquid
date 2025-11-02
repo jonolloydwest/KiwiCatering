@@ -28,6 +28,11 @@
               {{ section.settings.caption | escape }}
             </p>
           {% endif %}
+          {%- if section.settings.intro_text != blank -%}
+            <div class="cc__intro rte">
+              {{ section.settings.intro_text }}
+            </div>
+          {%- endif %}
           {%- if section.settings.heading != blank -%}
             <h2 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }}">
               {{ section.settings.heading }}
@@ -80,21 +85,23 @@
                     open
                   {% endif %}
                 >
-                  <summary id="Summary-{{ block.id }}-{{ section.id }}">
+                  <summary id="Summary-{{ block.id }}-{{ section.id }}" class="cc__summary">
                     {% render 'icon-accordion', icon: block.settings.icon %}
                     <h3 class="accordion__title inline-richtext h4">
                       {{ block.settings.heading | default: block.settings.page.title | escape }}
                     </h3>
                     {{- 'icon-caret.svg' | inline_asset_content -}}
                   </summary>
-                  <div
-                    class="accordion__content rte"
-                    id="CollapsibleAccordion-{{ block.id }}-{{ section.id }}"
-                    role="region"
-                    aria-labelledby="Summary-{{ block.id }}-{{ section.id }}"
-                  >
-                    {{ block.settings.row_content }}
-                    {{ block.settings.page.content }}
+                  <div class="cc__panel">
+                    <div
+                      class="accordion__content rte"
+                      id="CollapsibleAccordion-{{ block.id }}-{{ section.id }}"
+                      role="region"
+                      aria-labelledby="Summary-{{ block.id }}-{{ section.id }}"
+                    >
+                      {{ block.settings.row_content }}
+                      {{ block.settings.page.content }}
+                    </div>
                   </div>
                 </details>
               </div>
@@ -119,6 +126,11 @@
       "type": "text",
       "id": "caption",
       "label": "t:sections.collapsible_content.settings.caption.label"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Intro text"
     },
     {
       "type": "inline_richtext",
