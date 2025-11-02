@@ -201,7 +201,14 @@
     </div>
   {%- elsif section.settings.image_2 == blank -%}
     <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Natures_Factory..png?v=1727833832"
+        alt="{{ section.settings.fallback_alt_text | default: shop.name | escape }}"
+        loading="lazy"
+        width="1920"
+        height="850"
+        class="banner__media-default"
+      >
     </div>
   {%- endif -%}
   {%- if section.settings.image_2 != blank -%}
@@ -327,6 +334,12 @@
       "id": "overlay_color",
       "label": "Overlay color",
       "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "fallback_alt_text",
+      "label": "Default image alt text",
+      "default": "Kiwi Catering hero banner"
     },
     {
       "type": "select",

@@ -1,98 +1,98 @@
+.collection-hero {
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  background: linear-gradient(135deg, rgba(var(--brand-color-primary, 32, 129, 37), 0.08), rgba(var(--brand-color-secondary, 51, 51, 51), 0.03));
+}
+
 .collection-hero__inner {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  gap: clamp(1.6rem, 3vw, 2.8rem);
+  align-items: center;
+  text-align: center;
 }
 
 .collection-hero--with-image .collection-hero__inner {
-  margin-bottom: 0;
-  padding-bottom: 2rem;
-}
-
-@media screen and (min-width: 750px) {
-  .collection-hero.collection-hero--with-image {
-    padding: calc(4rem + var(--page-width-margin)) 0 calc(4rem + var(--page-width-margin));
-    overflow: hidden;
-  }
-
-  .collection-hero--with-image .collection-hero__inner {
-    padding-bottom: 0;
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2.4rem, 4vw, 4.8rem);
+  text-align: left;
 }
 
 .collection-hero__text-wrapper {
-  flex-basis: 100%;
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.6rem);
+  align-items: start;
 }
 
-@media screen and (min-width: 750px) {
-  .collection-hero {
-    padding: 0;
-  }
-
-  .collection-hero__inner {
-    align-items: center;
-    flex-direction: row;
-    padding-bottom: 0;
-  }
-}
-
-.collection-hero__title {
-  margin: 2.5rem 0;
-}
-
-.collection-hero__title + .collection-hero__description {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.6rem;
-  line-height: calc(1 + 0.5 / var(--font-body-scale));
-}
-
-@media screen and (min-width: 750px) {
-  .collection-hero__title + .collection-hero__description {
-    font-size: 1.8rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .collection-hero__description {
-    max-width: 66.67%;
-  }
-
-  .collection-hero--with-image .collection-hero__description {
-    max-width: 100%;
-  }
-}
-
-.collection-hero--with-image .collection-hero__title {
+.collection-hero__eyebrow {
+  font-family: var(--font-heading, var(--font-heading-family));
+  font-size: clamp(1.6rem, 2vw, 2.2rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(var(--brand-color-secondary, 51, 51, 51), 0.75);
+  font-weight: 300;
   margin: 0;
 }
 
-.collection-hero--with-image .collection-hero__text-wrapper {
-  padding: 5rem 0 4rem;
+.collection-hero__title {
+  font-family: var(--font-heading, var(--font-heading-family));
+  font-weight: 600;
+  font-size: clamp(4.4rem, 7vw, 7.6rem);
+  line-height: 1.05;
+  color: rgb(var(--brand-color-secondary, 51, 51, 51));
+  margin: 0;
 }
 
-.collection-hero__image-container {
-  border: var(--media-border-width) solid rgba(var(--color-foreground), var(--media-border-opacity));
-  border-radius: var(--media-radius);
-  box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
-    rgba(var(--color-shadow), var(--media-shadow-opacity));
+.collection-hero__intro,
+.collection-hero__description {
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+  line-height: 1.6;
+  color: rgba(var(--brand-color-secondary, 51, 51, 51), 0.78);
+  font-weight: 300;
+}
+
+.collection-hero__intro {
+  margin: 0;
+}
+
+.collection-hero__description {
+  margin: 0;
+}
+
+.collection-hero--with-image .collection-hero__image-container {
+  max-width: 52rem;
+  justify-self: center;
+}
+
+@media screen and (max-width: 989px) {
+  .collection-hero--with-image .collection-hero__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .collection-hero__text-wrapper {
+    justify-items: center;
+  }
+
+  .collection-hero__intro,
+  .collection-hero__description {
+    max-width: 48rem;
+  }
 }
 
 @media screen and (max-width: 749px) {
-  .collection-hero__image-container {
-    height: 20rem;
-  }
-}
-
-@media screen and (min-width: 750px) {
-  .collection-hero--with-image .collection-hero__text-wrapper {
-    padding: 4rem 2rem 4rem 0;
-    flex-basis: 50%;
+  .collection-hero {
+    padding: clamp(3.2rem, 10vw, 6rem) 0;
   }
 
-  .collection-hero__image-container {
-    align-self: stretch;
-    flex: 1 0 50%;
-    margin-left: 3rem;
-    min-height: 20rem;
+  .collection-hero__intro,
+  .collection-hero__description {
+    font-size: clamp(1.6rem, 3.5vw, 1.9rem);
+  }
+
+  .collection-hero__inner {
+    text-align: center;
+  }
+
+  .collection-hero__text-wrapper {
+    justify-items: center;
   }
 }
