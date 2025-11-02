@@ -1,0 +1,164 @@
+/* theme color */
+body{
+  color: #222222;
+}
+/*=====================================
+tag element
+======================================*/
+a:hover{
+  color: #52b357;
+}
+
+/* button type */
+.btn-style-medium,
+.btn-style{
+  background-color: #52b357;
+  border: 2px solid #52b357;
+}
+.btn-style-medium:hover,
+.btn-style:hover{
+  background-color: #333333;
+  border: 2px solid #333333;
+}
+
+.btn-style2-medium,
+.btn-style2{
+  background-color: #333333;
+  border: 2px solid #333333;
+}
+.btn-style2-medium:hover,
+.btn-style2:hover{
+  background-color: #52b357;
+  border: 2px solid #52b357;
+}
+
+
+
+/*=====================================
+  section title color
+======================================*/
+
+
+
+/*=====================================
+  product tab color
+======================================*/
+.product-tab-ptb .tab ul.nav-tabs li a.active{
+    color: #52b357;
+    border-bottom: 1px solid #52b357;
+}
+
+/*=====================================
+  header color
+======================================*/
+/* mainmenu color */
+.megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title.active{
+  color: #52b357;
+}
+.megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title.active span.sp-link-title:after,
+.megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title span.sp-link-title span{
+  background-color: #52b357;
+}
+
+.megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title span.sp-link-title span::before{
+  border-top: 5px solid #52b357;
+}
+
+/* vegamenu color */
+.vegamenu-content .browse-cat{
+  background-color: #52b357;
+}
+.vegamenu-content .vegawrap{
+  border: 1px solid #52b357;
+}
+.vegamenu-content .vegawrap ul.vega-menu li.menu-link a.link-title:hover,
+.vegamenu-content .vegawrap ul.vega-menu li.menu-link ul.dropdown-submenu.sub-menu li.submenu-li a:hover,
+.vegamenu-content .vegawrap ul.vega-menu li.menu-link ul.dropdown-supmenu li.supmenu-li a:hover{
+  color: #52b357;
+}
+@media (max-width: 1199px) {
+  .vegamenu-content .browse-cat{
+    background-color: #fff;
+  }
+  .vegamenu-content a.browse-cat[aria-expanded="false"],
+  .vegamenu-content .vegawrap ul.vega-menu li.menu-link a.link-title.link-title-lg[aria-expanded="false"]{
+    color: #222;
+  }
+  .vegamenu-content a.browse-cat[aria-expanded="true"],
+  .vegamenu-content .vegawrap ul.vega-menu li.menu-link a.link-title.link-title-lg[aria-expanded="true"]{
+    color: #52b357;
+  }
+  .vegamenu-content .vegawrap {
+    border: none;
+  }
+}
+
+/* mainmenu color */
+
+.megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title:hover,
+.megamenu-content .mainwrap ul.main-menu li.menu-link .dropdown-submenu li.submenu-li a:hover,
+.megamenu-content .mainwrap ul.main-menu li.menu-link .dropdown-submenu.banner-menu li.menu-banner:hover a.menu-banner-title,
+.megamenu-content .mainwrap ul.main-menu li.menu-link ul.dropdown-supmenu li.supmenu-li a:hover,
+.megamenu-content .mainwrap ul.main-menu li.menu-link ul.dropdown-supmenu li.supmenu-li a::before{
+  color: #52b357;
+}
+@media (max-width: 1199px) {
+
+  .megamenu-content a.browse-cat[aria-expanded="true"],
+  .megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title.link-title-lg[aria-expanded="true"],
+  .megamenu-content .mainwrap ul.main-menu li.menu-link .dropdown-submenu li.submenu-li a:hover,
+  .megamenu-content .mainwrap ul.main-menu li.menu-link .dropdown-submenu.banner-menu li.menu-banner:hover a.menu-banner-title,
+  .megamenu-content .mainwrap ul.main-menu li.menu-link ul.dropdown-supmenu li.supmenu-li a:hover,
+  .megamenu-content .mainwrap ul.main-menu li.menu-link ul.dropdown-supmenu li.supmenu-li a::before{
+    color: #52b357;
+  }
+}
+
+/*=====================================
+  product button color
+======================================*/
+.product-variant-option .swatch-variant .swatch.Material .swatch-element input:checked + label,
+.product-variant-option .swatch-variant .swatch.Size .swatch-element input:checked + label{
+  border: 2px solid #52b357;
+}
+.product-label span,
+.single-product-wrap .product-action a{
+  background-color: #52b357;
+}
+
+/* product label css */
+.product-label span.new-title,
+.product-label span.sale-title{
+  background-color: #333333;
+}
+
+/* product grid-list color */
+.product-grid-list .single-product-wrap .product-content .price-box .percent-count{
+  color: #333333;
+}
+
+/*=====================================
+  product name color
+======================================*/
+.product-content h6 a:hover{
+  color: #52b357;
+}
+
+/*=====================================
+  product list color
+======================================*/
+.shop-product-list-wrap .product-layout-list .product-content .product-action a{
+  background-color: #52b357;
+  border: 1px solid #52b357;
+}
+.product-list-item .single-product-wrap .product-content .product-action a{
+  background-color: #52b357;
+}
+
+/*=====================================
+  sortby css
+======================================*/
+.product-view-mode .change-view.active,
+.product-view-mode .change-view:hover{
+  color: #52b357;
+}

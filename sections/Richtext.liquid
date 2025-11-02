@@ -1,0 +1,223 @@
+{% assign my_image = section.settings.section_image %}
+<section class="rictext-main"> 
+<div class="container">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="section-capture">
+          <div class="section-title title-img">
+            {% if section.settings.section_best_title !='' %}
+            <h2>{{ section.settings.section_best_title }}</h2>
+           
+            {% endif %}</div>
+
+<div class="section-title title-bottom">
+            {% if section.settings.section_best_title1 !='' %}
+            <h2>{{ section.settings.section_best_title1 }}</h2>
+            {% endif %}</div>
+<div class="section-text rte">
+            {% if section.settings.section_best_desc !='' %}
+           {{ section.settings.section_best_desc }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+ </div>
+
+</section>
+
+
+
+
+
+
+<style>
+
+.rictext-main .row {
+   position: relative;
+}
+.rictext-main .row:before {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 15px;
+    top: -110px;
+    width: 32px;
+    height: 190px;
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/111.png?v=1698130736);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: auto;
+}
+.rictext-main .row:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 15px;
+    bottom: -130px;
+    width: 32px;
+    height: 190px;
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/111.png?v=1698130736);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: auto;
+}
+
+.title-img:before {
+    content: '';
+    display: block;
+    position: relative;
+    width: 45px;
+    height: 32px;
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/4444.png?v=1698130736);
+    top: 0px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+}
+.section-text.rte:after {
+    content: '';
+    display: block;
+    position: relative;
+    width: 80%;
+    max-width: 330px;
+    height: 35px;
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/2222.png?v=1698130736);
+    top: 0px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+}
+  
+.section-text.rte {
+    text-align: center;
+}
+
+.section-text p {
+    margin-bottom: 12px;
+}
+  .rictext-main{
+    padding-top:{{ section.settings.category_best_padding_top }}px;
+    padding-bottom:{{ section.settings.category_best_padding_bottom }}px;
+  }
+.section-title h2 {
+    font-size: 40px;
+    line-height: 1;
+}
+.section-title.title-bottom h2 {
+    color: #fff;
+    text-shadow: 0px 0px 15px #44e300;
+    line-height: 1;
+    padding-bottom: 15px;
+    font-style: italic;
+}
+  @media (max-width: 767px){
+.section-title h2 {
+    font-size: 28px!important;
+}
+    .rictext-main{
+      padding-top:{{ section.settings.category_best_padding_top_xs }}px;
+      padding-bottom:{{ section.settings.category_best_padding_bottom_xs }}px;
+    }
+  }
+</style>
+
+
+
+
+
+
+
+
+
+{% schema %}
+{
+  "name": "Custom Rich Text ",
+  "settings": [
+     {
+    "type" : "header",
+    "content" : "Section Padding"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop / tablet"
+  },
+  {
+    "type": "range",
+    "id": "category_best_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "category_best_padding_bottom",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "category_best_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "category_best_padding_bottom_xs",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "header",
+    "content": "Section Title"
+  },
+
+  {
+    "type": "text",
+    "id": "section_best_title",
+    "label": "Title",
+    "default": "Add your title here"
+  },
+  {
+    "type": "text",
+    "id": "section_best_title1",
+    "label": "Title",
+    "default": "Add your title here"
+  },
+  {
+    "type": "richtext",
+    "id": "section_best_desc",
+    "label": "Paragraph",
+    "default": "<p>Add your text here<p>"
+  }
+  ],
+  "presets": [
+    {
+      "name": "Custom Rich Text",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}
+
+
+

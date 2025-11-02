@@ -1,0 +1,314 @@
+<!-- banner-area start -->
+<section class="video-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="banner-block">
+                    <div class="section-capture">
+                        <div class="section-title">
+                            <h2>{{ section.settings.section_title }}</h2>
+                        </div>
+                    </div>
+                    <ul class="features-wrap">
+                        {% for block in section.blocks %}
+                        {% if block.settings.custom_feature != '' %}
+                        <li class="features-wrapper">{{ block.settings.custom_feature }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <a class="play-button popup-youtube" href="{{ section.settings.banner_bg_button_url }}">
+                        {% if section.settings.content_btn_svg_icon_enable %}
+                        {{ section.settings.content_btn_svg_icon }}
+                        {% else %}
+                        <i class="{{ section.settings.content_btn_icon }}"></i>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- banner-area end -->
+{% schema %}
+{
+    "name": "Video Banner",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section Padding"
+        },
+        {
+            "type" : "paragraph",
+            "content" : "Desktop / Laptop "
+        },
+        {
+            "type": "range",
+            "id": "section_padding_top",
+            "label": "Section Padding Top",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 100
+        },
+        {
+            "type": "range",
+            "id": "section_padding_bottom",
+            "label": "Section Padding bottom",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 100
+        },
+        {
+            "type" : "paragraph",
+            "content" : "Tablet"
+        },
+        {
+            "type": "range",
+            "id": "section_padding_top_lg",
+            "label": "Section Padding Top",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 70
+        },
+        {
+            "type": "range",
+            "id": "section_padding_bottom_lg",
+            "label": "Section Padding bottom",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 70
+        },
+        {
+            "type" : "paragraph",
+            "content" : "Mobile"
+        },
+        {
+            "type": "range",
+            "id": "section_padding_top_xs",
+            "label": "Section Padding Top",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 50
+        },
+        {
+            "type": "range",
+            "id": "section_padding_bottom_xs",
+            "label": "Section Padding bottom",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 50
+        },
+        {
+            "type": "header",
+            "content": "Banner Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "video_banner_img",
+            "label": "Banner Image",
+            "info": "Recommended Size: 1125px x 232px"
+        },
+        {
+            "type": "header",
+            "content": "Section Title"
+        },
+        {
+            "type": "text",
+            "id": "section_title",
+            "label": "Section Title",
+            "default": "Take Advantage of Siri"
+        },
+        {
+            "type": "header",
+            "content": "Content Button"
+        },
+        {
+            "type": "textarea",
+            "id": "content_btn_svg_icon",
+            "label": "SVG Code"
+        },
+        {
+            "type": "checkbox",
+            "id": "content_btn_svg_icon_enable",
+            "label": "Show SVG Icon",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "content_btn_icon",
+            "label": "Icon Class",
+            "default": "fa fa-play"
+        },
+        {
+            "type": "url",
+            "id": "banner_bg_button_url",
+            "label": "Button URL"
+        }
+    ],
+    "blocks":[
+        {
+            "type": "custom_features",
+            "name": "Your Features",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "custom_feature",
+                    "label": "Custom Features",
+                    "default": "Bluetooth Wireless Technology."
+                }
+            ]
+        }
+    ],
+    "presets":[
+        {
+            "name": "Video Banner",
+            "category" : "Video"
+        }
+    ]
+}
+{% endschema %}
+<script>
+    $(document).ready(function() {
+        $('.play-button, .popup-vimeo, .popup-gmaps').magnificPopup({
+            tClose: 'Close (Esc)',
+            type: 'iframe',
+            mainClass: 'mfp-fade',
+            removalDelay: 160,
+            preloader: false,
+            fixedContentPos: false
+        });
+    });
+</script>
+<style>
+    .video-banner{
+        background-image: url({% if section.settings.video_banner_img %}{{ section.settings.video_banner_img | img_url: 'master' }}{% else %}https://dummyimage.com/1920x697/f7f7f7/999999{% endif %});
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    .video-banner .banner-block{
+        padding-top: {{ section.settings.section_padding_top }}px;
+        padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    }
+    @media(max-width: 1199px){
+        .video-banner .banner-block{
+            padding-top: {{ section.settings.section_padding_top_lg }}px;
+            padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+        }
+    }
+    @media(max-width: 767px){
+        .video-banner .banner-block{
+            padding-top: {{ section.settings.section_padding_top_xs }}px;
+            padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+        }
+    }
+    /* section title css */
+
+    .video-banner .banner-block .section-capture .section-title h2{
+        font-size: 60px;
+        line-height: 1;
+        padding-bottom: 0;
+        color: {{ settings.color_primary }};
+        text-transform: none;
+
+    }
+    .video-banner .banner-block a.play-button {
+        margin-top: 60px;
+    }
+    .video-banner .banner-block a.play-button svg{
+        fill: #fff;
+        width: 90px;
+        height: 90px;
+    }
+    .video-banner .banner-block ul.features-wrap{
+        text-align: center;
+    }
+    .video-banner .banner-block ul.features-wrap li.features-wrapper {
+        color: #fff;
+        font-size: 18px;
+        font-weight: 400;
+        margin-top: 17px;
+    }
+    .video-banner .banner-block ul.features-wrap li.features-wrapper:first-child{
+        margin-top: 0;
+    }
+    /* magificant css */
+    .video-banner .banner-block{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    /* magificant css */
+    .mfp-container.mfp-iframe-holder{
+        width: auto;
+        left: 15px;
+        right: 15px;
+    }
+    .mfp-iframe-holder .mfp-content{
+        max-width: 700px;
+    }
+    .mfp-iframe-holder .mfp-close {
+        display: block!important;
+        font-size: 30px;
+        padding: 0;
+        height: auto;
+        width: auto;
+        position: absolute;
+        top: -30px;
+        right: 0;
+        opacity: 1;
+        background-color: transparent!important;
+        line-height: 1;
+    }
+    .mfp-iframe-scaler iframe{
+        border: none;
+    }
+    @media(max-width: 1199px){
+        .video-banner .banner-block a.play-button {
+            margin-top: 40px;
+        }
+        .video-banner .banner-block a.play-button svg{
+            width: 70px;
+            height: 70px;
+        }
+        .video-banner .banner-block .section-capture .section-title h2{
+            font-size: 40px;
+        }
+        .video-banner .banner-block ul.features-wrap li.features-wrapper{
+            font-size: 16px;
+            font-weight: 400;
+            margin-top: 13px;
+        }
+    }
+    @media(max-width: 991px) {
+        .video-banner .banner-block .section-capture .section-title h2{
+            font-size: 30px;
+        }
+        .video-banner .banner-block ul.features-wrap li.features-wrapper{
+            font-size: 14px;
+        }
+    }
+    @media(max-width: 767px) {
+        .video-banner .banner-block a.play-button {
+            margin-top: 30px;
+        }
+        .video-banner .banner-block .section-capture .section-title h2{
+            font-size: 24px;
+        }
+        .mfp-iframe-holder .mfp-content{
+            max-width: 100%;
+        }
+    }
+</style>

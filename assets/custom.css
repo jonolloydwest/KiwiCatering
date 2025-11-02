@@ -1,0 +1,427 @@
+.otherpage {
+    padding: 40px;
+    background-color: #52b357;
+    margin-bottom: 35px;
+}
+.otherpage h2 {
+    color: #ffff;
+}
+.custom-text-banner img{
+   transition:all 0.5s ease;
+}
+.custom-text-banner:hover img{
+  transform:scale(1.1);
+}
+@keyframes shake {
+		  0% {
+		    transform: translate(3px, 0);
+		  }
+		  50% {
+		    transform: translate(-3px, 0);
+		  }
+		  100% {
+		    transform: translate(0, 0);
+		  }
+}
+/** product detail css **/
+.product-inventory{
+   margin-bottom:25px;
+}
+.product_details_info .pro-nprist .pro-prlb .price-box .new-price{
+   font-size:25px !important;
+}
+.product_details_info .pro-nprist .product-title h6{
+   width:100% !important;
+   margin-right:0 !important;
+}
+.product_details_info .product-ratting{
+  display:none;
+}
+.product_details_info .pro-nprist .product-title h6{
+  line-height:36px !important;
+}
+.product-description-tab .description-review-text.tab-content p {
+   margin-bottom: 20px;
+}
+#shopify-section-product-template .product-variant-option .swatch-variant .Color .swatch-element{
+  min-width:32px;
+}
+/** product detail css **/
+/** other pages **/
+section.other-page{
+   padding:0px 0;
+}
+section.other-page p{
+   margin-bottom:30px;
+   font-size:15px;
+}
+section.other-page p > strong{
+  font-size:24px;
+}
+section.other-page p strong:has(a){
+  font-size:15px;
+}
+section.other-page p a{
+  color:#67b24d;
+}
+section.other-page ul{
+  list-style:disc;
+  margin-left:30px;
+  margin-bottom:15px;
+}
+section.other-page ul li:not(:last-child){
+  margin-bottom:20px;
+}
+/** other pages **/
+/** footer css **/
+.footer_button{
+    background: linear-gradient(180deg, #52b357,#52b357);
+    padding: 30px 0;
+}
+.footer_button .section-title{
+  text-align:left;
+}
+.footer_button h2{
+   color:#fff;
+}
+.footer_button a{
+    background: #fff;
+    border-color: #fff;
+    color: #333333;
+}
+/** footer css **/
+/** media query css **/
+@media(max-width:1199px){
+    .header2 .header-area .header-main .header-element.logo img{
+        width:30% !important;
+  }
+}
+@media(max-width:991px){
+    .owl-nav button {
+        width: 35px;
+        height: 35px;
+        background: #52b357 !important;
+        border-radius: 50% !important;
+        color: #fff !important;
+        font-size: 22px !important;
+        border:none !important;
+  }
+   .newsletter-custom .subscribe-block{
+       width:55% !important;
+  }
+  #shopify-section-footer2 .linklist {
+      padding: 25px 0;
+      border-width: 0px;
+      margin:0px;
+      border-color: black;
+      border-style: solid;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li a.theme-logo img{
+      width:20% !important;
+  }
+  .footer-list-wrap .ftlink-li.newsletter .social-icon{
+      justify-content:center;
+  }
+}
+@media(max-width:767px){
+
+ul.footer-sublist.penal {
+    padding-top: 20px;
+}
+.accordion {
+    background-color: #f7f7f7!important;
+}
+
+h6.footer-title {
+display:none;
+}
+    .header2 .header-area .header-main .header-element.logo img{
+        width:70% !important;
+  }
+    .newsletter-custom .subscribe-block{
+      width:calc(100% - 10%) !important;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li a.theme-logo img{
+      width:60% !important;
+  }
+  .shop-sidebar.sidebar-filter a.clear{
+      right:0 !important;
+  }
+}
+/** media query css **/
+
+/*header css  */
+
+@media(max-width: 1500px){
+  .header2 .megamenu-content .mainwrap ul.main-menu li.menu-link a.link-title {
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+    margin-right: 21px;
+    text-transform: capitalize;
+    font-size: 14px !imported;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+  
+}
+@media (max-width: 1199px){
+.header2 .header-area .header-main .header-element.right-block-box, .header2 .header-area .header-main .header-element.logo {
+    width: 41% !important;
+    margin-right: 0;
+}
+}
+@media (max-width: 991px){
+.header2 .header-area .header-main .header-element.right-block-box, .header2 .header-area .header-main .header-element.logo {
+    width: 50% !important;
+    margin-right: 0;
+}
+
+}
+@media (max-width: 991px){
+  .header2 .header-area .header-main {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-wrap: wrap;
+    justify-content: space-between;
+      
+}
+  a.btn.btn-style-medium {
+    display: inherit;
+    margin: 10px;
+}
+  .footer_button .section-title {
+    text-align: center;
+}
+}
+@media (min-width: 992px){
+.footer-list-wrap ul.footer-list li.ftlink-li {
+    width: 25%!important;
+}
+}
+
+h6.footer-title {
+    padding-bottom: 15px;
+    font-size:20px;
+    text-transform: uppercase;
+    color: #52b357;
+}
+
+.footer-list-wrap .ftlink-li.newsletter h6 {
+    display: block;
+}
+
+/* ----------------------custom-css----------------------- */
+
+
+@media (max-width:1500px) and (min-width:992px){
+.header2 .header-area .header-main .header-element.megamenu-content {
+    width: 65%!important;
+}
+.col-md-1 {
+    -ms-flex: 0 0 8.333333%;
+    flex: 0 0 13.333333%;
+    max-width: 13.333333%;
+}
+}
+@media (max-width:991px) and (min-width:768px){
+.header2 .header-area .header-main .header-element.logo {
+    width: 45%!important;
+    
+}
+.header2 .header-area .header-main .header-element.right-block-box {
+    width: 30%!important;
+}
+.header-main .col-md-1 {
+    -ms-flex: 0 0 8.333333%;
+    flex: 0px!important;
+    max-width: 23.333333%!important;
+}
+}
+@media (max-width:767px){
+.header-main .col-md-1 {
+
+    margin:0 auto!important;
+    
+}
+.is-sticky .header-main .col-md-1 {
+    display: none;
+}
+}
+div#shopify-section-af6a3d1a-8cab-4f89-b497-841042fb2b72 {
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/cocktail-glass-cup-kiwi-juice-with-slice-fruit-high-quality-photo_1.png?v=1696499444);    
+    background-position: center;
+    position:relative;
+    overflow:hidden;
+   
+}
+
+div#shopify-section-af6a3d1a-8cab-4f89-b497-841042fb2b72:before {
+    content: '';
+    display: block;
+    background: linear-gradient(309deg, #fff, #fff, #fff, #ffffffd9);
+    width: 100%;
+    height: 120%;
+    position: absolute;
+
+}
+div#shopify-section-311a5926-9013-491a-ba78-2045b40a2c2a {
+ background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/elevated-view-halved-kiwi-fruits-wooden-background_1.png?v=1696499444);
+  background-position: center;
+  position:relative;
+  overflow:hidden;
+}
+div#shopify-section-311a5926-9013-491a-ba78-2045b40a2c2a:before {
+    content: '';
+    display: block;
+    background: linear-gradient(15deg, #fff, #fff, #fff, #fff, #ffffffd9);
+    width: 100%;
+    height: 120%;
+    position: absolute;
+
+}
+
+div#shopify-section-1611804387db8f2ebe {
+    position: relative;
+    overflow: hidden;
+}
+section.our-service-area:before{
+      content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background: linear-gradient(359deg, #00000033, transparent);
+}
+
+.testimonial-area h2 {
+    text-transform: uppercase!important;
+}
+.testimonial-area h2:after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 20px;
+    border-radius: 50px;
+    margin: 0 auto!important;
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/heading-img_1.png?v=1695709021);
+    background-repeat: no-repeat;
+}
+.testimonial-area {
+    margin-bottom: -70px;
+    position: relative;
+    z-index: 2;
+}
+.testimonial-area .section-capture {
+    margin-bottom: -45px!important;
+}
+div#initialized-id-8c15b6e0-0fb3-11ee-a283-df6bed53db0f {
+       position: relative;
+    background-size: cover;
+    overflow: hidden;
+    padding-top: 170px;
+    padding-bottom: 60px;
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/top-view-fresh-kiwi-cherry-tomatoes-with-copy-space_1.jpg?v=1696500822);
+}
+div#initialized-id-8c15b6e0-0fb3-11ee-a283-df6bed53db0f:before {
+      content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(181deg, #ffffff, #ffffff, #fffffffa, #ffffffb8);
+    margin-top: -170px;
+    z-index: 0;
+}
+.reputon-google-reviews-widget .buttons-holder--3DwUW {
+    position: relative;
+    z-index: 2;
+}
+.reputon-google-reviews-widget .bt--1846p{
+    color: #fff;
+    background-color: #52b357;
+    border: 1px solid #52b357;
+    padding: 10px 20px;
+    letter-spacing: .5px;
+    border-radius: 0;
+}
+.reputon-google-reviews-widget .bt--1846p:hover{
+color: #52b357!important;
+background: #fff!important;
+}
+
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-button-prev--22OYd, .reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-container-rtl--28m1a .swiper-button-next--1bv5t{
+   color: #fff;
+    background: #469a4b!important;
+    padding:18px 19px;
+    border-radius: 50px;
+    border: 1px solid#469a4b!important;
+    box-shadow: 0 0 15px #6f6f6f;
+}
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-button-prev--22OYd:hover, .reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-container-rtl--28m1a .swiper-button-next--1bv5t:hover{
+   color: #469a4b!important;
+    background: #fff!important;
+   
+}
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-next--3P1yG {
+    color: #fff;
+    background: #469a4b!important;
+    padding:18px 20px;
+    border-radius: 50px;
+    border: 1px solid#469a4b!important;
+   box-shadow: 0 0 15px #6f6f6f;
+}
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-next--3P1yG:hover {
+    color: #469a4b!important;
+    background: #fff!important;
+   
+}
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-button-prev--22OYd:after, .reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-button-next--1bv5t:after {
+    font-size: 14px!important;
+    font-weight: bold;
+  }
+
+section.footer-top-area{
+     position:relative;
+    overflow:hidden;
+}
+section.footer-top-area:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 130%;
+    margin-top: -60px;
+    position: absolute;
+    background: linear-gradient(1deg, #ffffffd9, #ffffffeb, #fffffffa, #ffffffe0);
+    z-index: 0;
+}
+
+h1,h2{
+      text-transform: uppercase!important;
+}
+#shopify-section-1605848244aeafd51a .btn-style-medium{
+  
+    font-weight: 400;
+}
+#shopify-section-1605848244aeafd51a .btn-style-medium:hover{
+      background-color: #000!important;
+    border: 1px solid #000!important;
+    color: #fff!important;
+   
+}
+a.btn.btn-cart.btn.btn-style-medium {
+    line-height: 2.1;
+}
+.cal-icon {
+    font-size: 15px;
+}
+
+@media (max-width: 767px){
+.slider-content .home-slider .slide-image img {
+    height: auto!important;
+    object-fit: contain!important;
+}
+}
+

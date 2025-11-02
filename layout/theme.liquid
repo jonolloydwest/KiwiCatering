@@ -1,0 +1,388 @@
+<!doctype html>
+<html class="no-js supports-no-cookies {% if settings.enable_box %}box-layout {% endif %}" lang="{{ shop.locale }}">
+<head>
+  <!-- Basic and Helper page needs -->
+  <meta charset="utf-8">
+  {% include 'pluginseo' %} 
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_primary }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+  {%- endif -%}
+
+  <!-- Title and description -->
+
+
+  <!-- Helpers -->
+  {% include 'social-meta-tags' %}
+
+  <!-- CSS -->
+  {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'custom.css' | asset_url | stylesheet_tag }}
+  {%- include 'header-css' -%}
+ {% include "nonFlickerCode" %}
+
+ 
+  <!-- Header hook for plugins -->
+  {{ content_for_header }}
+  {% include 'oldIE-js' %}
+  <!-- JS -->
+  {%- include 'header-js' -%}
+
+  {% if template contains 'customers' or 'cart' %}
+  {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {% endif %}
+ 
+  {%- render 'bold-common' -%}
+  {% render 'judgeme_core' %}
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "hxowp9lrpg");
+</script>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-687589817"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-687589817');
+</script>
+
+</head>
+
+<body  id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template.name | handle }}">
+  </div>
+  {%- if settings.enable_preloader -%}
+  {% include 'preloader' %}
+  {%- endif -%}
+
+  {%- if template == 'index' and settings.newsletter_popup_enable -%}
+  {% include 'newsletter-popup' %}
+  {%- endif -%}
+  {% include 'top-notification-bar2' %}
+  {% include 'top-nocification-bar' %}
+
+  {%- if settings.header_style == "Style1" -%}
+  {% section 'header1' %}
+  {%- elsif settings.header_style == "Style2" -%}
+  {% section 'header2' %}
+  {%- elsif settings.header_style == "Style3" -%}
+  {% section 'header3' %}
+  {%- elsif settings.header_style == "Style4" -%}
+  {% section 'header4' %}
+  {%- elsif settings.header_style == "Style5" -%}
+  {% section 'header5' %}
+  {%- elsif settings.header_style == "Style6" -%}
+  {% section 'header6' %}
+  {%- elsif settings.header_style == "Style7" -%}
+  {% section 'header7' %}
+  {%- endif -%}
+
+  {%- if template != 'index' -%}
+  {% include 'breadcrumb-banner' %}
+  {%- endif -%}
+
+  <main role="main">
+    {{ content_for_layout }}
+  </main>
+  {% include 'fullscreen-bg' %}
+  {%- section "promo-fixed" -%}
+   {%- if settings.footer_style == "Style1" -%}
+  {% section 'footer1' %}
+  {%- elsif settings.footer_style == "Style2" -%}
+  {% section 'footer2' %}
+  {%- elsif settings.footer_style == "Style3" -%}
+  {% section 'footer3' %}
+  {%- elsif settings.footer_style == "Style4" -%}
+  {% section 'footer4' %}
+  {%- elsif settings.footer_style == "Style5" -%}
+  {% section 'footer5' %}
+  {%- elsif settings.footer_style == "Style6" -%}
+  {% section 'footer6' %}
+  {%- elsif settings.footer_style == "Style7" -%}
+  {% section 'footer7' %}
+  {%- endif -%}
+  {% section 'copy-right' %}
+  {% include 'back-to-top' %}
+  <!-- Necessary JS -->
+  {% include 'footer-js' %}
+  {%- render 'bold-currency-converter' -%}
+
+
+{{ "//cdn.shopify.com/s/files/1/0633/1672/1913/t/1/assets/splide.min.js" | script_tag}}
+
+</body>
+</html>
+
+
+
+
+<style>
+
+@media (max-width:1500px) and (min-width:992px){
+.header2 .header-area .header-main .header-element.megamenu-content {
+    width: 65%!important;
+}
+.col-md-1 {
+    -ms-flex: 0 0 8.333333%;
+    flex: 0 0 13.333333%;
+    max-width: 13.333333%;
+}
+}
+@media (max-width:991px) and (min-width:768px){
+.header2 .header-area .header-main .header-element.logo {
+    width: 45%!important;
+    
+}
+.header2 .header-area .header-main .header-element.right-block-box {
+    width: 30%!important;
+}
+.header-main .col-md-1 {
+    -ms-flex: 0 0 8.333333%;
+    flex: 0px!important;
+    max-width: 23.333333%!important;
+}
+}
+@media (max-width:767px){
+.header-main .col-md-1 {
+
+    margin:0 auto!important;
+    
+}
+.is-sticky .header-main .col-md-1 {
+    display: none;
+}
+}
+div#shopify-section-af6a3d1a-8cab-4f89-b497-841042fb2b72 {
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/cocktail-glass-cup-kiwi-juice-with-slice-fruit-high-quality-photo_1.png?v=1696499444);    
+    background-position: center;
+    position:relative;
+    overflow:hidden;
+   
+}
+
+div#shopify-section-af6a3d1a-8cab-4f89-b497-841042fb2b72:before {
+    content: '';
+    display: block;
+    background: linear-gradient(309deg, #fff, #fff, #fff, #ffffffd9);
+    width: 100%;
+    height: 120%;
+    position: absolute;
+
+}
+div#shopify-section-311a5926-9013-491a-ba78-2045b40a2c2a {
+ background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/elevated-view-halved-kiwi-fruits-wooden-background_1.png?v=1696499444);
+  background-position: center;
+  position:relative;
+  overflow:hidden;
+}
+div#shopify-section-311a5926-9013-491a-ba78-2045b40a2c2a:before {
+    content: '';
+    display: block;
+    background: linear-gradient(15deg, #fff, #fff, #fff, #fff, #ffffffd9);
+    width: 100%;
+    height: 120%;
+    position: absolute;
+
+}
+
+div#shopify-section-1611804387db8f2ebe {
+    position: relative;
+    overflow: hidden;
+}
+section.our-service-area:before{
+      content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background: linear-gradient(359deg, #00000033, transparent);
+}
+
+.testimonial-area h2 {
+    text-transform: uppercase!important;
+}
+.testimonial-area h2:after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 20px;
+    border-radius: 50px;
+    margin: 0 auto!important;
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/heading-img_1.png?v=1695709021);
+    background-repeat: no-repeat;
+}
+.testimonial-area {
+    margin-bottom: -70px;
+    position: relative;
+    z-index: 2;
+}
+.testimonial-area .section-capture {
+    margin-bottom: -45px!important;
+}
+div#initialized-id-8c15b6e0-0fb3-11ee-a283-df6bed53db0f {
+       position: relative;
+    background-size: cover;
+    overflow: hidden;
+    padding-top: 170px;
+    padding-bottom: 60px;
+    background-image: url(https://cdn.shopify.com/s/files/1/0523/6572/1788/files/top-view-fresh-kiwi-cherry-tomatoes-with-copy-space_1.jpg?v=1696500822);
+}
+div#initialized-id-8c15b6e0-0fb3-11ee-a283-df6bed53db0f:before {
+      content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(181deg, #ffffff, #ffffff, #fffffffa, #ffffffb8);
+    margin-top: -170px;
+    z-index: 0;
+}
+.reputon-google-reviews-widget .buttons-holder--3DwUW {
+    position: relative;
+    z-index: 2;
+}
+.reputon-google-reviews-widget .bt--1846p{
+    color: #fff;
+    background-color: #52b357;
+    border: 1px solid #52b357;
+    padding: 10px 20px;
+    letter-spacing: .5px;
+    border-radius: 0;
+}
+.reputon-google-reviews-widget .bt--1846p:hover{
+color: #52b357!important;
+background: #fff!important;
+}
+
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-button-prev--22OYd, .reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-container-rtl--28m1a .swiper-button-next--1bv5t{
+   color: #fff;
+    background: #469a4b!important;
+    padding:18px 19px;
+    border-radius: 50px;
+    border: 1px solid#469a4b!important;
+    box-shadow: 0 0 15px #6f6f6f;
+}
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-button-prev--22OYd:hover, .reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-container-rtl--28m1a .swiper-button-next--1bv5t:hover{
+   color: #469a4b!important;
+    background: #fff!important;
+   
+}
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-next--3P1yG {
+    color: #fff;
+    background: #469a4b!important;
+    padding:18px 20px;
+    border-radius: 50px;
+    border: 1px solid#469a4b!important;
+   box-shadow: 0 0 15px #6f6f6f;
+}
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-next--3P1yG:hover {
+    color: #469a4b!important;
+    background: #fff!important;
+   
+}
+.reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-button-prev--22OYd:after, .reputon-google-reviews-widget .reviews-holder--3hf8N .swiper-button-next--1bv5t:after {
+    font-size: 14px!important;
+    font-weight: bold;
+  }
+
+section.footer-top-area{
+     position:relative;
+    overflow:hidden;
+}
+section.footer-top-area:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 130%;
+    margin-top: -60px;
+    position: absolute;
+    background: linear-gradient(1deg, #ffffffd9, #ffffffeb, #fffffffa, #ffffffe0);
+    z-index: 0;
+}
+
+h1,h2{
+      text-transform: uppercase!important;
+}
+#shopify-section-1605848244aeafd51a .btn-style-medium{
+  
+    font-weight: 400;
+}
+#shopify-section-1605848244aeafd51a .btn-style-medium:hover{
+      background-color: #000!important;
+    border: 1px solid #000!important;
+    color: #fff!important;
+   
+}
+a.btn.btn-cart.btn.btn-style-medium {
+    line-height: 2.1;
+}
+.cal-icon {
+    font-size: 15px;
+}
+
+  li.submenu-li img {
+    width: 150px;
+}
+.Retailer-detail h6 {
+  text-transform: uppercase !important;
+}
+
+.recipes-img:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(1deg, #35913ac9, #52b3572e);
+}
+.recipes-img .slider-text-info {
+    width: 100%;
+    text-align: center;
+    left: 0px!important;
+}
+
+.image-with-text-section ul li {
+  list-style: disc;
+  list-style-position: inside;
+}
+.image-with-text-section .bg {
+  color: #fff;
+  background: #333;
+  padding: 4px 10px;
+  margin-bottom: 8px;
+}
+.img-width img {
+    min-width: 100%;
+    box-shadow: -15px 15px #52b357;
+}
+.section-title h2 {
+    line-height: 1.2!important;
+    }
+
+@media (max-width:767px){
+.image-with-text-section {
+    padding: 0 15px;
+}
+.check-box-btn input {
+    height: 26px;
+    width: 70px !important;
+}
+
+}
+
+@media (min-width:768px){
+.check-box-btn input {
+    height: 22px;
+    width: 36px !important;
+}
+}
+</style> 

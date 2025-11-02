@@ -1,0 +1,269 @@
+<!-- shop start -->
+<section class="all-collection">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="grid">
+          {% for collection in collections %}
+          {% unless collection.handle == 'frontpage' %}
+          {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+          {% assign collection =  link.object %}
+          <li class="wow fadeInUp">
+            <div class="collection-img" style="background-image: url('{% if collection.image %}{{ collection | img_url: 'master'  }}{% else %}{{ collection.products.first | img_url: 'master'  }}{% endif %}');">
+                <div class="collection-content">
+                  <div class="content">
+                    <h6>{{ collection_title }}</h6>
+                    <!-- <span>{{ section.settings.items_products }} ({{ collection.all_products_count }})</span> -->
+                  </div>
+                  <a href="{{ collection.url }}">{{ section.settings.coll_btn }}</a>
+                </div>
+            </div>
+          </li>
+          {% endunless %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  $('.grid').imagesLoaded(function () {
+    $('.grid').isotope({
+      itemSelector: 'li',
+      layoutMode: 'masonry'
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "All collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Desktop / Laptop "
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Button Title"
+    },
+    {
+      "type": "text",
+      "id": "items_products",
+      "label": "Product Title",
+      "default": "Product"
+    },
+    {
+      "type": "text",
+      "id": "coll_btn",
+      "label": "Title",
+      "default": "Shop now"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .all-collection{
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  @media (max-width: 1199px){
+    .all-collection{
+      padding-top: {{ section.settings.section_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+    }
+  } @media (max-width: 767px){
+    .all-collection{
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+
+  ul.grid{
+    margin-top: -30px;
+    {%- if settings.enable_rtl -%}
+    margin-right: -30px;
+    {%- else -%}
+    margin-left: -30px;
+    {%- endif -%}
+  }
+  ul.grid li{
+    width: calc(25% - 30px);
+    margin-top: 30px;
+    {%- if settings.enable_rtl -%}
+    margin-right: 30px;
+    {%- else -%}
+    margin-left: 30px;
+    {%- endif -%}
+    position: relative;
+    cursor: pointer;
+  }
+  @media (max-width: 1199px){
+    ul.grid li{
+      width: calc(33.33% - 30px);
+    }
+  }
+  @media (max-width: 767px){
+    ul.grid{
+      margin-top: -20px;
+      {%- if settings.enable_rtl -%}
+      margin-right: -15px;
+      {%- else -%}
+      margin-left: -15px;
+      {%- endif -%}
+    }
+    ul.grid li{
+      width: calc(100% - 15px);
+      margin-top: 20px;
+      {%- if settings.enable_rtl -%}
+      margin-right: 15px;
+      {%- else -%}
+      margin-left: 15px;
+      {%- endif -%}
+    }
+  }
+
+  ul.grid li .collection-img{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;    
+    height: 350px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 991px){
+    ul.grid li .collection-img{  
+      height: 250px;
+    }
+  }
+
+  ul.grid li .collection-content{
+    padding: 10px 15px;
+    background-color: #fff;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    overflow: hidden;
+  }
+  ul.grid li .collection-content .content h6{
+    color: {{ settings.color_primary }};
+    font-size: 16px;
+    text-transform: capitalize;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: normal;
+  }
+  ul.grid li .collection-content .content span{
+    display: block;
+    margin-top: 5px;
+  }
+  ul.grid li .collection-content a{
+    color: #fff;
+    font-size: 15px;
+    position: absolute;
+    bottom: -100%;
+    {%- if settings.enable_rtl -%}
+    right: 0;
+    {%- else -%}
+    left: 0;
+    {%- endif -%}   
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    background-color: {{ settings.color_primary }};
+    opacity: 0;
+    visibility: hidden;
+  }
+  ul.grid li:hover .collection-content a{
+    bottom: 0;
+    opacity: 1;
+    visibility: visible;
+  }
+  @media (max-width: 1199px){
+  }
+</style>

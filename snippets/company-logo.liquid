@@ -1,0 +1,16 @@
+{%- if settings.company_logo -%}
+<a href="/" class="theme-logo">
+  <img src="{%- if settings.company_logo -%}{{ settings.company_logo | img_url: 'master' }}{% else %}https://dummyimage.com/207x44/f7f7f7/999999{% endif %}" alt="{{ settings.company_logo.alt | default: shop.name }}">
+</a>
+{%- else -%}
+<a href="/" class="shop-name">
+	<span>{{ shop.name }}</span>
+</a>
+{%- endif -%}
+<style>
+	.logo a.shop-name span {
+	    color: #000;
+	    font-size: 24px;
+	    font-weight: 600;
+	}
+</style>

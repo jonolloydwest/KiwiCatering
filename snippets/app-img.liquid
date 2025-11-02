@@ -1,0 +1,42 @@
+{% if settings.app_img_enable %}
+<ul class="app-store">
+  <li class="appstore-img">
+    <a href="javascript:void(0)">
+      <img src="{% if settings.google_img %}{{ settings.google_img | img_url: 'master' }}{% else %}https://dummyimage.com/127x35/f7f7f7/999999{% endif %}" class="img-fluid" alt="{{ settings.google_img.alt | default: shop.name }}">
+    </a>
+  </li>
+  <li class="appstore-img">
+    <a href="javascript:void(0)">
+      <img src="{% if settings.apple_img %}{{ settings.apple_img | img_url: 'master' }}{% else %}https://dummyimage.com/127x35/f7f7f7/999999{% endif %}" class="img-fluid" alt="{{ settings.apple_img.alt | default: shop.name }}">
+    </a>
+  </li>
+</ul>
+<style>
+  ul.app-store{
+    display: flex;
+  }
+  ul.app-store li.appstore-img{
+    {% if settings.enable_rtl %}
+    margin-left: 5px;
+    {% else %}
+    margin-right: 5px;
+    {% endif %}
+  }
+  ul.app-store li.appstore-img:last-child{
+    {% if settings.enable_rtl %}
+    margin-left: 0px;
+    {% else %}
+    margin-right: 0px;
+    {% endif %}
+  }
+  ul.app-store li.appstore-img a{
+    display: block;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  ul.app-store li.appstore-img a img{
+    border: 1px solid #3c3c3c;
+    border-radius: 5px;
+  }
+</style>
+{% endif %}

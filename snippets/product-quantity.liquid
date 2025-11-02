@@ -1,0 +1,60 @@
+<div class="product-quantity">
+  {% if product.available %}
+  <div class="cart-plus-minus">
+    <input value="1" type="text" name="quantity" min="1" pattern="[0-9]*">
+  </div>
+  {% else %}
+  <div class="cart-plus-minus disabled">
+    <input value="1" type="text" name="quantity" min="1" pattern="[0-9]*" class="disabled" disabled="disabled">
+  </div>
+  {% endif %}
+</div>
+{% comment %}
+<style>
+  .product-quantity .cart-plus-minus {
+    display: flex;
+    position: relative;
+    border: 1px solid #e2e2e2;
+  }
+  .product-quantity .cart-plus-minus .qtybutton {
+    color: #fff;
+    font-size: 22px;
+    position: absolute;
+    {% if settings.enable_rtl %}
+    left: 0px;
+    {% else %}
+    right: 0px;
+    {% endif %}
+    height: 25px;
+    width: 25px;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 0;
+  }
+  .product-quantity .cart-plus-minus .dec.qtybutton{
+    bottom: 0;
+    border-top: 1px solid #fff;
+  }
+  .product-quantity .cart-plus-minus .inc.qtybutton{
+    top: 0;
+  }
+  .product-quantity .cart-plus-minus input {
+    height: 50px;
+    width: 75px;
+    {% if settings.enable_rtl %}
+    padding: 0 0px 0 25px;
+    {% else %}
+    padding: 0 25px 0 0;
+    {% endif %}
+    text-align: center;
+    border: none;
+  }
+  .product-quantity .cart-plus-minus.disabled{
+    opacity: .65;
+    pointer-events: none;
+  }
+</style>
+{% endcomment %}

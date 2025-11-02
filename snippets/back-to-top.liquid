@@ -1,0 +1,39 @@
+<a href="javascript:void(0)" id="top" class="scroll">
+    <i class="ti ti-arrow-up"></i>
+</a>
+<style>
+a.scroll {
+    display: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1;
+    padding: 12px;
+    background-color: {{ settings.color_primary }};
+    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    text-transform: uppercase;
+    position: fixed;
+    bottom: 110px;
+    {% if settings.enable_rtl %}
+    left: 30px;
+    {% else %}
+    right: 30px;
+    {% endif %}
+    z-index: 9;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    -ms-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+}
+@media(max-width: 767px){
+    a.scroll{
+        font-size: 12px;
+        height: 30px;
+        width: 30px;
+        right: 15px;
+        padding: 9px;
+    }
+}
+</style>

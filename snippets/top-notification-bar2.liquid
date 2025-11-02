@@ -1,0 +1,84 @@
+{%- if settings.topbar_notification2_enable -%}
+<section class="top-notification-bar top-bar">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="notification-entry">
+          <li class="notify-wrap txt-wrap">
+         {{ settings.topbar_notification2_text1 }}
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .top-notification-bar.top-bar{
+    color: {{ settings.notification2_txt_color }};
+    background-color: {{ settings.notification2_bg_color }}!important;
+    padding: 13px 0;
+    position: relative;
+  }
+
+  .top-notification-bar.top-bar ul li.notify-wrap{
+    display: flex;
+    align-items: center;
+    width: 100%!important;
+  }
+ 
+  
+  .top-notification-bar.top-bar ul li.notify-wrap p{
+    font-size: 15px;
+    font-weight: 400;
+    line-height: normal;
+    margin: auto;
+  }
+ 
+
+  @keyframes wobble{
+    30%,70%{
+        transform: rotate(0deg)
+    }
+    35%,65%{
+        transform: rotate(10deg)
+    }
+    40%,60%{
+        transform: rotate(-10deg)
+    }
+    45%,55%{
+        transform: rotate(10deg)
+    }
+    50%{
+        transform: rotate(-10deg)
+    }
+  }
+
+  @media (max-width : 1199px){
+
+ .top-notification-bar.top-bar ul li.notify-wrap p{
+    font-size: 14px!important;
+  }
+    .top-notification-bar{
+      padding: 10px 0;
+    }
+  
+  }
+
+  @media (max-width : 767px){
+   
+    .top-notification-bar.top-bar ul li.notify-wrap.txt-wrap{
+      display: flex;
+      padding-top: 5px;
+    }
+ 
+    .top-notification-bar.top-bar ul li.notify-wrap.currency-wrap,
+    .top-notification-bar.top-bar ul li.notify-wrap.link-wrap,
+    .top-notification-bar.top-bar ul li.notify-wrap{
+      width: 100%;
+      justify-content: center;
+    }
+   
+  }
+</style>
+{% endif %}

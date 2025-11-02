@@ -1,0 +1,38 @@
+{% if template contains 'article' or template contains 'blog' %}
+{% capture permalinkURL %}{{ shop.url }}{{ article.url }}{% endcapture %}
+{% capture shareTitle %}{{ article.title | url_param_escape }}{% endcapture %}
+
+{% elsif template contains 'product' %}
+{% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}
+{% capture shareTitle %}{{ product.title | url_param_escape }}{% endcapture %}
+
+{% elsif template == 'password' %}
+{% capture permalinkURL %}{{ shop.url }}{% endcapture %}
+{% capture shareTitle %}{% unless shop.description == blank %}{{ shop.description | url_param_escape }}{% else %}{{ shop.name | url_param_escape }}{% endunless %}{% endcapture %}
+
+{% endif %}
+
+{% assign shareButtonStyle = section.settings.social_sharing_style %}
+
+<div class="blog-share">
+
+<p class="share-tags-title f-left">Share This</p>
+
+<ul class="action-button share-button f-left {{ shareButtonStyle }}" data-permalink="{{ permalinkURL }}">
+  <li>
+    <a target="_blank" href="//www.facebook.com/sharer.php?u={{ permalinkURL }}" title="Share on Facebook" tabindex="0"><i class="zmdi zmdi-facebook"></i></a>
+  </li>
+  <li>
+    <a target="_blank" href="//twitter.com/share?text={{ shareTitle }}&amp;url={{ permalinkURL }};source=webclient" title="Share on Twitter" tabindex="0"><i class="zmdi zmdi-twitter"></i></a>
+  </li>
+  {% if product.featured_image or article.image  %}
+  <li>
+    <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media=http:{% if template contains 'product' %}{{ product | img_url: '1024x1024' }}{% else %}{{ article | img_url: '1024x1024' }}{% endif %}&amp;description={{ shareTitle }}" title="Share on Pinterest" tabindex="0"><i class="zmdi zmdi-pinterest"></i></a>
+  </li>
+  {% endif %}
+  <li>
+    <a target="_blank" href="//plus.google.com/share?url={{ permalinkURL }}" title="Share on Google+" tabindex="0"><i class="zmdi zmdi-google-plus"></i></a>
+  </li>
+</ul>
+
+</div>

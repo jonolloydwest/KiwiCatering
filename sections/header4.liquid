@@ -1,0 +1,226 @@
+<!-- header-area start -->
+<section class="header4">
+  <div class="header-kaj">
+    <div class="header-area">
+      <div class="header-main">
+        <div class="header-element megamenu-content">
+          <div class="mainwrap">
+            <ul class="main-menu">
+              {% assign header_main_menu = section.settings.header_main_menu %}
+              {% for link in linklists[header_main_menu].links %}
+              {% if linklists[header_main_menu].links != '' %}
+              {% include 'main-menu' %}
+              {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="header-element logo">
+          {%- if settings.company_logo -%}
+              <a href="/" class="theme-logo">
+                <img src="{%- if settings.company_logo -%}{{ settings.company_logo | img_url: 'master' }}{% else %}https://dummyimage.com/207x44/f7f7f7/999999{% endif %}" alt="{{ settings.company_logo.alt | default: shop.name }}">
+              </a>
+            {%- else -%}
+            <a href="/" class="shop-name">
+              <span>{{ shop.name }}</span>
+            </a>
+            {%- endif -%}
+        </div>
+        <div class="header-element right-block-box">
+          <ul class="shop-element">
+            <li class="side-wrap toggler-wrap">
+              <button class="navbar-toggler" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+              </button>
+            </li>
+            <li class="side-wrap search-wrap">
+              <div class="search-rap">
+                <a class="search-crap" data-toggle="modal" href="#search-crap">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </a>
+              </div>
+            </li>
+            <li class="side-wrap user-wrap">
+              {%- include 'store-account' -%}
+            </li>
+            <li class="side-wrap wishlist-wrap">
+              {%- include 'wishlist-4' -%}
+            </li>
+            <li class="side-wrap cart-wrap">
+              {% include 'mini-cart' %}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- include 'search-modal' -%}
+<div class="header-bottom-area">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="main-menu-area">
+          <nav class="main-navigation navbar-expand-xl">
+            <div class="box-header">
+              <button class="close-box" type="button"><i class="ti-close"></i></button>
+            </div>
+            <div class="navbar-collapse" id="navbarContent">
+              <div class="megamenu-content">
+                <a href="#main-collapse" class="browse-cat" data-toggle="collapse" aria-expanded="false">
+                  <i class="ti-menu"></i>
+                  <span>{{ section.settings.header_main_menu_title }}</span>
+                </a>
+                <div class="mainwrap">
+                  <ul class="main-menu">
+                    {% assign header_main_menu = section.settings.header_main_menu %}
+                    {% for link in linklists[header_main_menu].links %}
+                    {% if linklists[header_main_menu].links != '' %}
+                    {% include 'main-menu' %}
+                    {% endif %}
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- header-area end -->
+<script>
+  {% if template == 'index' or template == 'product' or template == 'collection' %}
+  $(window).scroll(function() {
+    var sticky = $('.header-kaj'),
+    scroll = $(window).scrollTop();
+    if (scroll >= 150) {
+      sticky.addClass('is-sticky');
+    }
+    else {
+      sticky.removeClass('is-sticky');
+    }
+  });
+  {% endif %}
+</script>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo Notice"
+    },
+    {
+      "type": "paragraph",
+      "content": "For logo go to 'Theme Settings' click on 'Company Logo' & set both Header-Footer Logo"
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "header_bg_color",
+      "label": "Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_bg_color_enable",
+      "label": "Show Background Color",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Main Menu"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "For main menu"
+    },
+    {
+      "type": "link_list",
+      "id": "header_main_menu",
+      "label": "Select Main Menu"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Mainmenu title for responsive"
+    },
+    {
+      "type": "text",
+      "id": "header_main_menu_title",
+      "label": "Title",
+      "default": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Search Bar"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder",
+      "default": "Search Our Catalog"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_sticky_enable",
+      "label": "Show Header Sticky",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+<style>
+
+  /* sticky menu css */
+  {% if section.settings.header_sticky_enable %}
+  .is-sticky{
+    position: fixed;
+    top: 0;
+    {%- if settings.enable_rtl -%}
+    right: 0;
+    {%- else -%}
+    left: 0;
+    {%- endif -%}
+    width: 100%;
+    z-index: 3;
+    background-color: #fff;
+    -webkit-box-shadow: rgba(116,116,116,.05) 0 0px 0px 0px, rgba(32,32,32,.05) 0 4px 10px;
+    -moz-box-shadow: rgba(116,116,116,.05) 0 0px 0px 0px, rgba(32,32,32,.05) 0 4px 10px;
+    box-shadow: rgba(116,116,116,.05) 0 0px 0px 0px, rgba(32,32,32,.05) 0 4px 10px;
+  }
+  .header-kaj.is-sticky .header-area{
+    position: unset;
+  }
+  .header-kaj.is-sticky{
+    animation: smoothScroll 1s forwards;
+  }
+  @keyframes smoothScroll {
+    0% {
+      transform: translateY(-150px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  {% endif %}
+  {% if section.settings.header_bg_color_enable %}
+  .is-sticky .header-area {
+    background-color: {{ section.settings.header_bg_color }};
+  }
+  {% endif %}
+  @media (max-width: 1199px) {
+    .right-block-box ul.shop-element li.side-wrap{
+      {% if settings.enable_rtl %}
+      margin-left: 15px;
+      {% else %}
+      margin-right: 15px;
+      {% endif %}
+    }
+  }
+</style>

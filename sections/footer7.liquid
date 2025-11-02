@@ -1,0 +1,361 @@
+<section class="footer-top-area" {% if section.settings.footer_bg_img_enable %}style="background-image: url('{% if section.settings.footer_bg_img %}{{ section.settings.footer_bg_img | img_url: 'master' }}{% else %}https://dummyimage.com/1920x450/f7f7f7/999999{% endif %}');"{% endif %}>
+  <div class="container-fluid container-col">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-12 col-center">
+        <div class="footer-list-wrap">
+          <ul class="footer-list">
+            <li class="ftlink-li newsletter">
+              
+              <div class="news-content">
+                <div class="title">
+                  <h6>{{ section.settings.newsletter_title }}</h6>
+                  <p>{{ section.settings.newsletter_des }}</p>
+                </div>
+                {% form 'customer' %}
+                {{ form.errors | default_errors }}
+                {% if form.posted_successfully? %}
+                <p class="text-success">
+                  <span>{{ settings.newsletter_success_text }}</span>
+                  <span>{{ settings.newsletter_coupan_code }}</span>
+                </p>
+                {% endif %}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="subscribe-block">
+                  <input type="email" name="contact[email]" class="email mail" id="E-mail" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ settings.email_placeholder }}" autocapitalize="off" required>
+
+                    <button type="submit" class="btn btn-style" name="commit" id="Subscribe">
+                      {{ settings.email_button }}
+                    </button>
+                  
+                </div>
+                {% endform %}
+              </div>
+              
+            </li>
+            {% for block in section.blocks %}
+            <li class="ftlink-li linklist">
+              <ul class="footer-sublist">
+                {% assign footer_menu = block.settings.footer_menu_handle %}
+                {% for link in linklists[footer_menu].links %}
+                {% if linklists[footer_menu].links != '' %}
+                <li class="ftsublink-li">
+                  <a href="{{ link.url }}" class="ft-sublink">{{ link.title }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </li>            
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+  {
+    "type": "header",
+    "content": "Section Padding"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop "
+  },
+  {
+    "type": "range",
+    "id": "foot_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 150,
+    "step": 5,
+    "unit": "px",
+    "default": 100
+  },
+  {
+    "type": "range",
+    "id": "foot_padding_bottom",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 150,
+    "step": 5,
+    "unit": "px",
+    "default": 100
+  },
+  {
+    "type" : "paragraph",
+    "content" : " tablet"
+  },
+  {
+    "type": "range",
+    "id": "foot_padding_top_lg",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "foot_padding_bottom_lg",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "foot_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "foot_padding_bottom_xs",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "header",
+    "content": "Section Background Image"
+  },
+  {
+    "type": "image_picker",
+    "id": "footer_bg_img",
+    "label": "Background Image",
+    "info": "Recommended Size: 1920 x 770px"
+  },
+  {
+    "type": "checkbox",
+    "id": "footer_bg_img_enable",
+    "label": "Show Background Image",
+    "default": false
+  },
+  {
+    "type": "header",
+    "content": "Section Background Color"
+  },
+  {
+    "type": "color",
+    "id": "footer_bg_color",
+    "label": "Background Color",
+    "default": "#fff"
+  },
+  {
+    "type": "header",
+    "content": "Newsletter"
+  },
+  {
+    "type": "text",
+    "id": "newsletter_title",
+    "label": "Newsletter title",
+    "default": "Newsletter"
+  },
+  {
+    "type": "text",
+    "id": "newsletter_des",
+    "label": "Newsletter Description",
+    "default": "Subscribe to the free newsletter and get 20% discount on your next booking"
+  }
+  ],
+  "blocks":[
+  {
+    "type": "footer_menu",
+    "name": "Menu",
+    "settings": [
+    {
+      "type": "link_list",
+      "id": "footer_menu_handle",
+      "label": "Select Menu"
+    }
+    ]
+  }
+  ]
+}
+{% endschema %}
+<style>
+.footer-top-area{
+  padding-top: {{ section.settings.foot_padding_top }}px;
+  padding-bottom: {{ section.settings.foot_padding_bottom }}px;
+  {% if section.settings.footer_bg_img_enable %}
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  {% else %}
+  background-color: {{ section.settings.footer_bg_color }};
+  {% endif %}
+  border-top: 1px solid #e2e2e2;
+}
+@media (max-width : 1199px){
+  .footer-top-area{
+    padding-top: {{ section.settings.foot_padding_top_lg }}px;
+    padding-bottom: {{ section.settings.foot_padding_bottom_lg }}px;
+  }
+}
+@media (max-width : 767px){
+  .footer-top-area{
+    padding-top: {{ section.settings.foot_padding_top_xs }}px;
+    padding-bottom: {{ section.settings.foot_padding_bottom_xs }}px;
+  }
+}
+.footer-top-area .container-col{
+  padding-right: 285px;
+  padding-left: 285px;
+}
+.box-layout .footer-top-area .container-col{
+  padding-right: 30px;
+  padding-left: 30px;
+}
+@media(max-width: 1599px){
+  .footer-top-area .container-col{
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+}
+@media(max-width: 991px){
+  .footer-top-area .container-col{
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+}
+@media(max-width: 767px){
+  .footer-top-area .container-col{
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .box-layout .footer-top-area .container-col{
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+/* footer-list css */
+.footer-list-wrap ul.footer-list{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.footer-list-wrap ul.footer-list li.ftlink-li{
+  width: 20%;
+  padding-left: 15px;
+}
+.footer-list-wrap ul.footer-list li.ftlink-li.newsletter{
+  width: 40%;
+  padding-left: 0px;
+}
+.footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li {
+  position: relative;
+  margin-top: 15px;
+}
+.footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li:first-child {
+  margin-top: 0;
+}
+.footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a{
+  font-size: 18px;
+  position: relative;
+  font-weight: 500;
+}
+
+.footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a:hover{
+  color: {{ settings.color_primary }};
+}
+
+@media(max-width: 1199px){
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li{
+    margin-top: 10px;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a{
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+@media(max-width: 991px){
+  .footer-list-wrap ul.footer-list li.ftlink-li.newsletter{
+    width: 100%;
+    text-align: center;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li{
+    width: 33.33%;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li.linklist{
+    margin-top: 30px;
+  }
+}
+@media(max-width: 767px){
+  .footer-list-wrap ul.footer-list li.ftlink-li{
+    width: 100%;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a{
+    font-size: 14px;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li{
+    padding-left: 0px;
+  }
+}
+
+/*newsletter*/
+.footer-list-wrap .ftlink-li.newsletter .title h6{
+  font-size: 24px;
+  line-height: 1;
+}
+.footer-list-wrap .ftlink-li.newsletter .title p{
+  font-size: 16px;
+  color: #6f6f6f;
+  margin-top: 30px;
+}
+.footer-list-wrap .ftlink-li .news-content {
+  width: 80%;
+}
+.footer-list-wrap .ftlink-li .news-content .subscribe-block{
+  display: flex;
+  margin-top: 30px;
+}
+.footer-list-wrap .ftlink-li .news-content .subscribe-block input{
+  width: 100%;
+  background-color: #fff;
+}
+.footer-list-wrap .ftlink-li .news-content .subscribe-block button{
+  margin-left: 10px;
+}
+
+@media(max-width: 1199px){
+  .footer-list-wrap .ftlink-li.newsletter .title h6{
+    font-size: 20px;
+  }
+  .footer-list-wrap .ftlink-li.newsletter .title p{
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  .footer-list-wrap .ftlink-li .news-content .subscribe-block{
+    margin-top: 15px;
+  }
+}
+@media(max-width: 991px){
+  .footer-list-wrap .ftlink-li .news-content{
+    width: 100%;
+  }
+}
+@media(max-width: 767px){
+  .footer-list-wrap .ftlink-li.newsletter h6{
+    font-size: 16px;
+  }
+}
+
+</style>

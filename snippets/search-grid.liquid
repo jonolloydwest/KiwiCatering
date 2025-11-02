@@ -1,0 +1,60 @@
+{%- assign on_sale = false -%}
+{%- if product.compare_at_price > product.price -%}
+{%- assign on_sale = true -%}
+{%- endif -%}
+ 
+{%- assign sold_out = true -%}
+{%- if product.available -%}
+{%- assign sold_out = false -%}
+{%- endif -%}
+
+{%- assign variant = product.selected_or_first_available_variant -%}
+
+{%- if product.available -%}
+{%- assign func = "Shopify.addItem(" | append: variant.id | append: ", 1)" -%}
+{%- endif -%}  
+
+{% if item.featured_image %}
+<div class="search-item single-product-wrap">
+  <div class="product-image">
+    <a href="{{ item.url | within: collection }}"><img src="{{ item.featured_image.src | img_url: 'large' }}" alt=""></a>
+  </div>
+  <div class="product-content">
+    <div class="product-title">
+      <a href="{{ item.url | within: collection }}">{{ item.title }}</a>
+    </div>
+    <div class="price-box">
+      <span class="new-price">{{ item.price | money }}</span>
+      {% if item.compare_at_price_max > item.price %}
+      <span class="old-price">{{ item.compare_at_price | money }}</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% else %}
+
+
+    {% comment %}
+    {%- if item.description contains '[short_description]' -%} 
+    {%- assign short_description_first = item.description | split:'[/short_description]' | first -%}
+    {%- assign short_description_final = short_description_first | split:'[short_description]' | last -%}
+    {{ short_description_final }}
+    {%- else -%}
+    {{ item.description | strip_html | truncatewords: 50 | split: '[short_description]' | first | split: '[product_description]' | first | split: '[new_products]' | first | split: '[product_video]' | first | split: '[affiliate_link]' | first }}
+    {%- endif -%}
+    {% endcomment %}
+    
+<div class="search-blog-item">
+  <div class="search-blog-img">
+    <a href="{{ item.url }}">
+      <img class="img-fluid" src="{{ item.image | img_url: '1140x600' }}" alt="{{ item.title | escape }}" />
+    </a>
+  </div>
+  <div class="search-blog-content">
+    <h6 class="search-blog-title">
+      <a href="{{ item.url }}">{{ item.title }}</a>
+    </h6>
+    <p>{{ item.content | strip_html | strip | truncate: 100 }}</p>
+  </div>
+</div>
+{% endif %}

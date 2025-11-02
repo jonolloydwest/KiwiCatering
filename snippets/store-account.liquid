@@ -1,0 +1,90 @@
+<div class="acc-desk">
+  <a class="acc-ti" href="/account">
+    <span class="acc-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    </span> 
+  </a> 
+  {% if customer and shop.customer_accounts_enabled %}
+  <div class="acc-re-lo">
+    <a href="/account">{{ settings.account_title}}</a>
+    <a href="/account/logout">{{ settings.logout_title}}</a>
+  </div>
+  {% else %}
+  <div class="acc-re-lo">
+    <a href="/account/login">{{ settings.login_title}}</a>
+    <a href="/account/register">{{ settings.register_title}}</a>
+  </div>  
+  {% endif %}
+</div>
+<style>
+  .user-wrap .acc-desk{
+    position: relative;
+  }
+  .user-wrap .acc-desk a.acc-ti svg{
+    width: 20px;
+    height: 20px;
+    stroke: #333;
+  }
+  .user-wrap .acc-desk a.acc-ti span.acc-detail{
+    display: none;
+    {% if settings.enable_rtl %}
+    margin-right: 10px;
+    {% else %}
+    margin-left: 10px;
+    {% endif %}
+  }
+  .user-wrap .acc-desk a.acc-ti span.acc-detail span.acc-text{
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  .user-wrap .acc-desk a.acc-ti span.acc-detail span.acc-user{
+    display: block;
+    color: #ddd;
+    margin-top: 5px;
+    text-transform: capitalize;
+  }
+  .user-wrap .acc-desk .acc-re-lo{
+    position: absolute;
+    {% if settings.enable_rtl %}
+    left: 0;
+    {% else %}
+    right: 0;
+    {% endif %}
+    top: calc(100% + 15px);
+    width: 150px;
+    background-color: #fff;
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    filter: alpha(opacity=0);
+    -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.08);
+    -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.08);
+    -webkit-transition: 400ms ease;
+    -moz-transition: 400ms ease;
+    -o-transition: 400ms ease;
+    transition: 400ms ease;
+  }
+  .user-wrap .acc-desk:hover .acc-re-lo{
+    visibility: visible;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  .user-wrap .acc-desk .acc-re-lo a{
+    display: block;
+    padding: 8px 15px;
+  }
+  .user-wrap .acc-desk .acc-re-lo a:first-child{
+    border-top: none;
+  }
+  .user-wrap .acc-desk .acc-re-lo a:hover{
+    background-color: #f5f5f5;
+  }
+  @media (max-width: 1199px) {
+    .user-wrap .acc-desk a.acc-ti span.acc-detail{
+      display: none;
+    }
+  }
+</style>

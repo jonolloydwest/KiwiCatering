@@ -1,0 +1,336 @@
+<!-- deal start -->
+<section class="deal-section">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="section-capture">
+          <div class="section-title">
+            {% if section.settings.deal_title !='' %}
+            <h2 style="color: {{ section.settings.deal_title_color }};">{{ section.settings.deal_title }}</h2>
+            {% endif %}
+          </div>
+        </div>
+        <div class="deal-slider owl-carousel owl-theme" id="deal-slider">
+          {% for product in collections[section.settings.label_deal_product].products %}
+          <div class="item">
+            {% include 'product-deal-timer' %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- deal end -->
+<script type="text/javascript">
+  $('#deal-slider').owlCarousel({
+    loop: false,
+    rewind: true,
+    margin: 0,
+    nav: true,
+    navText: ['<i class="ti-arrow-left"></i>','<i class="ti-arrow-right"></i>'],
+    dots: false,
+    {%- if settings.enable_rtl -%}
+    rtl: true,
+    {%- endif -%}
+    autoplay: true,
+    sautoplayTimeout: 5000,
+    autoplayHoverPause: true,
+    responsive:{
+      0:{
+        items: 1,
+        margin: 15
+      },
+      479:{
+        items: 1,
+        margin: 15
+      },
+      768:{
+        items: 1
+      },
+      979:{
+        items: 1
+      },
+      1199: {
+        items: 2
+      }
+    }
+  });
+</script>
+{% schema %}
+{
+  "name": "Deal Section",
+  "settings": [
+  {
+    "type" : "header",
+    "content" : "Section Padding"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop / tablet"
+  },
+  {
+    "type": "range",
+    "id": "deal_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "deal_padding_bottom",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "deal_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "deal_padding_bottom_xs",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type" : "header",
+    "content" : "Section Background"
+  },
+  {
+    "type": "color",
+    "id": "deal_bg_color",
+    "label": "Background Color",
+    "default": "#f7f7f7"
+  },
+  {
+    "type": "checkbox",
+    "id": "deal_bg_color_enable",
+    "label": "Show Background Color",
+    "default": false
+  },
+  {
+      "type": "image_picker",
+      "id": "deal_bg_img",
+      "label": "Image",
+      "info": "Recommended Size: 1470px x 600px"
+  },
+  {
+    "type": "checkbox",
+    "id": "deal_bg_img_enable",
+    "label": "Show Background Image",
+    "default": true
+  },
+  {
+    "type" : "header",
+    "content" : "Section Title"
+  },
+  {
+    "type": "text",
+    "id": "deal_title",
+    "label": "Title",
+    "default": "Deal Of The Week"
+  },
+  {
+    "type" : "header",
+    "content" : "Collection"
+  },
+  {
+    "type" : "collection",
+    "id" : "label_deal_product",
+    "label" : "Deal Collection"
+  }
+  ],
+  "presets": [
+  {
+    "name": "Deal Section",
+    "category": "deal section"
+  }
+  ]
+}
+{% endschema %}
+<style>
+
+  .deal-section{
+    position: relative;
+    padding-top: {{ section.settings.deal_padding_top }}px;
+    padding-bottom: {{ section.settings.deal_padding_bottom }}px;
+    {% if section.settings.deal_bg_img_enable %}
+    background-image: url({% if section.settings.deal_bg_img %}{{ section.settings.deal_bg_img | img_url: 'master' }}{% else %}https://dummyimage.com/1920x800/f7f7f7/999999{% endif %}); 
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    {% endif %}
+    {% if section.settings.deal_bg_color_enable %}
+    background-color: {{ section.settings.deal_bg_color }};
+    {% endif %}
+  }
+  .deal-section:after{
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  @media(max-width: 767px){
+    .deal-section{
+      padding-top: {{ section.settings.deal_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.deal_padding_bottom_xs }}px;
+    }
+  }
+  .deal-section .deal-slider .item{
+    background-color: #fff;
+
+  }
+  .deal-slider .single-product-wrap{
+    padding: 15px;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    border: none;
+  }
+  .deal-slider .single-product-wrap .product-image{
+    width: 50%;
+    border: none;
+  }
+  .deal-slider .single-product-wrap:hover .product-image a.pro-img .img1{
+    opacity: 1;
+    visibility: visible;
+  }
+  .deal-slider .single-product-wrap .product-content{
+    width: 50%;
+    align-items: flex-start;
+    {%- if settings.enable_rtl -%}
+    text-align: right;
+    {%- else -%}
+    text-align: left;
+    {%- endif -%}
+    justify-content: center;
+  }
+  .deal-slider .single-product-wrap .product-content h6{
+    margin-top: 0;
+  }
+  .deal-slider .single-product-wrap .product-content .price-box .old-price{
+    {%- if settings.enable_rtl -%}
+    margin-right: 5px;
+    {%- else -%}
+    margin-left: 5px;
+    {%- endif -%}
+  }
+  .deal-slider .single-product-wrap .product-content .product-ratting{
+    margin-top: 13px;
+  }
+  .deal-slider .single-product-wrap .product-content .timer-section{
+    width: 100%;
+    margin-top: 28px;
+  }
+  .deal-slider .single-product-wrap .product-content .deal-button{
+    display: flex;
+    margin-top: 30px;
+  }
+  .deal-slider .single-product-wrap .product-content .deal-button a:hover{
+    border-color: transparent; 
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 0px 15px rgb(0 0 0 / 25%);
+  }
+  .deal-slider .single-product-wrap .product-content .deal-button a{
+    height: 40px;
+    {%- if settings.enable_rtl -%}
+    margin-left: 5px;
+    {%- else -%}
+    margin-right: 5px;
+    {%- endif -%}
+  }
+  .deal-slider .single-product-wrap .product-content .deal-button a:last-child{
+    {%- if settings.enable_rtl -%}
+    margin-left: 0px;
+    {%- else -%}
+    margin-right: 0px;
+    {%- endif -%}
+  }
+  .deal-slider .single-product-wrap .product-content .deal-button a.wishlist,
+  .deal-slider .single-product-wrap .product-content .deal-button a.quick-view{
+    color: #fff;
+    font-size: 16px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    background-color: {{ settings.color_primary }};
+  }
+  .deal-slider .single-product-wrap .product-content .deal-button a.wishlist:hover,
+  .deal-slider .single-product-wrap .product-content .deal-button a.quick-view:hover{
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 0px 15px rgb(0 0 0 / 25%);
+  }
+
+  /*owl nav*/
+  .deal-slider.owl-carousel .owl-nav button{
+    color: {{ section.settings.deal_title_color }};
+  }
+
+  @media (max-width: 1199px) {
+    .deal-slider .single-product-wrap .product-image{
+      width: 40%;
+    }
+    .deal-slider .single-product-wrap .product-content{
+      width: 60%;    
+    }
+  }
+  @media (max-width: 767px) {
+    .deal-slider .single-product-wrap{
+      flex-direction: column;
+    }
+    .deal-slider .single-product-wrap .product-image{
+      width: 100%;
+    }
+    .deal-slider .single-product-wrap .product-content{
+      width: 100%;
+      padding-top: 15px;
+    }
+    .deal-slider .single-product-wrap .product-content .price-box{
+      align-items: flex-end;
+      flex-direction: row;
+      min-height: auto;
+    }
+    .deal-slider .single-product-wrap .product-content .timer-section{
+      margin-top: 15px;
+    }
+    .deal-slider .single-product-wrap .product-content .deal-button{
+      margin-top: 15px;
+    }
+    .deal-slider{
+      background-color: transparent;
+    }
+    .deal-section .deal-slider .item{
+      margin: 0;
+      box-shadow: none;
+    }
+  }
+</style>

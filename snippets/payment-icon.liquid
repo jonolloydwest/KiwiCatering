@@ -1,0 +1,28 @@
+<a href="javascript:void(0)" class="payment-icon">
+    <img src="{% if settings.payment_visaimg %}{{ settings.payment_visaimg | img_url: 'master' }}{% else %}https://dummyimage.com/40x25/f7f7f7/999999{% endif %}" class="img-fluid" alt="{{ settings.payment_visaimg.alt | default: shop.name }}">
+    <img src="{% if settings.payment_masterimg %}{{ settings.payment_masterimg | img_url: 'master' }}{% else %}https://dummyimage.com/40x25/f7f7f7/999999{% endif %}" class="img-fluid" alt="{{ settings.payment_masterimg.alt | default: shop.name }}">
+    <img src="{% if settings.payment_paypalimg %}{{ settings.payment_paypalimg | img_url: 'master' }}{% else %}https://dummyimage.com/40x25/f7f7f7/999999{% endif %}" class="img-fluid" alt="{{ settings.payment_paypalimg.alt | default: shop.name }}">
+    <img src="{% if settings.payment_expressimg %}{{ settings.payment_expressimg | img_url: 'master' }}{% else %}https://dummyimage.com/40x25/f7f7f7/999999{% endif %}" class="img-fluid" alt="{{ settings.payment_expressimg.alt | default: shop.name }}">
+    <img src="{% if settings.payment_discoverimg %}{{ settings.payment_discoverimg | img_url: 'master' }}{% else %}https://dummyimage.com/40x25/f7f7f7/999999{% endif %}" class="img-fluid" alt="{{ settings.payment_discoverimg.alt | default: shop.name }}">
+</a>
+<style>
+	.payment-icon{
+		display: flex;
+	}
+	.payment-icon img{
+		{% if settings.enable_rtl %}
+		margin-left: 5px;
+		{% else %}
+		margin-right: 5px;
+		{% endif %}
+		}
+	}
+	.payment-icon img:last-child{
+		{% if settings.enable_rtl %}
+		margin-left: 0px;
+		{% else %}
+		margin-right: 0px;
+		{% endif %}
+		}
+	}
+</style>

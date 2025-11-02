@@ -1,0 +1,147 @@
+<section class="collection-category">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="section-capture">
+          <div class="section-title">
+            {% if section.settings.section_new_title !='' %}
+            <h2>{{ section.settings.section_new_title }}</h2>
+            {% endif %}
+          </div>
+        </div>
+        {% assign category_product = collections[section.settings.new_label_product] %}
+        <div class="collection-slider owl-carousel owl-theme" id="pro-best">
+          {% assign category_product_limit = section.settings.category_new_product_limit_handle %}
+          {% for product in category_product.products limit: category_product_limit %}
+          <div class="item">
+            {% include 'product-grid-item' %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  $('#pro-best').owlCarousel({
+    loop: false,
+    rewind: true,
+    margin: 30,
+    nav: true,
+    navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+    dots: false,
+    {%- if settings.enable_rtl -%}
+    rtl: true,
+    {%- endif -%}
+    autoplay: true,
+    sautoplayTimeout: 5000,
+    autoplayHoverPause: true,
+    responsive:{
+      0:{
+        items: 2,
+        margin: 15
+      },
+      479:{
+        items: 2,
+        margin: 15
+      },
+      768:{
+        items: 3
+      },
+      979:{
+        items: 4
+      },
+      1199:{
+        items: {{ section.settings.category_new_product_limit }}
+      }
+    }
+  });
+</script>
+{% schema %}
+{
+  "name": "New Category",
+  "settings": [
+    {
+      "type" : "header",
+      "content" : "Section Padding"
+    },
+    {
+      "type": "text",
+      "id": "section_new_title",
+      "label": "Section Title",
+      "default": "New Products"
+    },
+    {
+      "type": "range",
+      "id": "category_new_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "category_new_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "select",
+      "id": "category_new_product_limit",
+      "label": "slides Per View",
+      "options":[
+        {
+          "label": "2 Products",
+          "value": "2"
+        },
+        {
+          "label": "3 Products",
+          "value": "3"
+        },
+        {
+          "label": "4 Products",
+          "value": "4"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "text",
+      "id": "category_new_product_limit_handle",
+      "label": "Product Limit",
+      "default": "10"
+    },
+    {
+      "type" : "collection",
+      "id" : "new_label_product",
+      "label" : "Best Product"
+    }
+  ],
+  "presets":[
+    {
+      "name": "New Product"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .collection-category{
+    padding-top:{{ section.settings.category_new_padding_top }}px;
+    padding-bottom:{{ section.settings.category_new_padding_bottom }}px;
+  }
+  @media (max-width: 767px){
+    .collection-category {
+      padding-top: 40px;
+    }
+  }
+</style>

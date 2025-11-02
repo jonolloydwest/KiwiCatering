@@ -1,0 +1,291 @@
+<section class="about-team">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="our-team recipes">
+          <div class="section-capture">
+
+            <div class="section-title">
+              {% if section.settings.our_team_title != '' %}
+              <h2>
+                {{ section.settings.our_team_title }}
+              </h2>
+              {% endif %}
+              {% if section.settings.our_team_desc != '' %}
+              <p>{{ section.settings.our_team_desc }}</p>
+              {% endif %}
+            </div>
+
+          </div>
+          <ul class="team-wrap">
+            {% for block in section.blocks %}
+
+{% if block.settings.recipes %}
+<a href="{{ block.settings.recipes }}">
+            <li class="team-content">
+              <a href="{{ block.settings.recipes }}" class="banner-hover">
+                <img class="img-fluid" src="{% if block.settings.member_img %}{{ block.settings.member_img | img_url: 'master' }}{% else %}https://dummyimage.com/350x450/f7f7f7/999999{% endif %}">
+              </a>
+              <div class="team-info">
+               <a href="{{ block.settings.recipes }}" class="recipes-title"> <h6>{{ block.settings.member_name }}</h6></a>
+                <p>{{ block.settings.member_desc }}</p>
+              </div>
+            </li>
+</a>
+  {% endif %}
+
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "recipes",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Desktop / Laptop "
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Section Title"
+    },
+    {
+      "type": "text",
+      "id": "our_team_title",
+      "label": "Title",
+      "default": "Our recipes"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Section Description"
+    },
+    {
+      "type": "textarea",
+      "id": "our_team_desc",
+      "label": "Description",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum egestas orci, vitae ullamcorper risus consectetur id."
+    }
+  ],
+  "blocks":[
+    {
+      "type": "our-vision",
+      "name": "Our recipes",
+      "limit": 20,
+      "settings": [
+
+       {
+        "type": "url",
+        "id":"recipes",
+         "label": "Link URL"
+
+       },
+        {
+          "type": "image_picker",
+          "id": "member_img",
+          "label": "Image",
+          "info": "Recommended Size: 350px x 450px"
+        },
+        {
+          "type": "text",
+          "id": "member_name",
+          "label": "Recipes Name",
+          "default": "Title recipes"
+        },
+
+        {
+          "type": "richtext",
+          "id": "member_desc",
+          "label": "Recipes Information",
+          "default": "<p>Vestibulum porttitor egestas orci, vitae ullamcorper risus rutrum massa quis.</p>"
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name": "recipes",
+      "category": "2. About recipes"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .about-team{
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  @media (max-width: 1199px){
+    .about-team{
+      padding-top: {{ section.settings.section_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .about-team{
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+  /* teamcontent */
+  .our-team ul.team-wrap{
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    {%- if settings.enable_rtl -%}
+    margin-right: -30px;
+    {%- else -%}
+    margin-left: -30px;
+    {%- endif -%}
+  }
+  .our-team ul.team-wrap li.team-content{
+    width: calc(25% - 30px);
+    {%- if settings.enable_rtl -%}
+    margin-right: 30px;
+    {%- else -%}
+    margin-left: 30px;
+    {%- endif -%}
+  }
+  .our-team ul.team-wrap li.team-content a{
+        margin-top: -20px;
+  }
+ 
+  .our-team ul.team-wrap li.team-content .team-info h6{
+    font-size: 16px;
+    text-transform: capitalize;
+    line-height: 1;
+
+  }
+  .our-team ul.team-wrap li.team-content .team-info span{
+    display: block;
+    color: #666;
+    font-size: 14px;
+    margin-top: 9px;
+  }
+  .our-team ul.team-wrap li.team-content .team-info p{
+    margin-top: 3px;
+    font-size: 13px;
+  }
+  @media (max-width: 991px) {
+    .our-team ul.team-wrap li.team-content{
+      width: calc(50% - 30px);
+    }
+    .our-team ul.team-wrap li.team-content:nth-child(1),
+    .our-team ul.team-wrap li.team-content:nth-child(2){
+      margin-top: 0!important;
+    }
+  }
+  @media (max-width: 600px) {
+    .our-team ul.team-wrap{
+      {%- if settings.enable_rtl -%}
+      margin-right: -15px;
+      {%- else -%}
+      margin-left: -15px;
+      {%- endif -%}
+    }
+    .our-team ul.team-wrap li.team-content{
+      width: calc(100% - 15px);
+      margin-top: 15px;
+      {%- if settings.enable_rtl -%}
+      margin-right: 15px;
+      {%- else -%}
+      margin-left: 15px;
+      {%- endif -%}
+    }
+  }
+
+.team-info .recipes-title {
+    box-shadow: none!important;
+    margin-top:0px!important;
+}
+   .recipes .team-info {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    position: relative;
+    z-index:3;
+}
+ .recipes li.team-content {
+    margin-bottom: 30px;
+    box-shadow: 0px 4px 8px #dedede7d;
+}
+</style>

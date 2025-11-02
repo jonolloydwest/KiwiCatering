@@ -1,0 +1,120 @@
+<section class="project-count-area">
+  <ul class="single-count">
+    {% for block in section.blocks %}
+    <li class="count-wrap">
+      <div class="count-title">
+        {% if block.settings.counter_number != '' %}
+        <h2 class="count">{{ block.settings.counter_number }}</h2>
+        {% endif %}
+        {% if block.settings.counter_title != '' %}
+        <span>{{ block.settings.counter_title }}</span>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<script>
+  $(document).ready(function(){
+    $('.count').counterUp({
+      delay: 10,
+      time: 1000
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Counter Up",
+  "class": "section-ptb",
+  "settings": [
+  {
+    "type" : "header",
+    "content" : "Background color"
+  },
+  {
+    "type" : "checkbox",
+    "id" : "counter_bgcolor_check",
+    "label" : "With Backgorund",
+    "default" : true
+  },
+  {
+    "type": "color",
+    "id": "counter_bgcolor",
+    "label": "Background Color",
+    "default": "#ffffff"
+  }
+  ],
+  "blocks":[
+  {
+    "type": "single_item",
+    "name": "Counter Up",
+    "settings": [
+    {
+      "type": "text",
+      "id": "counter_number",
+      "label": "Counter Number",
+      "default": "21"
+    },
+    {
+      "type": "color",
+      "id": "counter_main_text_color",
+      "label": "Main Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "counter_title",
+      "label": "Counter Title",
+      "default": "Years In Business"
+    },
+    {
+      "type": "color",
+      "id": "counter_text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+    ]
+  }
+  ],
+  "presets":[
+  {
+    "name": "Counter Up",
+    "category": "2. Counter Up",
+    "blocks":[
+    {
+      "type": "single_item"
+    },
+    {
+      "type": "single_item"
+    },
+    {
+      "type": "single_item"
+    },
+    {
+      "type": "single_item"
+    }
+    ]
+  }
+  ]
+}
+{% endschema %}
+<style>
+  .project-count-area {
+    {% if section.settings.counter_bgcolor_check %}
+    background-color: {{ section.settings.counter_bgcolor }};
+    {% endif %}
+  }
+
+  {% if block.settings.counter_main_text_color %}
+  .project-count-area ul.single-count li .count-title h2{
+    color: {{ block.settings.counter_main_text_color }};
+  }
+  {% endif %}
+
+  {% if block.settings.counter_text_color %}
+  .project-count-area ul.single-count li .count-title span{
+    color: {{ block.settings.counter_text_color }};
+  }
+  {% endif %}
+</style>

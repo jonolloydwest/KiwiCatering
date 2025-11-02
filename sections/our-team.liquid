@@ -1,0 +1,269 @@
+<section class="about-team">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="our-team">
+          <div class="section-capture">
+            <div class="section-title">
+              {% if section.settings.our_team_title != '' %}
+              <h2>
+                {{ section.settings.our_team_title }}
+              </h2>
+              {% endif %}
+              {% if section.settings.our_team_desc != '' %}
+              <p>{{ section.settings.our_team_desc }}</p>
+              {% endif %}
+            </div>
+          </div>
+          <ul class="team-wrap">
+            {% for block in section.blocks %}
+            <li class="team-content">
+              <a href="javascript:void(0)" class="banner-hover">
+                <img class="img-fluid" src="{% if block.settings.member_img %}{{ block.settings.member_img | img_url: 'master' }}{% else %}https://dummyimage.com/350x450/f7f7f7/999999{% endif %}">
+              </a>
+              <div class="team-info">
+                <h6>{{ block.settings.member_name }}</h6>
+                <span>{{ block.settings.member_position }}</span>
+                <p>{{ block.settings.member_desc }}</p>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Our Team",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Desktop / Laptop "
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Section Title"
+    },
+    {
+      "type": "text",
+      "id": "our_team_title",
+      "label": "Title",
+      "default": "Our team"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Section Description"
+    },
+    {
+      "type": "textarea",
+      "id": "our_team_desc",
+      "label": "Description",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum egestas orci, vitae ullamcorper risus consectetur id."
+    }
+  ],
+  "blocks":[
+    {
+      "type": "our-vision",
+      "name": "Our Team",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "member_img",
+          "label": "Image",
+          "info": "Recommended Size: 350px x 450px"
+        },
+        {
+          "type": "text",
+          "id": "member_name",
+          "label": "Team Member Name",
+          "default": "Nina Theresa"
+        },
+        {
+          "type": "text",
+          "id": "member_position",
+          "label": "Team Member Position",
+          "default": "Managing Director"
+        },
+        {
+          "type": "text",
+          "id": "member_desc",
+          "label": "About Team Member Information",
+          "default": "Vestibulum porttitor egestas orci, vitae ullamcorper risus rutrum massa quis."
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name": "Our Team",
+      "category": "2. About Us"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .about-team{
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  @media (max-width: 1199px){
+    .about-team{
+      padding-top: {{ section.settings.section_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .about-team{
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+  /* teamcontent */
+  .our-team ul.team-wrap{
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    {%- if settings.enable_rtl -%}
+    margin-right: -30px;
+    {%- else -%}
+    margin-left: -30px;
+    {%- endif -%}
+  }
+  .our-team ul.team-wrap li.team-content{
+    width: calc(25% - 30px);
+    {%- if settings.enable_rtl -%}
+    margin-right: 30px;
+    {%- else -%}
+    margin-left: 30px;
+    {%- endif -%}
+  }
+  .our-team ul.team-wrap li.team-content a{
+    box-shadow: 0 0 15px 0px rgba(0, 0, 0, 0.15);
+  }
+  .our-team ul.team-wrap li.team-content .team-info{
+    margin-top: 15px;
+  }
+  .our-team ul.team-wrap li.team-content .team-info h6{
+    font-size: 18px;
+    text-transform: capitalize;
+    line-height: 1;
+
+  }
+  .our-team ul.team-wrap li.team-content .team-info span{
+    display: block;
+    color: #666;
+    font-size: 14px;
+    margin-top: 9px;
+  }
+  .our-team ul.team-wrap li.team-content .team-info p{
+    margin-top: 3px;
+    font-size: 13px;
+  }
+  @media (max-width: 991px) {
+    .our-team ul.team-wrap li.team-content{
+      width: calc(50% - 30px);
+      margin-top: 30px;
+    }
+    .our-team ul.team-wrap li.team-content:nth-child(1),
+    .our-team ul.team-wrap li.team-content:nth-child(2){
+      margin-top: 0;
+    }
+  }
+  @media (max-width: 767px) {
+    .our-team ul.team-wrap{
+      {%- if settings.enable_rtl -%}
+      margin-right: -15px;
+      {%- else -%}
+      margin-left: -15px;
+      {%- endif -%}
+    }
+    .our-team ul.team-wrap li.team-content{
+      width: calc(50% - 15px);
+      margin-top: 15px;
+      {%- if settings.enable_rtl -%}
+      margin-right: 15px;
+      {%- else -%}
+      margin-left: 15px;
+      {%- endif -%}
+    }
+  }
+</style>

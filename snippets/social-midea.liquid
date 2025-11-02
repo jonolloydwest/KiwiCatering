@@ -1,0 +1,80 @@
+<ul class="social-icon">
+  {% if settings.social_icon_1_name != blank %}
+  <li> 
+    <a style="background-color: {{ settings.social_icon_color1 | color_modify: 'alpha', 0.85 }};" href="{{ settings.social_icon_1_link }}">
+      <i class="{{ settings.social_icon_1_name }}"></i>
+      <span>{{ settings.social_1_name }}</span>
+    </a>
+  </li>        
+  {% endif %}
+ 
+  {% if settings.social_icon_2_name != blank %}
+  <li class="">
+    <a style="background-color: {{ settings.social_icon_color2 | color_modify: 'alpha', 0.85 }};" href="{{ settings.social_icon_2_link }}">
+      <i class="{{ settings.social_icon_2_name }}"></i>
+      <span>{{ settings.social_2_name }}</span>
+    </a>
+  </li>        
+  {% endif %}
+
+  {% if settings.social_icon_3_name != blank %}
+  <li class="">
+    <a style="background-color: {{ settings.social_icon_color3 | color_modify: 'alpha', 0.85 }};" href="{{ settings.social_icon_3_link }}">
+      <i class="{{ settings.social_icon_3_name }}"></i>
+      <span>{{ settings.social_3_name }}</span>
+    </a>
+  </li>        
+  {% endif %}
+
+  {% if settings.social_icon_4_name != blank %}
+  <li class="">
+    <a style="background-color: {{ settings.social_icon_color4 | color_modify: 'alpha', 0.85 }};" href="{{ settings.social_icon_4_link }}">
+      <i class="{{ settings.social_icon_4_name }}"></i>
+      <span>{{ settings.social_4_name }}</span>
+    </a>
+  </li>        
+  {% endif %}
+
+  {% if settings.social_icon_5_name != blank %}
+  <li class="">
+    <a style="background-color: {{ settings.social_icon_color5 | color_modify: 'alpha', 0.85 }};" href="{{ settings.social_icon_5_link }}">
+      <i class="{{ settings.social_icon_5_name }}"></i>
+      <span>{{ settings.social_5_name }}</span>
+    </a>
+  </li>        
+  {% endif %}
+
+  {% if settings.social_icon_6_name != blank %}
+  <li class="">
+    <a style="background-color: {{ settings.social_icon_color6 | color_modify: 'alpha', 0.85 }};" href="{{ settings.social_icon_6_link }}">
+      <i class="{{ settings.social_icon_6_name }}"></i>
+      <span>{{ settings.social_6_name }}</span>
+    </a>
+  </li>        
+  {% endif %}
+</ul>
+<style>
+  /* social icon css */
+  ul.social-icon li{
+   {% if settings.enable_rtl %}
+    padding-left: 10px;
+    {% else %}
+    padding-right: 10px;
+    {% endif %}
+    
+  }
+  ul.social-icon li a{
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+    height: 35px;
+    width: 35px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ul.social-icon li a:hover{
+    background-color: {{ settings.color_primary }}!important;
+  }
+</style>

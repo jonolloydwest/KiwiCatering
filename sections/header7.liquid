@@ -1,0 +1,305 @@
+<!-- header-area start -->
+<section class="header7">
+  <div class="header-kaj">
+    <div class="header-transparent">
+      <div class="container-fluid header-col">
+        <div class="header-area">
+          {% include 'top-nocification-bar' %}
+          <div class="header-main">
+            <div class="header-element logo">
+              {%- if settings.company_logo -%}
+              <a href="/" class="theme-logo">
+                <img src="{%- if settings.company_logo -%}{{ settings.company_logo | img_url: 'master' }}{% else %}https://dummyimage.com/207x44/f7f7f7/999999{% endif %}" alt="{{ settings.company_logo.alt | default: shop.name }}">
+              </a>
+              {%- else -%}
+              <a href="/" class="shop-name">
+                <span>{{ shop.name }}</span>
+              </a>
+              {%- endif -%}
+            </div>
+            <div class="header-element megamenu-content">
+              <div class="mainwrap">
+                <ul class="main-menu">
+                  {% assign header_main_menu = section.settings.header_main_menu %}
+                  {% for link in linklists[header_main_menu].links %}
+                  {% if linklists[header_main_menu].links != '' %}
+                  {% include 'main-menu' %}
+                  {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            <div class="header-element right-block-box">
+              <ul class="shop-element">
+                <li class="side-wrap toggler-wrap">
+                  <button class="navbar-toggler" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                  </button>
+                </li>
+                
+                <li class="side-wrap search-wrap">
+                  <div class="search-rap">
+                    <a class="search-crap" data-toggle="modal" href="#search-crap">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </a>
+                  </div>
+                </li>
+                <li class="side-wrap user-wrap">
+                  <a class="acc-ti" href="/account">
+                    <span class="acc-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </span>
+                  </a>
+                </li>
+                <li class="side-wrap wishlist-wrap">
+                  {%- include 'wishlist-4' -%}
+                </li>
+                <li class="side-wrap cart-wrap">
+                  {% include 'mini-cart' %}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-bottom-area">
+    <div class="main-menu-area">
+      <nav class="main-navigation navbar-expand-xl">
+        <div class="box-header">
+          <button class="close-box" type="button"><i class="ti-close"></i></button>
+        </div>
+        <div class="navbar-collapse" id="navbarContent">
+          <div class="megamenu-content">
+            <a href="javascript:void(0)" class="browse-cat">
+              <i class="ti-menu"></i>
+              <span>{{ section.settings.header_main_menu_title }}</span>
+            </a>
+            <div class="mainwrap">
+              <ul class="main-menu">
+                {% assign header_main_menu = section.settings.header_main_menu %}
+                {% for link in linklists[header_main_menu].links %}
+                {% if linklists[header_main_menu].links != '' %}
+                {% include 'main-menu' %}
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</section>
+{%- include 'search-modal' -%}
+<!-- header-area end -->
+<script>
+  {% if template == 'index' or template == 'product' or template == 'collection' %}
+  $(window).scroll(function() {
+    var sticky = $('.header-kaj'),
+    scroll = $(window).scrollTop();
+    if (scroll >= 150) {
+      sticky.addClass('is-sticky');
+    }
+    else {
+      sticky.removeClass('is-sticky');
+    }
+  });
+  {% endif %}
+</script>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+  {
+    "type": "header",
+    "content": "Logo Notice"
+  },
+  {
+    "type": "paragraph",
+    "content": "For logo go to 'Theme Settings' click on 'Company Logo' & set both Header-Footer Logo"
+  },
+  {
+    "type": "header",
+    "content": "Section Background Color"
+  },
+  {
+    "type": "color",
+    "id": "header_bg_color",
+    "label": "Background Color",
+    "default": "#fff"
+  },
+  {
+    "type": "header",
+    "content": "Main Menu"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "For main menu"
+  },
+  {
+    "type": "link_list",
+    "id": "header_main_menu",
+    "label": "Select Main Menu"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Mainmenu title for responsive"
+  },
+  {
+    "type": "text",
+    "id": "header_main_menu_title",
+    "label": "Title",
+    "default": "Menu"
+  },
+  {
+    "type": "header",
+    "content": "Search Bar"
+  },
+  {
+    "type": "text",
+    "id": "search_placeholder",
+    "label": "Search Placeholder",
+    "default": "Search Our Catalog"
+  }
+  ]
+}
+{% endschema %}
+<style>
+.header-col{
+  padding-right: 285px;
+  padding-left: 285px;
+}
+.box-layout .header-col{
+  padding-right: 30px;
+  padding-left: 30px;
+}
+@media(max-width: 1599px){
+  .header-col{
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+}
+@media(max-width: 991px){
+  .header-col{
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+}
+@media(max-width: 767px){
+  .header-col{
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .box-layout .header-col{
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+/* sticky menu css */
+.is-sticky{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  {%- if settings.enable_rtl -%}
+  right: 0;
+  {%- else -%}
+  left: 0;
+  {%- endif -%}
+  max-width: 100%;
+  z-index: 3;
+  background-color: #fff;
+  -webkit-box-shadow: rgba(116,116,116,.05) 0 0px 0px 0px, rgba(32,32,32,.05) 0 4px 10px;
+  -moz-box-shadow: rgba(116,116,116,.05) 0 0px 0px 0px, rgba(32,32,32,.05) 0 4px 10px;
+  box-shadow: rgba(116,116,116,.05) 0 0px 0px 0px, rgba(32,32,32,.05) 0 4px 10px;
+}
+.box-layout .is-sticky{
+  max-width: 1500px;
+  margin: 0 auto;
+  {%- if settings.enable_rtl -%}
+  left: 0;
+  {%- else -%}
+  right: 0;
+  {%- endif -%}
+}
+.header-kaj.is-sticky .header-area{
+  position: unset;
+}
+.header-kaj.is-sticky{
+  animation: smoothScroll 1s forwards;
+}
+@keyframes smoothScroll {
+  0% {
+    transform: translateY(-150px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+{%- if template == 'index' -%}
+.header-transparent{
+  position: absolute;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.header-area{
+  padding-left: 40px;
+  padding-right: 40px;
+  background-color: {{ section.settings.header_bg_color }};
+  box-shadow: 0 0 15px rgb(0 0 0 / 10%);
+}
+.box-layout .header-area{
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.is-sticky .header-area{
+  box-shadow: none;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.is-sticky .header-transparent{
+  position: unset;
+}
+@media (max-width: 1599px) {
+  .header-transparent{
+    position: unset;
+  }
+  .header-area{
+    box-shadow: none;
+  }
+}
+@media (max-width: 1199px) {
+  .header-area{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+{% endif %}
+@media (max-width: 1199px) {
+  .right-block-box ul.shop-element li.side-wrap{
+    {% if settings.enable_rtl %}
+    margin-left: 15px;
+    {% else %}
+    margin-right: 15px;
+    {% endif %}
+  }
+}
+
+.user-wrap{
+  display: none;
+}
+.user-wrap a.acc-ti svg{
+  width: 20px;
+  height: 20px;
+  stroke: #333;
+}
+@media(max-width: 767px){
+  .user-wrap{
+    display: block;
+  }
+}
+</style>

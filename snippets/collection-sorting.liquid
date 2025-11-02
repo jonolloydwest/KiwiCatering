@@ -1,0 +1,149 @@
+<!-- shop-top-bar start -->
+<div class="shop-top-bar">
+  {% if section.settings.tab_bar_enable %}
+  <div class="product-view-mode">
+    <!-- shop-item-filter-list start -->
+      <a class="{% if template contains 'list' %}{% endif %} list-change-view list-one" data-grid-view="1"><i class="ti-layout-list-thumb"></i></a>
+      <a class="{% unless template contains 'list' %}{% endunless %} list-change-view grid-two" data-grid-view="2"><i class="ti-layout-grid2"></i></a>
+      <a class="{% unless template contains 'list' %}{% endunless %} list-change-view grid-three" data-grid-view="3"><i class="ti-layout-grid3"></i></a>
+      
+    <!-- shop-item-filter-list end -->
+  </div>
+  {% endif %}
+  {% comment %}  <span class="tt-title-total listing-total-js">items({{ collection.all_products_count }})</span>{% endcomment %}
+  {% if section.settings.short_by_enable %}
+  <!-- product-short start -->
+  <div class="product-short">
+    <label for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+    <select class="nice-select" name="sortby" id="SortBy">
+      <option value="manual">{{ 'collections.sorting.featured' | t }}</option>
+      <option value="best-selling">{{ 'collections.sorting.best_selling' | t }}</option>
+      <option value="title-ascending">{{ 'collections.sorting.az' | t }}</option>
+      <option value="title-descending">{{ 'collections.sorting.za' | t }}</option>
+      <option value="price-ascending">{{ 'collections.sorting.price_ascending' | t }}</option>
+      <option value="price-descending">{{ 'collections.sorting.price_descending' | t }}</option>
+      <option value="created-descending">{{ 'collections.sorting.date_descending' | t }}</option>
+      <option value="created-ascending">{{ 'collections.sorting.date_ascending' | t }}</option>
+    </select>
+  </div>
+  {% endif %}
+  <!-- product-short end -->
+</div>
+<!-- shop-top-bar end -->
+<script>
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+
+  var $select = $('#SortBy');
+  $('a[href="#sort"]').click(function () {
+    $select.val( $(this).data('select') );
+    event.preventDefault();
+    Shopify.queryParams.sort_by = jQuery(this).data('select');
+    location.search = jQuery.param(Shopify.queryParams);
+  });
+
+  $('.list-change-view').on("click",function () {
+    event.preventDefault();
+    var data_grid = $(this).attr('data-grid-view');
+    if($('.shop-product-wrap').hasClass('grid-1') || $('.shop-product-wrap').hasClass('grid-2') || $('.shop-product-wrap').hasClass('grid-3') || $('.shop-product-wrap').hasClass('grid-4')){
+
+      $('.shop-product-wrap').removeClass('grid-1');
+      $('.shop-product-wrap').removeClass('grid-2');
+      $('.shop-product-wrap').removeClass('grid-3');
+      $('.shop-product-wrap').removeClass('grid-4');
+      $('.shop-product-wrap').addClass('grid-'+data_grid);
+    }else{
+      $('.shop-product-wrap').addClass('grid-'+data_grid);
+    }
+
+
+  });
+
+  $(function() {
+    $('#SortBy')
+    .val('{{ collection.sort_by | default: collection.default_sort_by }}')
+    .bind('change', function() {
+      Shopify.queryParams.sort_by = jQuery(this).val();
+      location.search = jQuery.param(Shopify.queryParams);
+    }
+    );
+  });
+</script>
+<style>
+  .shop-top-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .shop-top-bar .product-view-mode{
+    background-color: #f7f7f7;
+    padding: 10px;
+    display: flex;
+  }
+  .shop-top-bar .product-view-mode .list-change-view{
+    display: block;
+    cursor: pointer;
+    font-size: 17px;
+    {% if settings.enable_rtl %}
+    margin-left: 15px;
+    {% else %}
+    margin-right: 15px;
+    {% endif %}
+    line-height: 1;
+  }
+  .shop-top-bar .product-view-mode .list-change-view:last-child{
+    {% if settings.enable_rtl %}
+    margin-left: 0px;
+    {% else %}
+    margin-right: 0px;
+    {% endif %}
+  }
+  .product-short{
+    display: flex;
+    align-items: center;
+  }
+  .product-short label{
+    margin-bottom: 0;
+    {% if settings.enable_rtl %}
+    margin-left: 15px;
+    {% else %}
+    margin-right: 15px;
+    {% endif %}
+  }
+  .product-short select{
+    padding: 10px 8px 8px 15px;
+    min-width: 200px;
+    background-color: #fff;
+  }
+  @media (max-width: 991px){
+    .shop-top-bar .product-view-mode .list-change-view.grid-two{
+      margin-right: 0; 
+    }
+    .shop-top-bar .product-view-mode .list-change-view.grid-three{
+      display: none;
+    }
+  }
+  @media (max-width: 767px){
+    .shop-top-bar{
+      flex-direction: column;
+    }
+    .product-short{
+      width: 100%;
+      margin-top: 15px;
+    }
+    .product-short label{
+      width: 75px;
+    }
+    .product-short select{
+      min-width: auto;
+      width: 100%;
+    }
+  }
+</style>

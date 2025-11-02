@@ -1,0 +1,113 @@
+{% form 'contact' %}
+{{ form.errors | default_errors }}
+<ul class="form-fill row retailer-form">
+    <li class="fname-input" style="display:flex;column-gap: 10px;">
+      <input style="width:50%;" type="text" placeholder="{{ section.settings.name_placeholder }}" class="{% if form.errors contains 'name' %}error{% endif %}" name="contact[name]" id="ContactFormName" value="{% if form.name %}{{ form.name }}{% elsif customer.name %}{{ customer.name }}{% endif %}">
+    
+<input style="width:50%;" type="text" placeholder="{{ section.settings.name2_placeholder }}" class="{% if form.errors contains 'name' %}error{% endif %}" name="contact[name2]" id="ContactFormName" value="{% if form.name2 %}{{ form.name2 }}{% elsif customer.name2 %}{{ customer.name2 }}{% endif %}">
+    
+
+</li>
+
+ <li >
+  <input type="text" placeholder="{{ section.settings.name3_placeholder }}" class="{% if form.errors contains 'name3' %}error{% endif %}" name="contact[name3]" id="ContactFormName" value="{% if form.name3 %}{{ form.name }}{% elsif customer.name3 %}{{ customer.name3 }}{% endif %}">   
+
+</li>
+
+    <li>
+      <input type="email" placeholder="{{ section.settings.email_placeholder }}" class="{% if form.errors contains 'email' %}error{% endif %}" name="contact[email]" id="ContactFormEmail" value="{% if form.email %}{{ form.email }}{% elsif customer.email %}{{ customer.email }}{% endif %}">
+    </li>
+    <li>
+      <input type="number" placeholder="{{ section.settings.mobile_placeholder }}" class="{% if form.errors contains 'mobile' %}error{% endif %}" name="contact[mobile]" id="ContactFormMobile" value="{% if form.mobile %}{{ form.mobile }}{% elsif customer.mobile %}{{ customer.mobile }}{% endif %}">
+    </li>
+
+    <li >
+      <textarea placeholder="{{ section.settings.message_placeholder }}" class="custom-textarea h-100" name="contact[body]" id="ContactFormMessage">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+    </li>
+
+</ul>
+
+<div class="contact-submit">
+  <button type="submit" class="btn btn-style2-medium">
+    <span>{{ section.settings.form_button_name }}</span>
+  </button>
+</div>
+{% if form.posted_successfully? %}
+<div class="post-success">
+  <ul>
+    <li class="text-success">{{ 'contact.form.post_success' | t }}</li>
+  </ul>
+</div>
+{% endif %}
+{% endform %}
+<style>
+ /* error css */
+  .errors{
+    margin: 30px 0 15px;
+    border-radius: 0;
+  }
+  .errors ul{
+    list-style: disc;
+    {% if settings.enable_rtl %}
+    margin-right: 15px;
+    text-align: right;
+    {% else %}
+    margin-left: 15px;
+    text-align: left;
+    {% endif %}
+  }
+  @media (max-width: 767px){
+    .errors{
+      margin: 20px 0 15px;
+    }
+  }
+
+  /* form css */
+  ul.form-fill li{
+    margin-top: 15px;
+  }
+  ul.form-fill li.textarea-input,
+  ul.form-fill li.fname-input{
+    margin-top: 0;
+  }
+  ul.form-fill li label{
+    display: block;
+    cursor: auto;
+    margin-bottom: 10px;
+    line-height: 1;
+  }
+  ul.form-fill li input,
+  ul.form-fill li textarea{
+    display: block;
+    width: 100%;
+  }
+  .contact-submit{
+    margin-top: 30px;
+  }
+
+  /* success css */
+  .post-success{
+    font-size: 0.9em;
+    padding: 6px 12px;
+    margin-top: 15px;
+    background-color: #f5fff7;
+    border: 1px solid #28a745;
+  }
+  .post-success ul{
+    list-style: disc;
+    {% if settings.enable_rtl %}
+    margin-right: 15px;
+    {% else %}
+    margin-left: 15px;
+    {% endif %}
+  }
+  @media (max-width: 767px){
+    ul.form-fill li.textarea-input{
+      margin-top: 15px;
+    }
+  }
+
+.retailer-form li{
+min-width:100%;
+}
+</style>

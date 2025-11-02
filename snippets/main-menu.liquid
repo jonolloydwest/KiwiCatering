@@ -1,0 +1,69 @@
+{% assign child_list_handle = link.title | handleize %}
+{% if linklists[child_list_handle].links != '' %}
+<li class="menu-link parant"> 
+  <a {% if link.current %}aria-current="page"{% endif %} class="link-title {% if link.current %}active{% endif %}" href="{{ link.url }}">
+    <span class="sp-link-title">{{ link.title }}</span>
+    <i class="fa fa-angle-down"></i>
+  </a>
+  <a data-toggle="collapse" href="#collapse-{{ link.title | handleize }}" class="link-title link-title-lg">
+    <span class="sp-link-title">{{ link.title }}</span>
+    <i class="fa fa-angle-down"></i>
+  </a>
+  <div class="dropdown-submenu">
+    <ul class="dropdown-collapse collapse" id="collapse-{{ link.title | handleize }}">
+      {% for childlink in linklists[child_list_handle].links %}
+      {% assign grand_childlink_handle = childlink.title | handle %}
+      {% if linklists[grand_childlink_handle] and linklists[grand_childlink_handle].links.size > 0 %}
+      <li class="megamenu-li parant">
+        <h2 class="sublink-title">{{ childlink.title }}</h2>
+        <ul class="dropdown-supmenu">
+          {% for grand_childlink_handle in linklists[grand_childlink_handle].links %}
+          <li class="supmenu-li">
+            <a href="{{ grand_childlink_handle.url }}" class="suplink-title">{{ grand_childlink_handle.title }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% else %}
+      {% if childlink.type == "collection_link" and childlink.object.image %}
+      {% if childlink.title == "bottom"  %}
+      <div class="menu-banner {{ childlink.title | downcase }}">
+        <a href="{{ childlink.url }}" class="banner-hover">
+          <img src="{{ childlink.object.image | img_url: 'master' }}">
+        </a>
+      </div>
+      {% else %}
+      <li class="menu-banner">
+        <a href="{{ childlink.url }}" class="banner-hover">
+          <img src="{{ childlink.object.image | img_url: '300x400', crop: 'center' }}">
+        </a>
+        <a href="{{ childlink.url }}" class="menu-banner-title">
+          <span>{{ childlink.title }}</span>
+        </a>
+      </li>
+      {% endif %}
+      {% else %}
+      <li class="submenu-li parant{% if childlink.active %} active{% endif %}">
+        <a href="{{ childlink.url }}" class="sublink-title">{{ childlink.title }}</a>
+      </li>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</li>
+{% else %}
+<li class="menu-link">
+  <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %} class="link-title {% if link.current %}active{% endif %}">
+    <span class="sp-link-title">{{ link.title }}</span>
+  </a>
+  <a href="{{ link.url }}" class="link-title link-title-lg">
+    <span class="sp-link-title">{{ link.title }}</span>
+  </a>
+</li>
+{% endif %}
+<script>
+  $('.megamenu-li').parent('ul').parent('.dropdown-submenu').addClass('mega-menu');
+  $('.menu-banner').parent('ul').parent('.dropdown-submenu').addClass('banner-menu');
+  $('.submenu-li').parent('ul').parent('.dropdown-submenu').addClass('sub-menu');
+</script>

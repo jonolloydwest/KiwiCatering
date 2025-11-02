@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <ul class="single-service">
+        <li class="service-content ser-box">
+          <div class="ser-block">
+            <a href="javascript:void(0)">
+              {% if settings.truck_img %}
+              <img class="img-fluid" src="{{ settings.truck_img | img_url: '40x40', crop: 'center' }}">
+              {% else %}
+              <i class="{{ settings.truck_icon }}"></i>
+              {% endif %}
+            </a>
+            <div class="service-text">
+              {%if settings.shipping_title != '' %}
+              <h6>{{ settings.shipping_title }}</h6>
+              {% endif %}
+              {%if settings.shipping_desc != '' %}
+              <p>{{ settings.shipping_desc }}</p>
+              {% endif %} 
+            </div>
+          </div>
+        </li>
+        <li class="service-content ser-box">
+          <div class="ser-block">
+            <a href="javascript:void(0)">
+              {% if settings.money_img %}
+              <img class="img-fluid" src="{{ settings.money_img | img_url: '40x40', crop: 'center' }}">
+              {% else %}
+              <i class="{{ settings.money_icon }}"></i>
+              {% endif %}
+            </a>
+            <div class="service-text">
+              {%if settings.money_title != '' %}
+              <h6>{{ settings.money_title }}</h6>
+              {% endif %}
+              {%if settings.money_desc != '' %}
+              <p>{{ settings.money_desc }}</p>
+              {% endif %} 
+            </div>
+          </div>
+        </li>
+        <li class="service-content ser-box">
+          <div class="ser-block">
+            <a href="javascript:void(0)">
+              {% if settings.support_img %}
+              <img class="img-fluid" src="{{ settings.support_img | img_url: '40x40', crop: 'center' }}">
+              {% else %}
+              <i class="{{ settings.support_icon }}"></i>
+              {% endif %}
+            </a>
+            <div class="service-text">
+              {%if settings.support_title != '' %}
+              <h6>{{ settings.support_title }}</h6>
+              {% endif %}
+              {%if settings.support_desc != '' %}
+              <p>{{ settings.support_desc }}</p>
+              {% endif %} 
+            </div>
+          </div>
+        </li>
+        <li class="service-content ser-box">
+          <div class="ser-block">
+            <a href="javascript:void(0)">
+              {% if settings.gift_img %}
+              <img class="img-fluid" src="{{ settings.gift_img | img_url: '40x40', crop: 'center' }}">
+              {% else %}
+              <i class="{{ settings.gift_icon }}"></i>
+              {% endif %}
+            </a>
+            <div class="service-text">
+              {%if settings.gift_title != '' %}
+              <h6>{{ settings.gift_title }}</h6>
+              {% endif %}
+              {%if settings.gift_desc != '' %}
+              <p>{{ settings.gift_desc }}</p>
+              {% endif %} 
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,160 @@
+<!-- banner-area start -->
+<section class="banner-grid custom-banner">
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <ul class="banner-block">
+                <li class="small-banner">
+                    <a href="{{ section.settings.banner3_url1 }}" class="banner-hover">
+                        <img class="img-fluid" src="{% if section.settings.banner3_img1 %}{{ section.settings.banner3_img1 | img_url: 'master' }}{% else %}https://dummyimage.com/345x300/f7f7f7/999999{% endif %}">
+                    </a>
+                </li>
+                <li class="big-banner">
+                    <a href="{{ section.settings.banner3_url2 }}" class="banner-hover">
+                        <img class="img-fluid" src="{% if section.settings.banner3_img2 %}{{ section.settings.banner3_img2 | img_url: 'master' }}{% else %}https://dummyimage.com/750x300/f7f7f7/999999{% endif %}">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        </div>
+    </div>
+</section>
+<!-- banner-area end -->
+{% schema %}
+{
+    "name": "Custom Banner",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section Padding"
+        },
+        {
+            "type" : "paragraph",
+            "content" : "Desktop / Laptop / tablet"
+        },
+        {
+            "type": "range",
+            "id": "custombanner_padding_top",
+            "label": "Section Padding Top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 30
+        },
+        {
+            "type": "range",
+            "id": "custombanner_padding_bottom",
+            "label": "Section Padding Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 30
+        },
+        {
+            "type" : "paragraph",
+            "content" : "Mobile"
+        },
+        {
+            "type": "range",
+            "id": "custombanner_padding_top_xs",
+            "label": "Section Padding Top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 40
+        },
+        {
+            "type": "range",
+            "id": "custombanner_padding_bottom_xs",
+            "label": "Section Padding Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 40
+        },
+        {
+            "type": "header",
+            "content": "Custom Banner1"
+        },
+        {
+            "type": "image_picker",
+            "id": "banner3_img1",
+            "label": "Banner Image 1",
+            "info": "Recommended Size: 345px x 300px"
+        },
+        {
+            "type": "url",
+            "id": "banner3_url1",
+            "label": "URL"
+        },
+        {
+            "type": "header",
+            "content": "Custom Banner2"
+        },
+        {
+            "type": "image_picker",
+            "id": "banner3_img2",
+            "label": "Banner Image 2",
+            "info": "Recommended Size: 750px x 300px"
+        },
+        {
+            "type": "url",
+            "id": "banner3_url2",
+            "label": "URL"
+        }
+    ],
+    "presets":[
+        {
+            "name": "Custom Banner",
+            "category": "Banner Grid"
+        }
+    ]
+}
+{% endschema %}
+<style>
+    .custom-banner{
+        padding-top: {{ section.settings.custombanner_padding_top }}px;
+        padding-bottom: {{ section.settings.custombanner_padding_bottom }}px;
+    }
+    @media (max-width: 767px){
+        .custom-banner{
+            padding-top: {{ section.settings.custombanner_padding_top_xs }}px;
+            padding-bottom: {{ section.settings.custombanner_padding_bottom_xs }}px;
+        }
+    }
+    .custom-banner ul.banner-block {
+        display: flex;
+        {%- if settings.enable_rtl -%}
+        margin-right: -30px;
+        {%- else -%}
+        margin-left: -30px;
+        {%- endif -%}
+    }
+    .custom-banner ul.banner-block li {
+        {%- if settings.enable_rtl -%}
+        margin-right: 30px;
+        {%- else -%}
+        margin-left: 30px;
+        {%- endif -%}
+    }
+    @media (max-width: 767px){
+        .custom-banner ul.banner-block li.big-banner a img{
+            object-fit: cover;
+            min-height: 150px;
+            object-position: left;
+        }
+        .custom-banner ul.banner-block {
+            flex-direction: column;
+        }
+        .custom-banner ul.banner-block li {
+            margin-top: 20px;
+        }
+        .custom-banner ul.banner-block li:first-child {
+            margin-top: 0px;
+        }
+    }
+</style>
