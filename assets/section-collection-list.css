@@ -184,3 +184,13 @@
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
+
+.collections-list__heading-group {
+  text-align: center;
+  width: 100%;
+}
+
+.collections-list__heading-group .collection-list-title {
+  margin-left: auto;
+  margin-right: auto;
+}

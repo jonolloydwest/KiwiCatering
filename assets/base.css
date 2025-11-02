@@ -2466,6 +2466,85 @@ input[type='checkbox'] {
   grid-area: announcements;
 }
 
+.utility-bar--brand-marquee {
+  background: linear-gradient(90deg, rgba(var(--brand-color-primary), 0.16), rgba(var(--brand-color-primary), 0.08));
+  color: rgb(var(--brand-color-primary));
+}
+
+.utility-bar--brand-marquee .announcement-bar,
+.utility-bar--brand-marquee .announcement-bar__marquee-item,
+.utility-bar--brand-marquee .announcement-bar__marquee-link {
+  color: inherit;
+}
+
+.announcement-bar--marquee {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  grid-area: announcements;
+}
+
+.announcement-bar__marquee {
+  width: 100%;
+}
+
+.announcement-bar__marquee-track {
+  display: flex;
+  align-items: center;
+  gap: clamp(6rem, 12vw, 18rem);
+  width: max-content;
+  min-height: 100%;
+  animation: announcement-bar-marquee var(--announcement-bar-marquee-duration, 28s) linear infinite;
+}
+
+.announcement-bar__marquee-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  letter-spacing: 0.22rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 1.2rem clamp(2.6rem, 6vw, 4.8rem);
+}
+
+.announcement-bar__marquee-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.announcement-bar__marquee-link:hover,
+.announcement-bar__marquee-link:focus-visible {
+  text-decoration: underline;
+}
+
+.announcement-bar__marquee-item--duplicate .announcement-bar__marquee-link {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-bar__marquee-track {
+    animation: none;
+    width: 100%;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+
+  .announcement-bar__marquee-item {
+    white-space: normal;
+  }
+}
+
+@keyframes announcement-bar-marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 .announcement-bar .slider--everywhere {
   margin-bottom: 0;
   scroll-behavior: auto;

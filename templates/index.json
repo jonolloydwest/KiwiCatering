@@ -74,7 +74,7 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
+            "heading": "",
             "heading_size": "h0"
           }
         },
@@ -113,22 +113,28 @@
         "value_props_block_1": {
           "type": "column",
           "settings": {
-            "title": "Wholesale-ready essentials",
-            "text": "<p>Curated cookware, utensils, and prep tools engineered for high-volume, back-of-house workflows.</p>"
+            "icon_url": "https://cdn.shopify.com/s/files/1/0523/6572/1788/files/kiwi-catering-icon_6.svg?v=1725037753",
+            "icon_alt": "Reliable Nationwide Delivery icon",
+            "title": "Reliable Nationwide Delivery",
+            "text": "<p>Same-day dispatch from our Auckland warehouse if ordered on business days before 2pm. Fast shipping anywhere in New Zealand.</p>"
           }
         },
         "value_props_block_2": {
           "type": "column",
           "settings": {
-            "title": "Reliable nationwide delivery",
-            "text": "<p>Same-day dispatch from our Auckland hub with tracking updates tailored to your purchasing team.</p>"
+            "icon_url": "https://cdn.shopify.com/s/files/1/0523/6572/1788/files/4.svg?v=1725048972",
+            "icon_alt": "Top Quality Products icon",
+            "title": "Quality Products You Can Trust",
+            "text": "<p>We stock only the best quality products from hand-picked suppliers so rest assured, we deliver exceptional value time and time again.</p>"
           }
         },
         "value_props_block_3": {
           "type": "column",
           "settings": {
-            "title": "Certified sustainable packaging",
-            "text": "<p>Compostable trays, liners, and serviceware that meet NZ ecolabel requirements without sacrificing durability.</p>"
+            "icon_url": "https://cdn.shopify.com/s/files/1/0523/6572/1788/files/3.svg?v=1725048972",
+            "icon_alt": "Made by Kiwis icon",
+            "title": "Made by Kiwis, for Kiwis",
+            "text": "<p>We're a small local team who have been making our mark in the industry and delivering consistent service since 2019.</p>"
           }
         }
       },
@@ -138,9 +144,9 @@
         "value_props_block_3"
       ],
       "settings": {
-        "title": "Why kitchens rely on Kiwi Catering Supply",
+        "title": "WHY CHOOSE US",
         "heading_size": "h2",
-        "column_alignment": "left",
+        "column_alignment": "center",
         "columns_desktop": 3,
         "columns_mobile": "1",
         "background_style": "none",

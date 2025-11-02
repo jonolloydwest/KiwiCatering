@@ -311,11 +311,17 @@
   margin: 1.3rem;
 }
 
+.card__media:not([class*='shape--']) .media {
+  border-radius: var(--brand-radius-glass, 2.4rem);
+  overflow: hidden;
+}
+
 .card__media .media img {
   height: 100%;
   object-fit: cover;
   object-position: center center;
   width: 100%;
+  border-radius: inherit;
 }
 
 .card__inner:not(.ratio) > .card__content {
@@ -489,33 +495,43 @@
   justify-content: center;
   width: 100%;
   margin-top: var(--space-brand-sm, 1.2rem);
-  padding: clamp(1.2rem, 1.8vw, 1.6rem);
-  border-radius: 999px;
-  background: rgba(var(--brand-surface-glass), var(--brand-surface-glass-alpha));
-  border: 1px solid rgba(var(--brand-surface-glass), var(--brand-surface-glass-border-alpha));
-  color: rgba(var(--brand-color-ink), var(--brand-opacity-ink-strong));
+  padding: clamp(1.2rem, 1.8vw, 1.6rem) clamp(1.6rem, 3vw, 2.4rem);
+  border-radius: var(--brand-radius-glass, 2.4rem);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgb(var(--brand-color-primary));
+  color: rgb(var(--brand-color-primary-contrast));
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 1.6rem 3.2rem -1.6rem rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-alpha));
+  box-shadow: 0 1.6rem 3.2rem rgba(var(--brand-surface-glass-shadow), 0.16);
   transition: transform var(--duration-short) ease, box-shadow var(--duration-short) ease,
-    background var(--duration-short) ease, border-color var(--duration-short) ease, color var(--duration-short) ease;
+    background-color var(--duration-short) ease, color var(--duration-short) ease;
 }
 
 .product-card__quick-add.button:hover,
 .product-card__quick-add.button:focus-visible {
-  background: rgba(var(--brand-surface-glass), 0.92);
-  border-color: rgba(var(--brand-surface-glass), 0.7);
-  box-shadow: 0 2.4rem 4.8rem -2.4rem rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-hover-alpha));
-  color: rgba(var(--brand-color-ink), 1);
+  background: rgb(var(--brand-color-focus));
+  box-shadow: 0 2.6rem 4.6rem rgba(var(--brand-surface-glass-shadow), 0.22);
+  transform: translateY(-1px);
+}
+
+.product-card__quick-add.button:active {
+  background: rgb(var(--brand-color-primary-border));
+  transform: translateY(0);
 }
 
 .product-card__quick-add.button[disabled] {
   opacity: 0.55;
   cursor: not-allowed;
   box-shadow: none;
+  transform: none;
+}
+
+.product-card__quick-add.button::before,
+.product-card__quick-add.button::after {
+  display: none;
 }
 
 .card-information > * + * {

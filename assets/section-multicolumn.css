@@ -10,6 +10,14 @@
   margin-top: 0;
 }
 
+.multicolumn .title-wrapper-with-link.multicolumn__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-xs, var(--space-brand-xs, 0.8rem));
+}
+
 @media screen and (max-width: 749px) {
   .multicolumn .title-wrapper-with-link {
     margin-bottom: 3rem;
@@ -197,6 +205,85 @@
   .background-none .multicolumn-list:not(.slider) .center .multicolumn-card__info {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+  }
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn__title {
+  text-align: center;
+  margin-bottom: clamp(2.4rem, 3.5vw, 3.2rem);
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn__title .title {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: inherit;
+  position: relative;
+  padding-bottom: clamp(1rem, 1.8vw, 1.4rem);
+  margin: 0 auto;
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn__title .title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: clamp(10rem, 18vw, 14rem);
+  height: 0.3rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgb(var(--brand-color-primary)), rgba(var(--color-foreground), 0.75));
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-sm, var(--space-brand-sm, 1.2rem));
+  padding: clamp(2.4rem, 4vw, 3.6rem);
+  border-radius: var(--brand-radius-glass, 2.8rem);
+  border: 1px solid rgba(var(--brand-color-primary), 0.24);
+  background: rgba(var(--brand-color-primary), 0.08);
+  box-shadow: 0 2.8rem 4.8rem -2.4rem rgba(var(--brand-surface-glass-shadow), 0.16);
+  text-align: center;
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn-card__info {
+  padding: 0;
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn-card__info h3 {
+  font-size: clamp(1.8rem, 1.2vw + 1.6rem, 2.2rem);
+  text-transform: uppercase;
+  letter-spacing: 0.18rem;
+  margin-bottom: var(--spacing-xs, var(--space-brand-xs, 0.8rem));
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn-card__info .rte p {
+  color: rgba(var(--brand-color-ink), var(--brand-opacity-ink-muted));
+  font-size: 1.5rem;
+  line-height: 1.7;
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn-card__icon--top {
+  margin-bottom: clamp(1.2rem, 2vw, 1.8rem);
+}
+
+.multicolumn[data-section-id='value_props'] .multicolumn-card__icon img {
+  width: clamp(5.6rem, 6vw, 7.2rem);
+  height: auto;
+}
+
+@media screen and (max-width: 749px) {
+  .multicolumn[data-section-id='value_props'] .multicolumn-list__item {
+    margin-bottom: 1.6rem;
   }
 }
 

@@ -355,10 +355,45 @@ quick-add-modal .product-form__buttons {
   max-width: initial;
 }
 
-.quick-add__submit {
-  padding: 0.8rem;
+.quick-add__submit.button {
+  padding: clamp(1.1rem, 2vw, 1.5rem);
   min-width: 100%;
   box-sizing: border-box;
+  border-radius: var(--brand-radius-glass, 2.4rem);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgb(var(--brand-color-primary));
+  color: rgb(var(--brand-color-primary-contrast));
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 1.6rem 3.2rem rgba(var(--brand-surface-glass-shadow), 0.16);
+  transition: transform var(--duration-short) ease, box-shadow var(--duration-short) ease,
+    background-color var(--duration-short) ease, color var(--duration-short) ease;
+}
+
+.quick-add__submit.button:hover,
+.quick-add__submit.button:focus-visible {
+  background: rgb(var(--brand-color-focus));
+  transform: translateY(-1px);
+  box-shadow: 0 2.6rem 4.6rem rgba(var(--brand-surface-glass-shadow), 0.22);
+}
+
+.quick-add__submit.button:active {
+  background: rgb(var(--brand-color-primary-border));
+  transform: translateY(0);
+}
+
+.quick-add__submit.button[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 quick-add-modal .product-media-container.constrain-height {
