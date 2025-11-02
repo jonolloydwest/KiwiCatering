@@ -1,0 +1,235 @@
+<section class="faq-section2">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-12">
+				<div class="section-capture">
+					<div class="section-title">
+						{% if section.settings.section_title != '' %}
+						<h2>{{ section.settings.section_title }}</h2>
+						{% endif %}
+					</div>
+				</div>
+				<div class="que-ans">
+					{% assign b = 0 %}
+					{% assign j = 0 %}
+					<ul id="collapse-b{{ b }}">
+						{% for block in section.blocks %}
+						{% case block.type %}
+						{% when 'accordion_area1' %}
+						{% assign j = j | plus: 1 %}
+						<li>
+							<a href="#collapse-b{{ j }}" class="question" data-toggle="collapse" {% if j == 1 %}aria-expanded="true"{% endif %}>
+								<span class="que">{{ block.settings.accordion_title }}</span>
+								<span class="que-accordian"><i class="ti-plus"></i></span>
+							</a>
+							<div class="ans-accordian collapse{% if j == 1 %} show{% endif %}" id="collapse-b{{ j }}" data-parent="#collapse-b{{ b }}">
+								<p>{{ block.settings.accordion_ans1 }}</p>
+							</div>
+						</li>
+						{% endcase %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% schema %}
+{
+	"name": "Faq Section",
+	"settings": [
+		{
+			"type" : "header",
+			"content" : "Section Padding"
+		},
+		{
+			"type" : "paragraph",
+			"content" : "Desktop / Laptop / tablet"
+		},
+		{
+			"type": "range",
+			"id": "section_padding_top",
+			"label": "Section Padding Top",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "section_padding_bottom",
+			"label": "Section Padding Bottom",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"default": 60
+		},
+		{
+			"type" : "paragraph",
+			"content" : "Ipad pro / Ipad"
+		},
+		{
+			"type": "range",
+			"id": "section_padding_top_ipad",
+			"label": "Section Padding Top",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "section_padding_bottom_ipad",
+			"label": "Section Padding Bottom",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"default": 30
+		},
+		{
+			"type" : "paragraph",
+			"content" : "Mobile"
+		},
+		{
+			"type": "range",
+			"id": "section_padding_top_xs",
+			"label": "Section Padding Top",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"default": 20
+		},
+		{
+			"type": "range",
+			"id": "section_padding_bottom_xs",
+			"label": "Section Padding Bottom",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"default": 20
+		},
+		{
+			"type": "header",
+			"content": "Section Title"
+		},
+		{
+			"type": "text",
+			"id": "section_title",
+			"label": "Section Title",
+			"default": "Frequently asked questions"
+		},
+		{
+			"type": "header",
+			"content": "Section Background Color"
+		},
+		{
+			"type": "color",
+			"id": "section_bg_color",
+			"label": "Background Color",
+			"default": "#fff"
+		}
+	],
+	"blocks": [
+		{
+			"type": "accordion_area1",
+			"name": "Faq Accordion 1",
+			"settings": [
+				{
+					"type": "text",
+					"id": "accordion_title",
+					"label": "Accordion Title",
+					"info": "Type Here For Question?",
+					"default": "How do I activate my account?"
+				},
+				{
+					"type": "textarea",
+					"id": "accordion_ans1",
+					"label": "Answer1",
+					"info": "Type Here For Answer",
+					"default": "As Sample Store uses some of the latest graphics designs which may not be supported in lower version of browsers"
+				}
+			]
+		}
+	],
+	"presets":[
+		{
+			"name": "Faq Section",
+			"category": "8. Faq Page"
+		}
+	]
+}
+{% endschema %}
+<style>
+	.faq-section2 {
+		padding-top: {{ section.settings.section_padding_top }}px;
+		padding-bottom: {{ section.settings.section_padding_bottom }}px;
+		background-color: {{ section.settings.section_bg_color }};
+	}
+	@media (max-width: 1199px) {
+		.faq-section2 {
+			padding-top: {{ section.settings.section_padding_top_ipad }}px;
+			padding-bottom: {{ section.settings.section_padding_bottom_ipad }}px;
+		}
+	}
+	@media (max-width: 767px) {
+		.faq-section2 {
+			padding-top: {{ section.settings.section_padding_top_xs }}px;
+			padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+		}
+	}
+	.faq-section2 .que-ans ul li {
+	    padding: 30px;
+	    margin-top: 10px;
+	    border: 1px solid #e2e2e2;
+	}
+	.faq-section2 .que-ans ul li:first-child{
+		margin-top: 0;
+	}
+	.faq-section2 .que-ans ul li a.question{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		position: relative;
+		font-size: 16px;
+		font-weight: 500;
+	}
+	.faq-section2 .que-ans ul li a.question[aria-expanded="true"],
+	.faq-section2 .que-ans ul li a.question:hover{
+		color: {{ settings.color_primary }};
+	}
+	.faq-section2 .que-ans ul li a.question span.que {
+		display: block;
+	}
+	.faq-section2 .que-ans ul li a.question span.que-accordian {
+		color: {{ settings.color_primary }};
+		font-size: 14px;
+		position: absolute;
+		{%- if settings.enable_rtl -%}
+		left: 0;
+		{%- else -%}
+		right: 0;
+		{%- endif -%}
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.faq-section2 .que-ans ul li a.question[aria-expanded="true"] span.que-accordian i:before {
+		content: "\e622";
+	}
+	.faq-section2 .que-ans ul li .ans-accordian p{
+		font-size: 15px;
+		padding-top: 15px;
+	    color: #999;
+	}
+	@media(max-width: 767px){
+		.faq-section2 .que-ans ul li {
+	    	padding: 15px;
+		}
+	}
+</style>

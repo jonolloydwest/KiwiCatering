@@ -1,0 +1,100 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <ul class="single-service">
+        <li class="service-content ser-box">
+          <div class="ser-block">
+            <a href="javascript:void(0)">
+              {% if settings.truck_img %}
+              {% assign truck_alt = settings.shipping_title | default: shop.name %}
+              {% assign truck_src = settings.truck_img | image_url: width: 400 %}
+              {% assign truck_width = settings.truck_img.width | default: 120 %}
+              {% assign truck_height = settings.truck_img.height | default: 120 %}
+              <img class="img-fluid" src="{{ truck_src }}" alt="{{ truck_alt }}" width="{{ truck_width }}" height="{{ truck_height }}" loading="lazy">
+              {% else %}
+              <i class="{{ settings.truck_icon }}"></i>
+              {% endif %}
+            </a>
+            <div class="service-text">
+              {%if settings.shipping_title != '' %}
+              <h6>{{ settings.shipping_title }}</h6>
+              {% endif %}
+              {%if settings.shipping_desc != '' %}
+              <p>{{ settings.shipping_desc }}</p>
+              {% endif %} 
+            </div>
+          </div>
+        </li>
+        <li class="service-content ser-box">
+          <div class="ser-block">
+            <a href="javascript:void(0)">
+              {% if settings.money_img %}
+              {% assign money_alt = settings.money_title | default: shop.name %}
+              {% assign money_src = settings.money_img | image_url: width: 400 %}
+              {% assign money_width = settings.money_img.width | default: 120 %}
+              {% assign money_height = settings.money_img.height | default: 120 %}
+              <img class="img-fluid" src="{{ money_src }}" alt="{{ money_alt }}" width="{{ money_width }}" height="{{ money_height }}" loading="lazy">
+              {% else %}
+              <i class="{{ settings.money_icon }}"></i>
+              {% endif %}
+            </a>
+            <div class="service-text">
+              {%if settings.money_title != '' %}
+              <h6>{{ settings.money_title }}</h6>
+              {% endif %}
+              {%if settings.money_desc != '' %}
+              <p>{{ settings.money_desc }}</p>
+              {% endif %} 
+            </div>
+          </div>
+        </li>
+        <li class="service-content ser-box">
+          <div class="ser-block">
+            <a href="javascript:void(0)">
+              {% if settings.support_img %}
+              {% assign support_alt = settings.support_title | default: shop.name %}
+              {% assign support_src = settings.support_img | image_url: width: 400 %}
+              {% assign support_width = settings.support_img.width | default: 120 %}
+              {% assign support_height = settings.support_img.height | default: 120 %}
+              <img class="img-fluid" src="{{ support_src }}" alt="{{ support_alt }}" width="{{ support_width }}" height="{{ support_height }}" loading="lazy">
+              {% else %}
+              <i class="{{ settings.support_icon }}"></i>
+              {% endif %}
+            </a>
+            <div class="service-text">
+              {%if settings.support_title != '' %}
+              <h6>{{ settings.support_title }}</h6>
+              {% endif %}
+              {%if settings.support_desc != '' %}
+              <p>{{ settings.support_desc }}</p>
+              {% endif %} 
+            </div>
+          </div>
+        </li>
+        <li class="service-content ser-box">
+          <div class="ser-block">
+            <a href="javascript:void(0)">
+              {% if settings.gift_img %}
+              {% assign gift_alt = settings.gift_title | default: shop.name %}
+              {% assign gift_src = settings.gift_img | image_url: width: 400 %}
+              {% assign gift_width = settings.gift_img.width | default: 120 %}
+              {% assign gift_height = settings.gift_img.height | default: 120 %}
+              <img class="img-fluid" src="{{ gift_src }}" alt="{{ gift_alt }}" width="{{ gift_width }}" height="{{ gift_height }}" loading="lazy">
+              {% else %}
+              <i class="{{ settings.gift_icon }}"></i>
+              {% endif %}
+            </a>
+            <div class="service-text">
+              {%if settings.gift_title != '' %}
+              <h6>{{ settings.gift_title }}</h6>
+              {% endif %}
+              {%if settings.gift_desc != '' %}
+              <p>{{ settings.gift_desc }}</p>
+              {% endif %} 
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

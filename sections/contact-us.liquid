@@ -1,0 +1,745 @@
+<section class="main-content-wrap contact-us-page">
+  <div class="section-capture">
+    <div class="section-title">
+      {% if section.settings.contact_us_title != '' %}
+      <h2>
+        {{ section.settings.contact_us_title }}
+      </h2>
+      {% endif %}
+      {% if section.settings.contact_us_des != '' %}
+      <p>{{ section.settings.contact_us_des }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if section.settings.contact_us_map_enable %}
+  <div class="contact-map">
+    {% if section.settings.map_show == "google_map" %}
+    <div class="google-map-area">
+      <div id="map" class="map"></div>
+    </div>
+    {% else %}
+    <img class="img-fluid" src="{{ section.settings.map_images | image_url: width: 1170, height: 500 }}" alt="{{ shop.name }}" width="1170" height="500">
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="form-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="contact-content">
+                    <div class="get-info contact-detail">
+                        <div class="form-title">
+                            {% if section.settings.get_toch_title != '' %}
+                            <h6>{{ section.settings.get_toch_title }}</h6>
+                            {% endif %}
+                        </div>
+                        <ul class="contact-info-list">
+                            {%- render 'company-address' -%}
+                        </ul>
+                    </div>
+                    <div class="form-warp contact-detail">
+                        <div class="form-title">
+                            {% if section.settings.contact_drop_title != '' %}
+                            <h6>{{ section.settings.contact_drop_title }}</h6>
+                            {% endif %}
+                        </div>
+                        <div class="contact-form-list">
+                            {% render 'contact-form'%}
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+{%- comment -%} theme-check-disable RemoteAsset {%- endcomment -%}
+<script defer src="https://maps.googleapis.com/maps/api/js?key={{ section.settings.map_api_key }}"></script>
+{%- comment -%} theme-check-enable RemoteAsset {%- endcomment -%}
+<script>
+  function initContactUsMap() {
+    var mapOptions = {
+      zoom: 11,
+      scrollwheel: false,
+      center: new google.maps.LatLng({{ section.settings.latitude }}, {{ section.settings.longitude }}),
+      styles:
+      [
+      {
+        "featureType": "all",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+          "saturation": 36
+        },
+        {
+          "color": "#878787"
+        },
+        {
+          "lightness": 40
+        }
+        ]
+      },
+      {
+        "featureType": "all",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+        {
+          "visibility": "on"
+        },
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 16
+        }
+        ]
+      },
+      {
+        "featureType": "all",
+        "elementType": "labels.icon",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "administrative",
+        "elementType": "geometry.fill",
+        "stylers": [
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 20
+        }
+        ]
+      },
+      {
+        "featureType": "administrative",
+        "elementType": "geometry.stroke",
+        "stylers": [
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 17
+        },
+        {
+          "weight": 1.2
+        }
+        ]
+      },
+      {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 20
+        }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 21
+        }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry.fill",
+        "stylers": [
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 17
+        }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
+        {
+          "color": "#444444"
+        },
+        {
+          "lightness": 29
+        },
+        {
+          "weight": 0.2
+        }
+        ]
+      },
+      {
+        "featureType": "road.arterial",
+        "elementType": "geometry",
+        "stylers": [
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 18
+        }
+        ]
+      },
+      {
+        "featureType": "road.local",
+        "elementType": "geometry",
+        "stylers": [
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 16
+        }
+        ]
+      },
+      {
+        "featureType": "transit",
+        "elementType": "geometry",
+        "stylers": [
+        {
+          "color": "#000000"
+        },
+        {
+          "lightness": 19
+        }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+        {
+          "color": "#2d333c"
+        },
+        {
+          "lightness": 17
+        }
+        ]
+      }
+      ]
+    };
+    var mapElement = document.getElementById('map');
+    var map = new google.maps.Map(mapElement, mapOptions);
+    var marker = new google.maps.Marker({
+      position: new google.maps.LatLng({{ section.settings.latitude }}, {{ section.settings.longitude }}),
+      map: map,
+      title: 'Snazzy!'
+    });
+  }
+  window.addEventListener('load', function() {
+    if (window.google && google.maps && google.maps.event) {
+      initContactUsMap();
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Contact Us",
+  "settings": [
+  {
+    "type": "header",
+    "content": "Section Padding"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop "
+  },
+  {
+    "type": "range",
+    "id": "main_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 100
+  },
+  {
+    "type": "range",
+    "id": "main_padding_bottom",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 0
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Tablet"
+  },
+  {
+    "type": "range",
+    "id": "main_padding_top_lg",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "main_padding_bottom_lg",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 0
+  },
+    {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "main_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "main_padding_bottom_xs",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 0
+  },
+  {
+    "type": "header",
+    "content": "Section Title"
+  },
+  {
+    "type": "text",
+    "id": "contact_us_title",
+    "label": "Title",
+    "default": "Contact Us"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Content Description"
+  },
+  {
+    "type": "text",
+    "id": "contact_us_des",
+    "label": "Description",
+    "default": "Got a question? We had love to hear from you. Send us a message and we will respond as soon as possible."
+  },
+  {
+    "type": "header",
+    "content": "Map Setting"
+  },
+  {
+    "type": "checkbox",
+    "id": "contact_us_map_enable",
+    "label": "Show Map And Image",
+    "default": true
+  },
+  {
+    "type": "range",
+    "id": "contact_us_map_height",
+    "label": "Map Height",
+    "min": 0,
+    "max": 1000,
+    "step": 100,
+    "unit": "px",
+    "default": 500
+  },
+  {
+    "type" : "select",
+    "id" : "map_show",
+    "label" : "Map Style",
+    "options" : [
+    {
+      "value" : "google_map",
+      "label" : "Google Map Api Key"
+    },
+    {
+      "value" : "google_map_img",
+      "label" : "Google Map Image"
+    }
+    ]
+  },
+  {
+    "type" : "image_picker",
+    "id" : "map_images",
+    "label" : "Google Map Images"
+  },
+  {
+    "type": "text",
+    "id": "latitude",
+    "label": "Latitude",
+    "default": "40.709896"
+  },
+  {
+    "type": "text",
+    "id": "longitude",
+    "label": "Longitude",
+    "default": "-73.995481"
+  },
+  {
+    "type": "textarea",
+    "id": "map_api_key",
+    "label": "Google Map API Key",
+    "default": "AIzaSyBMlLa3XrAmtemtf97Z2YpXwPLlimRK7Pk"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop "
+  },
+  {
+    "type": "range",
+    "id": "section_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 100
+  },
+  {
+    "type": "range",
+    "id": "section_padding_bottom",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 0
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Tablet"
+  },
+  {
+    "type": "range",
+    "id": "section_padding_top_lg",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "section_padding_bottom_lg",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 0
+  },
+    {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "section_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "section_padding_bottom_xs",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 0
+  },
+  {
+    "type": "header",
+    "content": "Form Info"
+  },
+  {
+    "type": "text",
+    "id": "contact_drop_title",
+    "label": "Form Title",
+    "default": "Drop us message"
+  },
+  {
+    "type": "text",
+    "id": "name_placeholder",
+    "label": "Name Placeholder",
+    "default": "Your name"
+  },
+  {
+    "type": "text",
+    "id": "email_placeholder",
+    "label": "Email Placeholder",
+    "default": "Your email address"
+  },
+  {
+    "type": "text",
+    "id": "mobile_placeholder",
+    "label": "Mobile Placeholder",
+    "default": "Your Mobile"
+  },
+  {
+    "type": "text",
+    "id": "message_placeholder",
+    "label": "Message Placeholder",
+    "default": "Your message here..."
+  },
+  {
+    "type": "text",
+    "id": "form_button_name",
+    "label": "Button Name",
+    "default": "Submit"
+  },
+  {
+    "type": "header",
+    "content": "Get Touch"
+  },
+  {
+    "type": "text",
+    "id": "get_toch_title",
+    "label": "Touch Title",
+    "default": "Get in Touch"
+  }
+  ],
+  "presets":[
+  {
+    "name": "Contact Us",
+    "category": "contact us"
+  }
+  ]
+}
+{% endschema %}
+
+<style>
+
+
+li.ftcon-li {
+    padding: 20px;
+    border: 1px solid #e1e1e1;
+    background: #fff;
+}
+
+  .contact-us-page{
+    padding-top: {{ section.settings.main_padding_top }}px;
+    padding-bottom: {{ section.settings.main_padding_bottom }}px;
+    margin-bottom:45px;
+    background: url({{ 'contactus-banner.jpg' | file_url }});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position:relative;
+  }
+  .contact-us-page:after {
+    content: "";
+    position: absolute;
+    background: linear-gradient(1deg, #52b357, #52b357d4, #52b35700);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+}
+  @media (max-width: 1199px){
+    .contact-us-page{
+      padding-top: {{ section.settings.main_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.main_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .contact-us-page{
+      padding-top: {{ section.settings.main_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.main_padding_bottom_xs }}px;
+    }
+  }
+  {% if section.settings.contact_us_map_enable %}
+  .contact-us-page .contact-map .map {
+    height: {{ section.settings.contact_us_map_height }}px;
+    width: 100%;
+  }
+  {% endif %}
+  @media (max-width: 767px){
+    .contact-us-page .contact-map .map {
+      height: 320px;
+    }
+  }
+
+  .form-contact .contact-content .form-warp.contact-detail{
+        padding-top: {{ section.settings.section_padding_top }}px;
+        padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    }   
+    @media (max-width: 1199px){
+         .form-contact .contact-content .form-warp.contact-detail{
+            padding-top: {{ section.settings.section_padding_top_lg }}px;
+            padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+        }
+    }
+    @media (max-width: 767px){
+         .form-contact .contact-content .form-warp.contact-detail{
+            padding-top: {{ section.settings.section_padding_top_xs }}px;
+            padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+        }
+    }
+    .form-contact .contact-content{
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: 50px;
+        background-color: #f7f7f7;
+        border: 1px solid #e2e2e2;
+        margin-bottom:50px;
+    }
+    .form-contact .contact-content .form-warp.contact-detail{
+        width: 100%;
+    }
+
+    /* contact form css */
+    .contact-content .form-warp .contact-form-list{
+
+    }
+    .contact-content .form-title h6{
+        font-size: 20px;
+        text-align: center;
+        text-transform: capitalize;
+        text-align: center;
+        line-height: 1;
+        margin-bottom: 30px;
+        
+    }
+    @media (max-width: 767px){
+        .contact-content .form-warp .contact-form-list{
+            margin-top: 20px;
+        }
+        .form-contact .contact-content{
+            padding: 50px 15px; 
+        }
+    }
+    /* get in touch css */
+    .form-contact .contact-content .get-info.contact-detail{
+        width: 100%;
+    }
+    .contact-content .get-info .contact-info-list{
+        display: flex;
+        justify-content: center;
+        {% if settings.enable_rtl %}
+        margin-right: -30px;
+        {% else %}
+        margin-left: -30px;
+        {% endif %}
+        flex-wrap: wrap;
+    }
+    /* get touch css */
+    ul.contact-info-list li.ftcon-li{
+        display: -ms-flexbox;
+        display: flex;
+        align-items: center;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        flex-direction: column;
+        width: calc(33.33% - 30px);
+        {% if settings.enable_rtl %}
+        margin-right: 30px;
+        {% else %}
+        margin-left: 30px;
+        {% endif %}
+        text-align: center;
+    }
+    ul.contact-info-list li.ftcon-li span.con-icon{
+        font-size: 38px;
+        line-height: 1;
+        color: {{ settings.color_primary }};
+    }
+    ul.contact-info-list li.ftcon-li span.con-add,
+    ul.contact-info-list li.ftcon-li a.con-add{
+        margin-top: 21px;
+        color: #828282;
+    }
+    ul.contact-info-list li.ftcon-li span.con-add a:hover{
+        color: {{ settings.color_primary }};
+    }
+    ul.contact-info-list li.ftcon-li span.con-add a{
+        color: #828282;
+    }
+    ul.contact-info-list li.ftcon-li span.con-add span{
+      display: block;
+    }
+    .section-capture{
+        margin:0;
+         position:relative;
+        z-index:10;
+    }
+   .section-title :is(h2, p){
+        color:#fff;
+    } 
+    .container > .row{
+/*         flex-direction:column; */
+        align-items:center;
+    }
+    @media(max-width: 767px){
+      ul.contact-info-list li.ftcon-li{
+        width: calc(100% - 30px);
+      }
+      ul.contact-info-list li.ftcon-li span.con-icon{
+          font-size: 28px;
+      }
+        .contact-content .get-info .contact-info-list{
+          {% if settings.enable_rtl %}
+          margin-right: 0px;
+          {% else %}
+          margin-left: 0px;
+          {% endif %}
+          margin-top: -15px;
+        }
+        ul.contact-info-list li.ftcon-li{
+            {% if settings.enable_rtl %}
+            margin-right: 0px;
+            {% else %}
+            margin-left: 0px;
+            {% endif %}
+            margin-top: 15px;
+        }
+    }
+.contact-submit button.btn.btn-style2-medium {
+  text-transform: capitalize;
+  background-color: #52b357 !important;
+  border: 2px solid #52b357 !important;
+}
+.contact-submit button.btn.btn-style2-medium:hover {
+  background-color: #000 !important;
+  border: 2px solid #000 !important;
+}
+.contact-content .form-title h6 {
+    text-transform: uppercase!important;
+    font-weight: bold;
+}
+</style>

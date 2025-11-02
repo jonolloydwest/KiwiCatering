@@ -1,0 +1,101 @@
+{% if template contains 'article' or template contains 'blog' %}
+{% capture permalink_u_r_l %}{{ shop.url }}{{ article.url }}{% endcapture %}
+{% capture share_title %}{{ article.title | url_param_escape }}{% endcapture %}
+  
+{% elsif template contains 'product' %}
+{% capture permalink_u_r_l %}{{ shop.url }}{{ product.url }}{% endcapture %}
+{% capture share_title %}{{ product.title | url_param_escape }}{% endcapture %}
+
+{% elsif template == 'password' %}
+{% capture permalink_u_r_l %}{{ shop.url }}{% endcapture %}
+{% capture share_title %}{% unless shop.description == blank %}{{ shop.description | url_param_escape }}{% else %}{{ shop.name | url_param_escape }}{% endunless %}{% endcapture %}
+{% endif %}
+
+{% assign share_button_style = section.settings.social_sharing_style %}
+
+<ul class="social-icons{% if share_button_style != blank %} social-icons--{{ share_button_style | handle | replace: ' ', '-' }}{% endif %}">
+  <li>
+    <a target="_blank" href="//www.facebook.com/sharer.php?u={{ permalink_u_r_l }}" title="Share on Facebook" tabindex="0" class="facebook">
+      <i class="ion-social-facebook"></i>
+      <span>facebook</span>
+    </a>
+  </li>
+  <li>
+    <a target="_blank" href="//twitter.com/share?text={{ share_title }}&amp;url={{ permalink_u_r_l }};source=webclient" title="Share on Twitter" tabindex="0" class="twitter">
+      <i class="ion-social-twitter"></i>
+      <span>twitter</span>
+    </a>
+  </li>
+  <li>
+    <a target="_blank" href="https://www.instagram.com/?url={{ permalink_u_r_l }}" title="Share on Instagram" tabindex="0" class="gplus">
+      <i class="ion-social-instagram"></i>
+      <span>Instagram</span>
+    </a>
+  </li>
+  {% if product.featured_image or article.image  %}
+  <li>
+    <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ permalink_u_r_l }}&amp;media=http:{% if template contains 'product' %}{{ product | image_url: width: 1024, height: 1024 }}{% else %}{{ article | image_url: width: 1024, height: 1024 }}{% endif %}&amp;description={{ share_title }}" title="Share on Pinterest" tabindex="0" class="pinterest">
+      <i class="ion-social-pinterest"></i>
+      <span>pinterest</span>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+<style>
+  ul.social-icons {
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    {% if settings.enable_rtl %}
+    margin-right: -5px;
+    {% else %}
+    margin-left: -5px;
+    {% endif %}
+  }
+  ul.social-icons li {
+    {% if settings.enable_rtl %}
+    margin: 5px 5px 0 0px;
+    {% else %}
+    margin: 5px 0px 0 5px;
+    {% endif %}
+  }
+  ul.social-icons li a{
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    line-height: 1;
+  }
+  ul.social-icons li a.facebook{
+    background-color: #3b5999;
+    border: 2px solid #3b5999;
+  }
+  ul.social-icons li a.twitter{
+    background-color: #55acee;
+    border: 2px solid #55acee;
+  }
+  ul.social-icons li a.gplus{
+    background-color: #dd3971;
+    border: 2px solid #dd3971;
+  }
+  ul.social-icons li a.pinterest{
+    background-color: #bd081c;
+    border: 2px solid #bd081c;
+  }
+  ul.social-icons li a:hover{
+    color: #fff;
+    opacity: .5;
+  }
+  ul.social-icons li a span{
+    display: block;
+    font-size: 14px;
+    {% if settings.enable_rtl %}
+    margin-right: 5px;
+    {% else %}
+    margin-left: 5px;
+    {% endif %}
+    text-transform: capitalize;
+    line-height: normal;
+  }
+</style>

@@ -1,0 +1,188 @@
+<section class="img-text">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+
+<div class="image-with-text-section">
+ <div class="img-width">
+ {% if section.settings.image %}
+    {% assign section_image_alt = section.settings.title | default: shop.name %}
+    {{ section.settings.image
+      | image_url: width: 1200
+      | image_tag: class: 'img-fluid', alt: section_image_alt, loading: 'lazy'
+    }}
+  {% endif %}
+ </div>
+
+<div class="content-width">
+
+<div class="section-title title-img">
+{% if section.settings.title !='' %}
+            <h2>{{ section.settings.title }}</h2>
+           
+            {% endif %}</div>
+
+  {% if section.settings.text %}
+    <p>{{ section.settings.text }}</p>
+  {% endif %}
+
+</div>
+
+</div>
+
+ </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with Text Section",
+  "settings": [
+
+ {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Desktop / Laptop "
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Select an image for the section"
+    },
+{
+    "type": "text",
+    "id": "title",
+    "label": "Title",
+    "default": "Add your title here"
+  },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "info": "Enter the text to be displayed"
+    }
+  ],
+  "presets": []
+}
+{% endschema %}
+
+
+<style>
+  .img-text{
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  @media (max-width: 1199px){
+    .img-text{
+      padding-top: {{ section.settings.section_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .img-text{
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+
+.image-with-text-section {
+    display: flex;
+    flex-direction: column-reverse;
+}
+.content-width{
+padding-bottom:40px;
+}
+  }
+
+  @media (min-width: 768px){
+.img-width{
+width:50%;
+}
+.content-width{
+width:50%;
+}
+
+.image-with-text-section {
+    display: flex;
+    column-gap: 70px;
+}
+  }
+.content-width h2{
+text-align:left;
+    width: 100%;
+}
+
+
+</style>

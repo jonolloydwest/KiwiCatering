@@ -1,0 +1,180 @@
+{% assign child_links = link.links %}
+{% if child_links == blank %}
+  {%- assign base_handles = '' | split: ',' -%}
+  {%- assign title_handle = link.title | handleize -%}
+  {%- if title_handle != blank -%}
+    {%- assign base_handles = base_handles | push: title_handle -%}
+  {%- endif -%}
+  {%- if link.handle -%}
+    {%- assign base_handles = base_handles | push: link.handle | handleize -%}
+  {%- endif -%}
+  {%- if link.object and link.object.handle -%}
+    {%- assign base_handles = base_handles | push: link.object.handle | handleize -%}
+  {%- endif -%}
+  {%- if link.url -%}
+    {%- assign url_parts = link.url | split: '/' -%}
+    {%- assign url_last = url_parts | last | split: '?' | first | split: '#' | first | handleize -%}
+    {%- if url_last != blank -%}
+      {%- assign base_handles = base_handles | push: url_last -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- assign base_handles = base_handles | uniq -%}
+  {%- assign candidate_handles = '' | split: ',' -%}
+  {%- for handle in base_handles -%}
+    {%- if handle != blank -%}
+      {%- assign candidate_handles = candidate_handles | push: handle -%}
+      {%- assign candidate_handles = candidate_handles | push: handle | replace: '-', '' -%}
+      {%- assign candidate_handles = candidate_handles | push: handle | replace: '-', '_' -%}
+      {%- assign candidate_handles = candidate_handles | push: handle | append: '-menu' -%}
+      {%- assign candidate_handles = candidate_handles | push: handle | append: '-submenu' -%}
+      {%- assign candidate_handles = candidate_handles | push: handle | append: '-dropdown' -%}
+      {%- assign candidate_handles = candidate_handles | push: handle | append: '-nav' -%}
+      {%- assign candidate_handles = candidate_handles | push: handle | append: '-mega-menu' -%}
+      {%- assign candidate_handles = candidate_handles | push: handle | append: '-mega' -%}
+      {%- assign handle_length = handle | size -%}
+      {%- if handle_length > 1 -%}
+        {%- assign last_char_index = handle_length | minus: 1 -%}
+        {%- assign last_char = handle | slice: last_char_index, 1 -%}
+        {%- if last_char == 's' -%}
+          {%- assign singular_handle = handle | slice: 0, last_char_index -%}
+          {%- if singular_handle != blank -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle | replace: '-', '' -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle | replace: '-', '_' -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle | append: '-menu' -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle | append: '-submenu' -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle | append: '-dropdown' -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle | append: '-nav' -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle | append: '-mega-menu' -%}
+            {%- assign candidate_handles = candidate_handles | push: singular_handle | append: '-mega' -%}
+          {%- endif -%}
+        {%- endif -%}
+        {%- assign suffix_start = handle_length | minus: 3 -%}
+        {%- if suffix_start >= 0 -%}
+          {%- assign suffix = handle | slice: suffix_start, 3 -%}
+        {%- else -%}
+          {%- assign suffix = '' -%}
+        {%- endif -%}
+        {%- if suffix == 'ies' and handle_length > 3 -%}
+          {%- assign stem_length = handle_length | minus: 3 -%}
+          {%- assign ies_handle = handle | slice: 0, stem_length | append: 'y' -%}
+          {%- if ies_handle != blank -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle | replace: '-', '' -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle | replace: '-', '_' -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle | append: '-menu' -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle | append: '-submenu' -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle | append: '-dropdown' -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle | append: '-nav' -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle | append: '-mega-menu' -%}
+            {%- assign candidate_handles = candidate_handles | push: ies_handle | append: '-mega' -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign candidate_handles = candidate_handles | uniq -%}
+  {%- for menu_handle in candidate_handles -%}
+    {%- if menu_handle != blank and linklists[menu_handle] -%}
+      {%- assign child_links = linklists[menu_handle].links -%}
+      {%- unless child_links == blank -%}
+        {%- break -%}
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endfor -%}
+{% endif %}
+{% if child_links != blank %}
+{%- assign has_megamenu = false -%}
+{%- assign has_menu_banner = false -%}
+{%- assign has_simple_children = false -%}
+{%- assign parent_handle = link.title | handleize -%}
+{%- for childlink in child_links -%}
+  {%- assign grand_child_links = childlink.links -%}
+  {%- assign grand_childlink_handle = childlink.title | handleize -%}
+  {%- if grand_child_links == blank and linklists[grand_childlink_handle] -%}
+    {%- assign grand_child_links = linklists[grand_childlink_handle].links -%}
+  {%- endif -%}
+  {%- if grand_child_links != blank -%}
+    {%- assign has_megamenu = true -%}
+  {%- elsif childlink.type == "collection_link" and childlink.object.image and parent_handle != 'cream-chargers' -%}
+    {%- assign has_menu_banner = true -%}
+    {%- assign has_megamenu = true -%}
+  {%- else -%}
+    {%- assign has_simple_children = true -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- capture dropdown_classes -%}
+dropdown-submenu{% if has_megamenu %} mega-menu{% endif %}{% if has_menu_banner %} banner-menu{% endif %}{% if has_simple_children %} sub-menu{% endif %}
+{%- endcapture -%}
+{%- assign dropdown_classes = dropdown_classes | strip -%}
+<li class="menu-link parant"> 
+  <a {% if link.current %}aria-current="page"{% endif %} class="link-title {% if link.current %}active{% endif %}" href="{{ link.url }}">
+    <span class="sp-link-title">{{ link.title }}</span>
+    <i class="fa fa-angle-down"></i>
+  </a>
+  <a data-toggle="collapse" href="#collapse-{{ link.title | handleize }}" class="link-title link-title-lg">
+    <span class="sp-link-title">{{ link.title }}</span>
+    <i class="fa fa-angle-down"></i>
+  </a>
+  <div class="{{ dropdown_classes }}">
+    <ul class="dropdown-collapse collapse" id="collapse-{{ link.title | handleize }}">
+      {% for childlink in child_links %}
+      {% assign grand_child_links = childlink.links %}
+      {% assign grand_childlink_handle = childlink.title | handleize %}
+      {% if grand_child_links == blank and linklists[grand_childlink_handle] %}
+        {% assign grand_child_links = linklists[grand_childlink_handle].links %}
+      {% endif %}
+      {% if grand_child_links != blank %}
+      <li class="megamenu-li parant">
+        <h2 class="sublink-title">{{ childlink.title }}</h2>
+        <ul class="dropdown-supmenu">
+          {% for grand_childlink_handle in grand_child_links %}
+          <li class="supmenu-li">
+            <a href="{{ grand_childlink_handle.url }}" class="suplink-title">{{ grand_childlink_handle.title }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% else %}
+      {% if childlink.type == "collection_link" and childlink.object.image and parent_handle != 'cream-chargers' %}
+      {% if childlink.title == "bottom"  %}
+      <div class="menu-banner {{ childlink.title | downcase }}">
+        <a href="{{ childlink.url }}" class="banner-hover">
+          {% assign menu_banner_alt = childlink.title | default: shop.name %}
+          {% assign menu_banner_width = childlink.object.image.width | default: 800 %}
+          {% assign menu_banner_height = childlink.object.image.height | default: 600 %}
+          {% assign menu_banner_src = childlink.object.image | image_url: width: 800 %}
+          <img src="{{ menu_banner_src }}" alt="{{ menu_banner_alt }}" width="{{ menu_banner_width }}" height="{{ menu_banner_height }}">
+        </a>
+      </div>
+      {% else %}
+      <li class="menu-banner">
+        <a href="{{ childlink.url }}" class="banner-hover">
+          {% assign menu_banner_small_alt = childlink.title | default: shop.name %}
+          <img src="{{ childlink.object.image | image_url: width: 300, height: 400, crop: 'center' }}" alt="{{ menu_banner_small_alt }}" width="300" height="400">
+        </a>
+        <a href="{{ childlink.url }}" class="menu-banner-title">
+          <span>{{ childlink.title }}</span>
+        </a>
+      </li>
+      {% endif %}
+      {% else %}
+      <li class="submenu-li parant{% if childlink.active %} active{% endif %}">
+        <a href="{{ childlink.url }}" class="sublink-title">{{ childlink.title }}</a>
+      </li>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</li>
+{% else %}
+<li class="menu-link">
+  <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %} class="link-title {% if link.current %}active{% endif %}">
+    <span class="sp-link-title">{{ link.title }}</span>
+  </a>
+  <a href="{{ link.url }}" class="link-title link-title-lg">
+    <span class="sp-link-title">{{ link.title }}</span>
+  </a>
+</li>
+{% endif %}

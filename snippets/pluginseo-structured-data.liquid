@@ -1,0 +1,590 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------
+   Plug in SEO Plus for Shopify
+
+   Copyright (c) 2020 SureSwift Capital, Inc.
+
+   This file is subject to the license at https://www.pluginseo.com/eula
+  ----------------------------------------------------------------------------------
+{%- endcomment -%}
+{%- comment -%} theme-check-disable UnusedAssign {%- endcomment -%}
+
+{%- assign logo_url = 'pluginseo_structuredDataLogo.png' | asset_img_url  -%}
+{%- assign organization_id = shop.url | append: "#organization" -%}
+
+{%- assign shop_name = shop.name  -%}
+{%- assign shop_description = shop.description  -%}
+{%- if hasLangify == true and language != shop.metafields["languages"]["default"] -%}
+ {%- assign shop_name = langify_shop_name  -%}
+ {%- assign shop_description = langify_shop_description  -%}
+{%- endif -%}
+
+{%- comment -%}
+  https://developers.google.com/search/docs/data-types/articles
+{%- endcomment -%}
+{%- if rootTemplate == 'article' -%}
+
+ {%- assign article_title = article.title  -%}
+ {%- assign article_content = article.content  -%}
+ {%- if hasLangify == true and language != shop.metafields["languages"]["default"] -%}
+  {%- assign article_title = langify_title  -%}
+  {%- assign article_content = langify_description  -%}
+ {%- endif -%}
+
+  <script data-desc="seo-news" type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{- shop.url -}}"
+      },
+      "headline": "{{- article_title | escape -}}",
+      {%- if article.image -%}
+      "image": {
+        "@type": "ImageObject",
+        "url": "https:{{- article | image_url: width: 800, height: 800 -}}",
+        "height": "800px",
+        "width": "800px"
+      },
+      {%- endif -%}
+      "dateModified": "{{- article.published_at -}}",
+      "datePublished": "{{- article.created_at -}}",
+      "author": {
+        "@type": "Person",
+        "name": "{{- article.author -}}"
+      },
+       "publisher": {
+        "@type": "Organization",
+        "@id": "{{ organization_id }}"
+      },
+      "description": "{{- article_content | newline_to_br | replace: '<br />', ' ' | strip_html | strip_newlines | strip | escape | truncate: 163 -}}"
+    }
+  </script>
+{%- endif -%}
+
+{%- comment -%}
+https://developers.google.com/search/docs/data-types/breadcrumbs
+https://help.shopify.com/themes/customization/navigation/add-breadcrumbs
+{%- endcomment -%}
+
+{%- unless rootTemplate == 'index' or rootTemplate == 'cart' or rootTemplate == 'list-collections' -%}
+
+<script data-desc="seo-breadcrumb-list" type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {%- if rootTemplate == 'page' -%}
+      {%- assign page_title = page.title  -%}
+      {%- if hasLangify == true and language != shop.metafields["languages"]["default"] -%}
+       {%- assign page_title = langify_title  -%}
+      {%- endif -%}
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "{{- shop.url -}}{{- page.url -}}",
+          "name": "{{- page_title -}}"
+        }
+      }
+    {%- elsif rootTemplate == 'product' -%}
+      {%- assign piseo_max_product_id = shop.metafields.pluginseo.max_product_id -%}      
+      {%- if piseo_max_product_id == blank or product.id <= piseo_max_product_id -%}
+        {%- assign product_title = product.title  -%}
+        {%- if hasLangify == true and language != shop.metafields["languages"]["default"] -%}
+        {%- assign product_title = langify_title  -%}
+        {%- endif -%}
+
+        {%- if collection.url -%}
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "{{- shop.url -}}{{- collection.url -}}",
+              "name": "{{- collection.title -}}"
+            }
+          },{
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@id": "{{- shop.url -}}{{- product.url -}}",
+              "name": "{{- product_title | escape -}}"
+            }
+          }
+        {%- else -%}
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "{{- shop.url -}}{{- product.url -}}",
+              "name": "{{- product_title | escape -}}"
+            }
+          }
+        {%- endif -%}
+      {%- endif -%}
+    {%- elsif template contains 'collection' and collection.handle -%}
+      {%- assign collection_title = collection.title  -%}
+      {%- if hasLangify == true and language != shop.metafields["languages"]["default"] -%}
+       {%- assign collection_title = langify_title  -%}
+      {%- endif -%}
+      {%- if current_tags -%}
+        {%- capture url -%}/collections/{{- collection.handle -}}{%- endcapture -%}
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "{{- shop.url -}}{{- url -}}",
+            "name": "{{- collection_title -}} {{- current_tags | join: " + " -}}"
+          }
+        }
+      {%- else -%}
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "{{- shop.url -}}{{- collection.url -}}",
+            "name": "{{- collection_title -}}"
+          }
+        }
+      {%- endif -%}
+    {%- elsif rootTemplate == 'blog' -%}
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "{{- shop.url -}}{{- blog.url -}}",
+          "name": "{{- blog.title -}}"
+        }
+      }
+    {%- elsif rootTemplate == 'article' -%}
+      {%- assign article_title = article.title  -%}
+      {%- if hasLangify == true and language != shop.metafields["languages"]["default"] -%}
+       {%- assign article_title = langify_title  -%}
+      {%- endif -%}
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "{{- shop.url -}}{{- blog.url -}}",
+          "name": "{{- blog.title -}}"
+        }
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@id": "{{- shop.url -}}{{- article.url -}}",
+          "name": "{{- article_title | escape -}}"
+        }
+      }
+    {%- else -%}
+
+    {%- endif -%}
+  ]
+}
+</script>
+
+{%- endunless -%}
+
+{%- comment -%}
+  https://developers.google.com/search/docs/data-types/logo
+  https://developers.google.com/search/docs/data-types/corporate-contacts
+  https://developers.google.com/search/docs/data-types/social-profile-links
+{%- endcomment -%}
+
+{%- assign links = settings.pluginseo_structuredDataSocialProfileLinks | newline_to_br | split: '<br />' -%}
+
+<script data-desc="seo-organization" type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "@id": "{{ organization_id }}",
+    "name": "{{- shop_name -}}",
+    "url": "{{- shop.url -}}",
+    {%- if settings.pluginseo_structuredDataDisplayLogo == true  -%}
+      "logo": {
+        "type": "ImageObject",
+        "url": "https:{{- logo_url -}}"
+      },
+      "image": "https:{{- logo_url -}}",
+    {%- endif -%}
+    "sameAs": [
+      {%- for sociallink in links -%}
+        "{{- sociallink | strip -}}"{%- if forloop.last == false -%},{%- endif -%}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{%- comment -%}
+  https://developers.google.com/search/docs/data-types/products
+{%- endcomment -%}
+{%- if rootTemplate == 'product' -%}
+  {%- assign piseo_max_product_id = shop.metafields.pluginseo.max_product_id -%}      
+  {%- if piseo_max_product_id == blank or product.id <= piseo_max_product_id -%}
+    {%- assign product_title = product.title -%}
+    {%- assign product_description = product.description  -%}
+    {%- if hasLangify == true and language != shop.metafields["languages"]["default"] -%}
+    {%- assign product_title = langify_title -%}
+    {%- assign product_description = langify_description -%}
+    {%- endif -%}
+    {%- assign review_app = settings.pluginseo_structuredDataReviewApp -%}
+    {%- if review_app == blank -%}
+      {%- assign review_app = "autodetect" -%}
+    {%- endif -%}
+
+    <script data-desc="seo-product" type="application/ld+json">
+      {
+        "@context": "http://schema.org/",
+        "@type": "Product",
+        "@id": "{{- canonical_url | append: '#product' -}}",
+        "name": "{{- product_title | escape -}}",
+        "image": "https:{{- product.featured_image | image_url: width: 450, height: 450 -}}",
+        "description": "{{- product_description | newline_to_br | replace: '<br />', ' ' | strip_html | strip_newlines | strip | escape -}}",
+        "mpn": "{{- product.id -}}",
+        "brand": {
+          "@type": "Thing",
+          "name": "{{- product.vendor -}}"
+        },
+        {%- assign aggregate_rating_id = canonical_url | append: '#rating' -%}
+        {%- if review_app == "shopify_product_reviews" or review_app == "autodetect" and product.metafields.spr.reviews != blank -%}
+          {%- if product.metafields.spr.reviews != blank -%}
+            {%- comment -%}These are perhaps legacy...{%- endcomment -%}
+            {%- assign spr_average = product.metafields.spr.reviews | split: '<meta itemprop="average" content="' -%}
+            {%- assign spr_average = spr_average[1] | split: '" />' -%}
+            {%- assign spr_votes = product.metafields.spr.reviews | split: '<meta itemprop="votes" content="' -%}
+            {%- assign spr_votes = spr_votes[1] | split: '" />' -%}
+            {%- assign spr_best = product.metafields.spr.reviews | split: '<meta itemprop="best" content="' -%}
+            {%- assign spr_best = spr_best[1] | split: '" />' -%}
+            {%- assign spr_worst = product.metafields.spr.reviews | split: '<meta itemprop="worst" content="' -%}
+            {%- assign spr_worst = spr_worst[1] | split: '" />' -%}
+            {%- if spr_average[0] != blank and spr_votes[0] != blank and spr_best[0] != blank and spr_worst[0] != blank-%}
+              "aggregateRating": {
+                "@id": "{{ aggregate_rating_id }}",
+                "@type": "AggregateRating",
+                "ratingValue": {{- spr_average[0] -}},
+                "ratingCount": {{- spr_votes[0] -}},
+                "reviewCount": {{- spr_votes[0] -}},
+                "bestRating": {{- spr_best[0] -}},
+                "worstRating": {{- spr_worst[0] -}}
+              },
+            {%- else -%}
+              {%- comment -%}...and these are perhaps new {%- endcomment -%}
+              {%- assign spr_best_rating = product.metafields.spr.reviews | split: '<meta itemprop="bestRating" content="' -%}
+              {%- assign spr_best_rating = spr_best_rating[1] | split: '">' -%}
+              {%- assign spr_worst_rating = product.metafields.spr.reviews | split: '<meta itemprop="worstRating" content="' -%}
+              {%- assign spr_worst_rating = spr_worst_rating[1] | split: '">' -%}
+              {%- assign spr_review_count = product.metafields.spr.reviews | split: '<meta itemprop="reviewCount" content="' -%}
+              {%- assign spr_review_count = spr_review_count[1] | split: '">' -%}
+              {%- assign spr_rating_value = product.metafields.spr.reviews | split: '<meta itemprop="ratingValue" content="' -%}
+              {%- assign spr_rating_value = spr_rating_value[1] | split: '">' -%}
+              {%- if spr_rating_value[0] != blank and spr_review_count[0] != blank and spr_best_rating[0] != blank and spr_worst_rating[0] != blank- %}
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "@id": "{{ aggregate_rating_id }}",
+                  "ratingValue": {{- spr_rating_value[0] -}},
+                  "ratingCount": {{- spr_review_count[0] -}},
+                  "reviewCount": {{- spr_review_count[0] -}},
+                  "bestRating": {{- spr_best_rating[0] -}},
+                  "worstRating": {{- spr_worst_rating[0] -}}
+                },
+              {%- endif %}
+            {%- endif -%}
+          {%- endif -%}
+        {%- elsif review_app == "loox" or review_app == "autodetect" and product.metafields.loox.reviews != blank -%}
+          {%- if product.metafields.loox.reviews != blank -%}
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "@id": "{{ aggregate_rating_id }}",
+              "ratingValue": {{ product.metafields.loox.avg_rating }},
+              "ratingCount": {{ product.metafields.loox.num_reviews }},
+              "reviewCount": {{ product.metafields.loox.num_reviews }},
+              "bestRating": 5,
+              "worstRating": 1
+            },
+            "review": [
+            {%- assign split_reviews = product.metafields.loox.reviews | split: '<div class="review">' -%}
+            {%- for review in split_reviews offset:1 -%}
+              {%- assign review_author = review | split: '<div class="name">' | last | split: "<" | first -%}
+              {%- assign review_content = review | split: '<div class="review_text">' | last | split: "<" | first | newline_to_br | replace: '<br />', ' ' | strip_html | strip_newlines | strip | escape -%}
+              {
+                "@type": "Review",
+                "reviewRating": {
+                  "@type": "AggregateRating",
+                  "@id": "{{ aggregate_rating_id }}"
+                },
+                "author": {
+                  "@type": "Person",
+                  "name": "{{ review_author }}"
+                },
+                "reviewBody": "{{ review_content }}"
+              }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+            ],
+          {%- endif -%}
+        {%- elsif review_app == "judge.me" or review_app == "autodetect" and product.metafields.judgeme.badge != blank -%}
+          {%- if product.metafields.judgeme.badge != blank -%}
+            {%- assign average_rating = product.metafields.judgeme.badge | strip_newlines | remove: " " | split: '<div class="review">' -%}
+            {%- assign average_rating = average_rating[1] | split: '"' | first -%}
+
+            {%- assign rating_count = product.metafields.judgeme.badge | strip_newlines | remove: " " | split: 'data-reviews="' -%}
+            {%- assign rating_count = rating_count[1] | split: '"' | first -%}
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "@id": "{{ aggregate_rating_id }}",
+              "ratingValue": {{ average_rating }},
+              "ratingCount": {{ rating_count }},
+              "reviewCount": {{ rating_count}},
+              "bestRating": 5,
+              "worstRating": 1
+            },
+          {%- endif -%}
+        {%- elsif review_app == "stamped" or review_app == "autodetect" and product.metafields.stamped.badge != blank -%}
+          {%- if product.metafields.stamped.badge != blank -%}
+            {%- assign average_rating = product.metafields.stamped.badge | strip_newlines | remove: " " | split: '<spanclass="stamped-badge"data-rating="' -%}
+            {%- assign average_rating = average_rating[1] | split: '"' | first -%}
+
+            {%- assign rating_count = product.metafields.stamped.badge | strip_newlines | remove: " " | split: 'data-reviews="' -%}
+            {%- assign rating_count = rating_count[1] | split: '"' | first -%}
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "@id": "{{ aggregate_rating_id }}",
+              "ratingValue": {{ average_rating }},
+              "ratingCount": {{ rating_count }},
+              "reviewCount": {{ rating_count}},
+              "bestRating": 5,
+              "worstRating": 1
+            },
+          {%- endif -%}
+        {%- elsif review_app == "rivyo" or review_app == "autodetect" and product.metafields.product_schema.th_ratingCount != blank and product.metafields.product_schema.th_ratingValue != blank-%}
+          {%- if product.metafields.product_schema.th_ratingCount != blank and product.metafields.product_schema.th_ratingValue != blank -%}
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "@id": "{{ aggregate_rating_id }}",
+              "ratingValue": {{ product.metafields.product_schema.th_ratingValue }},
+              "ratingCount": {{ product.metafields.product_schema.th_ratingCount }},
+              "reviewCount": {{ product.metafields.product_schema.th_ratingCount}},
+              "bestRating": 5,
+              "worstRating": 1
+            },
+          {%- endif -%}
+        {%- elsif review_app == "opinew" or review_app == "autodetect" and product.metafields.opinew_metafields.product_plugin != blank -%}
+          {%- if product.metafields.opinew_metafields.product_plugin != blank -%}
+            {%- assign metafield = product.metafields.opinew_metafields.product_plugin | strip_newlines -%}
+            {%- assign average_rating = metafield | split: '"average_stars":' | last | split: ',' | first-%}
+            {%- assign rating_count = metafield | split: '"review_number":' | last | split: ',' | first -%}
+            {%- if average_rating != "0" and rating_count != "0" -%}
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "@id": "{{ aggregate_rating_id }}",
+                "ratingValue": {{ average_rating }},
+                "ratingCount": {{ rating_count }},
+                "reviewCount": {{ rating_count}},
+                "bestRating": 5,
+                "worstRating": 1
+              },
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+        {%- if product.variants.size > 1 -%}
+          {%- assign variants_by_price = product.variants | sort: 'price' -%}
+          {%- assign num_available_variants = product.variants | where: "available" | size %}
+          "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "{{- shop.currency -}}",
+            "lowPrice": {{- variants_by_price.first.price | divided_by: 100.0 -}},
+            "highPrice": {{- variants_by_price.last.price | divided_by: 100.0 -}},
+            "availability": "{%- if num_available_variants > 0 -%}InStock{%- else -%}OutOfStock{%- endif -%}",
+            "offerCount": {%- if num_available_variants > 0 -%}{{- num_available_variants -}}{%- else -%}1{%- endif -%},
+            "seller": {
+              "@type": "Organization",
+              "@id": "{{ organization_id }}"
+            }
+          },
+          "model": [
+            {%- for variant in product.variants -%}
+              {%- if variant.featured_image -%}
+                {%- assign image = variant.featured_image -%}
+              {%- else -%}
+                {%- assign image = product.featured_image -%}
+              {%- endif -%}
+              {
+                "@type": "ProductModel",
+                "@id": "{{- canonical_url | append: '#productModel=' | append: variant.id -}}",
+                "url": "{{- shop.url -}}{{- variant.url -}}",
+                "name": "{{- product_title | append: " " | append: variant.title | replace: "\", "\\\" | replace: '"', '\"' -}}",
+                "mpn": "{{- variant.id -}}",
+                {%- if variant.sku -%}
+                  "sku": "{{- variant.sku -}}",
+                {%- endif -%}
+                {%- if variant.barcode -%}
+                  {%- assign barcode = variant.barcode -%}
+                  {%- assign barcode_key = "" -%}
+                  {%- assign barcode_length = barcode | size -%}
+                  {%- case barcode_length 8 -%}
+                    {%- when 8 %}
+                      {%- assign barcode_key = "gtin8" -%}
+                    {%- when 12 -%}
+                      {%- assign barcode_key = "gtin12" -%}
+                    {%- when 13 -%}
+                      {%- assign barcode_key = "gtin13" -%}
+                    {%- when 14 -%}
+                      {%- assign barcode_key = "gtin14" -%}
+                  {% endcase %}
+
+                  {%- unless barcode_key == blank -%}
+                    "{{ barcode_key }}": "{{ barcode }}",
+                  {%- endunless -%}
+                {%- endif -%}
+                {%- if variant.requires_shipping and variant.weight > 0 -%}
+                  "weight": {
+                    "@type": "QuantitativeValue",
+                    "value": {{ variant.weight }},
+                    "unitCode": "GRM"
+                  },
+                {%- endif -%}
+
+                {%- assign additional_properties = "" -%}
+                {%- assign color_variations = "color,colour,kleur,farbe,couleur,colore" | split:"," -%}
+                {%- assign color_found = false -%}
+
+                {%- for productOption in product.options_with_values -%}
+                  {%- assign option_name = productOption.name -%}
+                  {%- assign option_name_downcased = option_name | downcase %}
+                  {%- assign option_key = "option%1" |  replace: "%1", productOption.position -%}
+                  {% comment %} `replace: "\", "\\\"` is actually replacing single backlash with double backlash. Don't know why it needs to be writtern like this {% endcomment %}
+                  {%- assign value = variant[option_key] | replace: "\", "\\\" | replace: '"', '\"' -%}
+
+                  {%- if color_found != true and color_variations contains option_name_downcased -%}
+                    {%- assign color_found = true -%}
+                    "color": "{{- value -}}",
+                  {%- else -%}
+                    {%- capture additional_property -%}
+                      {
+                        "@type": "PropertyValue",
+                        "name": "{{- option_name -}}",
+                        "value": "{{- value -}}"
+                      }
+                    {%- endcapture -%}
+                    {%- unless additional_properties == blank -%}
+                      {%- assign additional_properties = additional_properties | append: "," -%}
+                    {%- endunless -%}
+                    {%- assign additional_properties = additional_properties | append: additional_property -%}
+                  {% endif %}
+                {%- endfor -%}
+
+                {%- unless additional_properties == blank -%}
+                  "additionalProperty": [{{ additional_properties }}],
+                {%- endunless -%}
+
+                "image": "https:{{- image | image_url: width: 450, height: 450 -}}",
+                "offers": {
+                  "@type": "Offer",
+                  "priceCurrency": "{{- shop.currency -}}",
+                  "price": {{- variant.price | divided_by: 100.0 -}},
+                  "availability": "{%- if variant.available -%}InStock{%- else -%}OutOfStock{%- endif -%}",
+                  "seller": {
+                    "@type": "Organization",
+                    "@id": "{{ organization_id }}"
+                  }
+                }
+              }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ]
+        {%- else -%}
+          {%- assign product_or_variant = product.selected_or_first_available_variant -%}
+          {%- if product_or_variant.sku -%}
+            "sku": "{{- product_or_variant.sku -}}",
+          {%- endif -%}
+          {%- if product_or_variant.barcode -%}
+            {%- assign barcode = product_or_variant.barcode -%}
+            {%- assign barcode_key = "" -%}
+            {%- assign barcode_length = barcode | size -%}
+            {%- case barcode_length 8 -%}
+              {%- when 8 %}
+                {%- assign barcode_key = "gtin8" -%}
+              {%- when 12 -%}
+                {%- assign barcode_key = "gtin12" -%}
+              {%- when 13 -%}
+                {%- assign barcode_key = "gtin13" -%}
+              {%- when 14 -%}
+                {%- assign barcode_key = "gtin14" -%}
+            {% endcase %}
+
+            {%- unless barcode_key == blank -%}
+              "{{ barcode_key }}": "{{ barcode }}",
+            {%- endunless -%}
+          {%- endif -%}
+          {%- if product_or_variant.requires_shipping and product_or_variant.weight > 0 -%}
+            "weight": {
+              "@type": "QuantitativeValue",
+              "value": {{ product_or_variant.weight }},
+              "unitCode": "GRM"
+            },
+          {%- endif -%}
+          "offers": {
+            "@type": "Offer",
+            "url": "{{-canonical_url -}}",
+            "priceCurrency": "{{- shop.currency -}}",
+            "price": "{{- product_or_variant.price | divided_by: 100.00 -}}",
+            "availability": "{%- if product_or_variant.available -%}InStock{%- else -%}OutOfStock{%- endif -%}",
+            "seller": {
+              "@type": "Organization",
+              "@id": "{{ organization_id }}"
+            }
+          }
+        {%- endif -%}
+      }
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%}
+https://developers.google.com/search/docs/data-types/sitename
+https://developers.google.com/search/docs/data-types/sitelinks-searchbox
+{%- endcomment -%}
+<script data-desc="seo-website" type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "{{- shop_name -}}",
+    "url": "{{- shop.url -}}",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{- shop.url -}}/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+</script>
+{%- if settings.pluginseo_structuredDataDisplayLocalBusiness and settings.pluginseo_structuredDataDisplayLogo -%}
+  {%- assign local_business_name = settings.pluginseo_structuredDataBusinessName -%}
+  {%- assign local_business_url = settings.pluginseo_structuredDataShopUrl -%}
+  {%- assign local_business_telephone = settings.pluginseo_structuredDataContactPhone -%}
+  {%- assign local_business_email = settings.pluginseo_structuredDataBusinessEmail -%}
+  {%- assign local_business_street_address = settings.pluginseo_structuredDataStreet -%}
+  {%- assign local_business_address_locality = settings.pluginseo_structuredDataLocality -%}
+  {%- assign local_business_address_region = settings.pluginseo_structuredDataRegion -%}
+  {%- assign local_business_address_country = settings.pluginseo_structuredDataCountry -%}
+  {%- assign local_business_postal_code = settings.pluginseo_structuredDataPostalCode -%}
+
+  <script data-desc="seo-local-business" type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "LocalBusiness",
+      "image": "{{- logo_url -}}",
+      {%- if local_business_name != blank -%}"name": "{{- local_business_name -}}",{%- endif -%}
+      {%- if local_business_url != blank -%}"url": "{{- local_business_url -}}",{%- endif -%}
+      {%- if local_business_telephone != blank -%}"telephone": "{{- local_business_telephone -}}",{%- endif -%}
+      {%- if local_business_email != blank -%}"email": "{{- local_business_email -}}",{%- endif -%}
+      "address": {
+        "@type": "PostalAddress"
+        {%- if local_business_street_address != blank -%},"streetAddress": "{{- local_business_street_address-}}"{%- endif -%}
+        {%- if local_business_address_locality != blank -%},"addressLocality": "{{- local_business_address_locality -}}"{%- endif -%}
+        {%- if local_business_address_region != blank -%},"addressRegion": "{{- local_business_address_region -}}"{%- endif -%}
+        {%- if local_business_address_country != blank -%},"addressCountry": "{{- local_business_address_country -}}"{%- endif -%}
+        {%- if local_business_postal_code != blank -%},"postalCode": "{{- local_business_postal_code -}}"{%- endif -%}
+      }
+    }
+  </script>
+{%- endif -%}
+{%- comment -%} theme-check-enable UnusedAssign {%- endcomment -%}

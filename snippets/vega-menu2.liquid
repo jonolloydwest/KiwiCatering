@@ -1,0 +1,77 @@
+<ul class="vega-menu">
+  {% for link in linklists.vega-menu.links %}
+  {% assign child_list_handle = link.title | handleize %}
+  {% if linklists[child_list_handle].links != '' %}
+  <li class="menu-link parant">  
+    <a class="link-title" href="JavaScript:void(0)">
+      <span class="sp-link-title">{{ link.title }}</span>
+      <i class="fa fa-angle-right"></i>
+    </a>
+    <a data-toggle="collapse" href="#collapse-{{ link.title | replace: ' ' , '-' | remove: '&' }}" class="link-title link-title-lg">
+      <span class="sp-link-title">{{ link.title }}</span>
+      <i class="fa fa-angle-right"></i>
+    </a>
+    <ul class="dropdown-submenu collapse" id="collapse-{{ link.title | replace: ' ' , '-' | remove: '&' }}">
+      {% for childlink in linklists[child_list_handle].links %}
+      {% assign grand_childlink_handle = childlink.title | handle %}
+      {% if linklists[grand_childlink_handle] and linklists[grand_childlink_handle].links.size > 0 %}
+      <li class="megamenu-li parant">
+        <h2 class="sublink-title">{{ childlink.title }}</h2>
+        <a data-toggle="collapse" href="#collapse-{{ childlink.title | replace: ' ' , '-' | remove: '&' }}" class="sublink-title">
+          <span>{{ childlink.title }}</span>
+          <i class="fa fa-angle-down"></i>
+        </a>
+        <ul class="dropdown-supmenu collapse" id="collapse-{{ childlink.title | replace: ' ' , '-' | remove: '&' }}">
+          {% for grand_childlink_handle in linklists[grand_childlink_handle].links %}
+          <li class="supmenu-li">
+            <a href="{{ grand_childlink_handle.url }}" class="suplink-title">{{ grand_childlink_handle.title }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% else %}
+      {% if childlink.type == "collection_link" and childlink.object.image %}
+      {% if childlink.title == "bottom"  %}
+      <div class="menu-banner {{ childlink.title | downcase }}">
+       <a href="{{ childlink.url }}" class="banner-hover">
+          {% assign vega2_banner_alt = childlink.title | default: shop.name %}
+          {% assign vega2_banner_width = childlink.object.image.width | default: 800 %}
+          {% assign vega2_banner_height = childlink.object.image.height | default: 600 %}
+          {% assign vega2_banner_src = childlink.object.image | image_url: width: 800 %}
+          <img src="{{ vega2_banner_src }}" alt="{{ vega2_banner_alt }}" width="{{ vega2_banner_width }}" height="{{ vega2_banner_height }}">
+        </a>
+      </div>
+      {% else %}
+      <li class="menu-banner">
+       <a href="{{ childlink.url }}" class="banner-hover">
+          {% assign vega2_banner_small_alt = childlink.title | default: shop.name %}
+          <img src="{{ childlink.object.image | image_url: width: 200, height: 200, crop: 'center' }}" alt="{{ vega2_banner_small_alt }}" width="200" height="200">
+        </a>
+      </li>
+      {% endif %}
+      {% else %}
+      <li class="submenu-li parant{% if childlink.active %} active{% endif %}">
+        <a href="{{ childlink.url }}" class="sublink-title">{{ childlink.title }}</a>
+      </li>      
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </li>
+  {% else %}
+  <li class="menu-link">
+    <a href="{{ link.url }}" class="link-title">
+      <span class="sp-link-title">{{ link.title }}</span>
+    </a>
+    <a href="{{ link.url }}" class="link-title link-title-lg">
+      <span class="sp-link-title">{{ link.title }}</span>
+    </a>
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>
+<script>
+  $('.megamenu-li').parent('ul').addClass('mega-menu');
+  $('.menu-banner').parent('ul').addClass('banner-menu');
+  $('.submenu-li').parent('ul').addClass('sub-menu');
+</script>

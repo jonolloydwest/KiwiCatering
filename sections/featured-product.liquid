@@ -1,0 +1,245 @@
+<!-- product-area start -->
+<div class="product-area product-tab-ptb">
+  <div class="container">
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+      {% if section.settings.section_title !='' %}
+      <div class="section-capture tab">
+        <div class="section-title">
+          {% if section.settings.section_title !='' %}
+          <h2>{{ section.settings.section_title }}</h2>
+          {% endif %}
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+          {% for block in section.blocks %}
+          {% case block.type %}
+          {% when 'product_tab' %}
+          {% assign category_product = collections[block.settings.tab_product] %}
+          <li role="presentation">
+            <a class="{% if forloop.first == true %}active show{% endif %}" role="tab" data-toggle="tab" href="#tab-{{ block.id }}">{{ category_product.title }}</a>
+          </li>
+          {% endcase %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      <div class="tab-content tabs">
+        {% for block in section.blocks %}
+        {% case block.type %}
+        {% when 'product_tab' %}
+        {% assign tab_collection = collections[block.settings.tab_product] %}
+        <div class="tab-pane fade{% if forloop.first == true %} active show{% endif %}" id="tab-{{ block.id }}" role="tabpanel">
+          <div class="swiper-container" id="feture_pro_tab">
+            <div class="swiper-wrapper">
+              {% for product in tab_collection.products %}
+              <div class="swiper-slide">
+                {% render 'product-grid-item', product: product, collection: tab_collection %}
+              </div>
+              {% endfor %}
+            </div>
+            <div class="swiper-buttons">
+              <button class="swiper-prev"><i class="ti-arrow-left"></i></button>
+              <button class="swiper-next"><i class="ti-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
+        {% endcase %}
+        {% endfor %}
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- product-area end -->
+<script>
+  var swiper = new Swiper('.swiper-container#feture_pro_tab', {
+    slidesPerColumn: {{ section.settings.product_col }},
+    slidesPerView: 4,
+    spaceBetween: 30,
+    observer: true,
+    observeParents: true,
+    {%- if settings.enable_rtl -%}
+    rtl: true,
+    {%- endif -%}
+    navigation: {
+      nextEl: '.swiper-next',
+      prevEl: '.swiper-prev',
+    },
+    breakpoints: {
+      0: {
+        slidesPerView: 2,
+        spaceBetween: 15
+      },
+      640: {
+        slidesPerView: 2,
+        spaceBetween: 15
+      },
+      768: {
+        slidesPerView: 3
+      },
+      1024: {
+        slidesPerView: 4
+      },
+      1599: {
+        slidesPerView: 4
+      }
+    }
+  });
+</script>
+{% schema %}
+{
+  "name": "Swiper Tab slider",
+  "settings": [
+  {
+    "type" : "header",
+    "content" : "Section Padding"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop / tablet"
+  },
+  {
+    "type": "range",
+    "id": "pro_tab_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "pro_tab_padding_bottom",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "pro_tab_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "pro_tab_padding_bottom_xs",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "header",
+    "content": "Section Title"
+  },
+  {
+    "type": "text",
+    "id": "section_title",
+    "label": "Title",
+    "default": "Featured Products"
+  },
+  {
+    "type": "header",
+    "content": "Product"
+  },
+  {
+    "type": "select",
+    "id": "product_col",
+    "label": "slides Per Column",
+    "options":[
+    {
+      "label": "1 Products",
+      "value": "1"
+    },
+    {
+      "label": "2 Products",
+      "value": "2"
+    },
+    {
+      "label": "3 Products",
+      "value": "3"
+    }
+    ],
+    "default": "1"
+  },
+  {
+    "type": "select",
+    "id": "slide_product_limit",
+    "label": "slides Per View",
+    "options":[
+    {
+      "label": "2 Products",
+      "value": "2"
+    },
+    {
+      "label": "3 Products",
+      "value": "3"
+    },
+    {
+      "label": "4 Products",
+      "value": "4"
+    }
+    ],
+    "default": "4"
+  },
+  {
+    "type": "text",
+    "id": "featured_product_limit_handle",
+    "label": "Product Limit",
+    "default": "10"
+  },
+  {
+    "type": "color",
+    "id": "pro_tab_bg_color", 
+    "label": "Background Color",
+    "default":   "#fff"
+  }
+  ],
+  "blocks" : [
+  {
+    "type" : "product_tab",
+    "name" : "Our Product",
+    "settings" : [
+    {
+      "type" : "collection",
+      "id" : "tab_product",
+      "label" : "Tab With Product"
+    }
+    ]
+  }
+  ],
+  "presets": [
+  {
+    "name": "Swiper Tab Slider",
+    "category": "Product Tab Slider"
+  }
+  ]
+}
+{% endschema %}
+<style>
+  .product-tab-ptb {
+    padding-top: {{ section.settings.pro_tab_padding_top }}px;
+    padding-bottom: {{ section.settings.pro_tab_padding_bottom }}px;
+    background-color: {{ section.settings.pro_tab_bg_color }};
+  }
+  @media (max-width: 767px){
+    .product-tab-ptb {
+      padding-top: {{ section.settings.pro_tab_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.pro_tab_padding_bottom_xs }}px;
+    }
+  }
+</style>

@@ -1,0 +1,81 @@
+<section class="page-not-found section-ptb">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="search-error-wrapper">
+          <div class="img-text">
+            {% assign opps_image = section.settings.opps_404 %}
+            {% if opps_image %}
+              {% assign opps_alt = section.settings.page_button_title | default: shop.name %}
+              {% assign opps_width = opps_image.width | default: 626 %}
+              {% assign opps_height = opps_image.height | default: 245 %}
+              {% assign opps_src = opps_image | image_url: width: 1024 %}
+              <img class="img-fluid" src="{{ opps_src }}" alt="{{ opps_alt }}" width="{{ opps_width }}" height="{{ opps_height }}" loading="lazy">
+            {% else %}
+              <img class="img-fluid" src="{{ 'placeholder-image.svg' | asset_url }}" alt="Error illustration" width="626" height="245" loading="lazy">
+            {% endif %}
+          </div>
+          {% if section.settings.page_button_title !='' %}
+          <a class="btn btn-style" href="{{ section.settings.button_url }}" data-text="{{ section.settings.page_button_title }}">
+            <span>{{ section.settings.page_button_title }}</span>
+            <i class="ti-home"></i>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .page-not-found .search-error-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .page-not-found .search-error-wrapper a {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .page-not-found .search-error-wrapper a i{
+    font-size: 14px;
+    {%- if section.settings.enable_rtl -%}
+    margin-right: 5px;
+    {%- else -%}
+    margin-left: 5px;
+    {%- endif -%}
+  }
+  @media (max-width: 767px) {
+    .page-not-found .search-error-wrapper a{
+      margin-top: 15px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Page Not Found",
+  "settings": [
+      {
+        "type": "image_picker",
+        "id": "opps_404",
+        "label": "Image",
+        "info": "Recommended Size: 512px X 512px"
+      },
+      {
+        "type": "text",
+        "id": "page_button_title",
+        "label": "Button Title",
+        "default": "Back to homepage"
+      },
+      {
+        "type": "url",
+        "id": "button_url",
+        "label": "Button URL",
+        "default": "\/"
+      }
+    
+  ]
+}
+{% endschema %}

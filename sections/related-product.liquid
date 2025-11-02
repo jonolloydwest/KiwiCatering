@@ -1,0 +1,220 @@
+<!-- PRODUCT SECTION START -->
+{% assign product_limit = section.settings.section_product_limit_handle | default: '10' | plus: 0 %}
+{% if product_limit <= 0 %}
+  {% assign product_limit = 4 %}
+{% endif %}
+{% assign original_product = product %}
+{% assign related_collection = nil %}
+{% if collection and collection.products_count > 1 %}
+  {% assign related_collection = collection %}
+{% else %}
+  {% assign fallback_collection = collections['all'] %}
+  {% if fallback_collection and fallback_collection.products_count > 1 %}
+    {% assign related_collection = fallback_collection %}
+  {% endif %}
+{% endif %}
+{% assign related_products = blank %}
+{% if related_collection %}
+  {% assign related_products = related_collection.products | shuffle %}
+{% endif %}
+{% capture related_items %}
+  {% assign displayed = 0 %}
+  {% for related_product in related_products %}
+    {% if related_product.handle != original_product.handle %}
+      <div class="item">
+        {% render 'product-grid-item', product: related_product, collection: related_collection %}
+      </div>
+      {% assign displayed = displayed | plus: 1 %}
+      {% if displayed >= product_limit %}
+        {% break %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+{% assign related_items = related_items | strip %}
+{% if section.settings.section_products_enable and related_items != '' %}
+<section class="related-product">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        {% if section.settings.section_title !='' %}
+        <div class="section-capture">
+          <div class="section-title">
+            {% if section.settings.section_title !='' %}
+            <h2 class="heading-home">{{ section.settings.section_title }}</h2>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        <div class="product-related-slider owl-carousel owl-theme" id="related-slider">
+          {{ related_items }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  $('#related-slider').owlCarousel({
+    loop: false,
+    rewind: true,
+    margin: 30,
+    nav: true,
+    navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+    dots: false,
+    {%- if settings.enable_rtl -%}
+    rtl: true,
+    {%- endif -%}
+    autoplay: true,
+    sautoplayTimeout: 5000,
+    autoplayHoverPause: true,
+    responsive:{
+      0:{
+        items: 1,
+        margin: 15
+      },
+      768:{
+        items: 3
+      },
+      979:{
+        items: 3
+      },
+      1199: {
+        items: 3
+      }
+    }
+  });
+</script>
+{% endif %}
+<!-- PRODUCT SECTION END -->
+{% schema %}
+{
+  "name": "Related Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "section_products_enable",
+      "label": "Show Related Product",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Desktop / Laptop "
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_lg",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "label": "Section Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Section Title"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Title",
+      "default": "Related Product"
+    },
+    {
+      "type": "header",
+      "content": "Product Options"
+    },
+    {
+      "type": "text",
+      "id": "section_product_limit_handle",
+      "label": "Product Limit",
+      "default": "10"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .related-product {
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  @media (max-width: 991px){
+    .related-product {
+      padding-bottom: 0;
+    }
+  }
+  @media (max-width: 1199px){
+    .related-product {
+      padding-top: {{ section.settings.section_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .related-product {
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+</style>

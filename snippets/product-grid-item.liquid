@@ -1,0 +1,108 @@
+{% if product %}
+  {%- assign variant = product.selected_or_first_available_variant -%}
+  {%- if product.available and variant -%}
+    {%- assign func = "Shopify.addItem(" | append: variant.id | append: ", 1)" -%}
+  {%- endif -%}
+
+  {%- assign current_collection = collection -%}
+  {%- if current_collection == blank and product.collections.size > 0 -%}
+    {%- assign current_collection = product.collections.first -%}
+  {%- endif -%}
+  {%- assign product_url = product.url -%}
+  {%- if current_collection -%}
+    {%- assign product_url = product.url | within: current_collection -%}
+  {%- endif -%}
+
+  {%- assign primary_image = product.featured_image -%}
+  {%- assign primary_image_alt = product.title -%}
+  {%- if primary_image -%}
+    {%- assign primary_image_alt = primary_image.alt | default: product.title -%}
+    {%- assign primary_image_url = primary_image | image_url: width: 558, height: 600, crop: 'center' -%}
+  {%- else -%}
+    {%- assign primary_image_url = 'placeholder-image.svg' | asset_url -%}
+  {%- endif -%}
+
+  {%- assign secondary_image = blank -%}
+  {%- assign secondary_image_url = blank -%}
+  {%- assign secondary_image_alt = product.title -%}
+  {%- if product.images.size > 1 -%}
+    {%- assign secondary_image = product.images[1] -%}
+    {%- if secondary_image -%}
+      {%- assign secondary_image_alt = secondary_image.alt | default: product.title -%}
+      {%- assign secondary_image_url = secondary_image | image_url: width: 558, height: 600, crop: 'center' -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  <div class="single-product-wrap">
+    <div class="{% if product.available %}product-image{% else %}product-image stock-out{% endif %}">
+      <a class="pro-img" href="{{ product_url }}">
+        <img loading="lazy" class="img-fluid img1" src="{{ primary_image_url }}" alt="{{ primary_image_alt | escape }}" width="558" height="600">
+        {% if secondary_image_url %}
+          <img loading="lazy" class="img-fluid img2" src="{{ secondary_image_url }}" alt="{{ secondary_image_alt | escape }}" width="558" height="600" />
+        {% endif %}
+      </a>
+      <div class="product-label">
+        {%- assign compare_price = product.compare_at_price_max | default: 0 -%}
+        {%- assign on_sale_flag = false -%}
+        {%- if compare_price > product.price and compare_price > 0 -%}
+          {%- assign on_sale_flag = true -%}
+        {%- endif -%}
+        {%- assign sold_out_flag = false -%}
+        {%- unless product.available -%}
+          {%- assign sold_out_flag = true -%}
+        {%- endunless -%}
+        {%- render 'product-label', product: product, on_sale: on_sale_flag, sold_out: sold_out_flag -%}
+      </div>
+    </div>
+    <div class="product-content">
+      <div class="product-title">
+        <a href="{{ product_url }}" title="{{ product.title }}">{{ product.title }}</a>
+      </div>
+      <div class="price-box">
+        <span class="new-price">{{ product.price | money }}</span>
+        {% if product.compare_at_price_max > product.price %}
+          <span class="old-price">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+      <div class="product-ratting">
+        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+      </div>
+      <p class="product-description">
+        {%- if product.description contains '[short_description]' -%}
+          {%- assign short_description_first = product.description | split: '[/short_description]' | first -%}
+          {%- assign short_description_final = short_description_first | split: '[short_description]' | last -%}
+          {{ short_description_final | truncate: 100 }}
+        {%- else -%}
+          {{ product.description
+            | strip_html
+            | truncatewords: 35
+            | split: '[short_description]' | first
+            | split: '[product_description]' | first
+            | split: '[new_products]' | first
+            | split: '[product_video]' | first
+            | split: '[affiliate_link]' | first }}
+        {%- endif -%}
+      </p>
+      <div class="product-content__cta">
+        {% if product.available and func %}
+          <a href="javascript:void(0);" onclick="{{ func }}; return false;" class="add-to-cart ajax-spin-cart">
+            <span>
+              <span class="cart-title">Add to cart</span>
+              <span class="cart-loading animated infinite rotateOut"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-loader"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg></span>
+              <span class="cart-added"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span class="cart-unavailable"><i class="ion-android-alert"></i></span>
+            </span>
+          </a>
+        {% else %}
+          <a class="add-to-cart disabled" disabled="disabled" href="#" title="Out of stock">Soldout</a>
+        {% endif %}
+      </div>
+      <div class="product-action">
+        <a href="javascript:void(0);" onclick="quiqview('{{ product.handle | handleize }}')" class="quick-view">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </a>
+        {% render 'wishlist-button', product: product %}
+      </div>
+    </div>
+  </div>
+{% endif %}

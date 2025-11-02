@@ -1,0 +1,111 @@
+<div class="crap-search fade modal" id="search-crap">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form action="{{ routes.search_url }}" method="get" class="search-bar" role="search">
+          <div class="form-search">
+            <input type="hidden" name="type" value="product">
+            <input type="hidden" name="options[unavailable_products]" value="show">
+            <input type="hidden" name="options[prefix]" value="last">
+            <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder }}" id="search" required class="input-text" aria-label="{{ 'general.search.placeholder' | t }}">
+            <button class="search-btn" type="submit">
+              {% if settings.search_icon %}{{ settings.search_icon }}{% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              {% endif %}
+            </button>
+          </div>
+        </form>
+        <button type="button" class="btn close" data-dismiss="modal">
+        	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .crap-search{
+    width: 100%;
+    padding: 0px !important;
+  }
+  .crap-search .modal-content{
+    border: none;
+    border-radius: 0px;
+  }
+  .crap-search .modal-dialog{
+    max-width: 100%;
+    margin: 0px;
+  }
+  .crap-search .modal-content .search-bar{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .crap-search .modal-dialog .modal-body{
+    padding: 60px 15px;
+  }
+  .crap-search .form-search{
+    position: relative;
+  }
+  .crap-search .form-search input.input-text{
+	width: 100%;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #a4a4a4;
+  }
+  .crap-search .form-search button{
+    font-size: 18px;
+    position: absolute;
+    top: 0px;
+    {% if settings.enable_rtl %}
+    left: 0;
+    {% else %}
+    right: 0;
+    {% endif %}
+    height: 100%;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .crap-search .form-search button svg{
+    width: 20px;
+    height: 20px;
+  }
+  .crap-search .modal-dialog .modal-body button.close{
+    opacity: 1;
+    padding: 0;
+    position: absolute;
+    top: 30px;
+    text-shadow: none;
+    {% if settings.enable_rtl %}
+    left: 30px;
+    {% else %}
+    right: 30px;
+    {% endif %}
+  }
+  .crap-search .modal-dialog .modal-body button.close,
+  .crap-search .modal-dialog .modal-body button.close:hover{
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  .crap-search .modal-dialog .modal-body button.close:hover{
+    color: {{ settings.color_primary }};
+  }
+  @media (max-width: 767px) {
+    .crap-search .modal-dialog .modal-body{
+      padding: 30px 15px;
+    }
+    .crap-search .modal-dialog .modal-body button.close{
+      {% if settings.enable_rtl %}
+      left: 0px;
+      {% else %}
+      right: 0px;
+      {% endif %}
+      top: 0;
+    }
+    .crap-search .modal-content .search-bar{
+      width: 1000%;
+    }
+  }
+</style>

@@ -1,0 +1,68 @@
+<!-- Share -->
+<div class="share-icons">
+    
+  {% if template contains 'article' or template contains 'blog' %}
+  {% capture permalink_u_r_l %}{{ shop.url }}{{ article.url }}{% endcapture %}
+  {% capture share_title %}{{ article.title | url_param_escape }}{% endcapture %}
+
+  {% elsif template contains 'product' %}
+  {% capture permalink_u_r_l %}{{ shop.url }}{{ product.url }}{% endcapture %}
+  {% capture share_title %}{{ product.title | url_param_escape }}{% endcapture %}
+
+  {% elsif template == 'password' %}
+  {% capture permalink_u_r_l %}{{ shop.url }}{% endcapture %}
+  {% capture share_title %}{% unless shop.description == blank %}{{ shop.description | url_param_escape }}{% else %}{{ shop.name | url_param_escape }}{% endunless %}{% endcapture %}
+
+  {% endif %}
+
+  {% assign share_button_style = section.settings.social_sharing_style %}
+  
+  <h6>{{ section.settings.social_share_title }}</h6>
+  <ul class="pro_social_link{% if share_button_style != blank %} pro_social_link--{{ share_button_style | handle | replace: ' ', '-' }}{% endif %}">
+    <li>
+      <a target="_blank" href="//www.facebook.com/sharer.php?u={{ permalink_u_r_l }}" class="facebook" title="Share on Facebook" tabindex="0"><i class="ion-social-facebook"></i></a>
+    </li>
+    <li>
+      <a target="_blank" href="//twitter.com/share?text={{ share_title }}&amp;url={{ permalink_u_r_l }};source=webclient" class="twitter" title="Share on Twitter" tabindex="0"><i class="ion-social-twitter"></i></a>
+    </li>
+    <li>
+      <a target="_blank" href="//plus.google.com/share?url={{ permalink_u_r_l }}" class="googleplus" title="Share on Google+" tabindex="0"><i class="ion-social-googleplus"></i></a>
+    </li>
+    {% if product.featured_image or article.image  %}
+    <li>
+      <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ permalink_u_r_l }}&amp;media=http:{% if template contains 'product' %}{{ product | image_url: width: 1024, height: 1024 }}{% else %}{{ article | image_url: width: 1024, height: 1024 }}{% endif %}&amp;description={{ share_title }}" class="pinterest" title="Share on Pinterest" tabindex="0"><i class="ion-social-pinterest"></i></a>
+    </li>
+    {% endif %}
+  </ul>
+</div>
+<style>
+  ul.pro_social_link{
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+  ul.pro_social_link li{
+    {%- if settings.enable_rtl -%}
+    margin-left: 15px;
+    {%- else -%}
+    margin-right: 15px;
+    {%- endif -%}
+  }
+  ul.pro_social_link li a{
+    font-size: 18px;
+    line-height: 0;
+  }
+  ul.pro_social_link li a.facebook{
+    color: #3b5999;
+  }
+  ul.pro_social_link li a.twitter{
+    color: #55acee;
+  }
+  ul.pro_social_link li a.googleplus{
+    color: #dd4b39;
+  }
+  ul.pro_social_link li a.pinterest{
+    color: #bd081c;
+  }
+</style>

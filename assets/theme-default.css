@@ -1,0 +1,49 @@
+
+/* Product Swatch Variant */
+.swatch-element > input {
+  display: none;
+}
+/* End Product Swatch Variant */
+
+/* Popup Cart */
+.ajax-popup .modal-content-text {
+  float: left;
+  margin-right: 20px;
+}
+.ajax-popup .modal-button {
+  float: left;
+}
+.ajax-popup .modal-close {
+  float: right;
+}
+.ajax-popup .modal-content-text i {
+  font-size: 14px;
+  margin-right: 10px;
+}
+.ajax-popup .modal-button > a {
+  
+  text-decoration: underline;
+}
+.ajax-popup .modal-content {
+  border: medium none rgba(0, 0, 0, 0);
+  border-radius: 0;
+}
+.ajax-popup .modal-content-text i {
+  float: left;
+  font-size: 24px;
+  margin-right: 10px;
+}
+.ajax-popup .modal-close button {
+  font-size: 24px;
+}
+.error-ajax-popup .modal-content-text {
+  width: 80%;
+}
+/* End Popup Cart */
+
+
+/* 404 Page */
+.error-content > img {
+  margin-bottom: 30px;
+}
+/* End 404 Page */

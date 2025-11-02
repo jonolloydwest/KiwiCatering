@@ -1,0 +1,152 @@
+{%- assign story_handles = '10-boxes-of-cream-chargers,24-boxes-of-cream-chargers,50-boxes-of-cream-chargers,100-packs-of-cream-chargers-8-5-gram,flavoured-cream-chargers,cream-dispensers,birch-cutlery-1,palm-leaf-plates' | split: ',' -%}
+{%- assign stories_output = '' -%}
+{%- for handle in story_handles -%}
+  {%- assign coll = collections[handle] -%}
+  {%- if coll -%}
+    {%- capture stories_output -%}
+{{ stories_output }}
+      <a href="{{ coll.url }}" class="collection-stories__item">
+        <span class="collection-stories__image">
+          {% if coll.image %}
+            {{ coll.image | image_url: width: 148, height: 148, crop: 'center' | image_tag: alt: coll.title, width: 74, height: 74, loading: 'lazy', class: 'collection-stories__img' }}
+          {% else %}
+            <span class="collection-stories__placeholder" aria-hidden="true">{{ coll.title | slice: 0, 1 }}</span>
+          {% endif %}
+        </span>
+        <span class="collection-stories__title">{{ coll.title }}</span>
+      </a>
+    {%- endcapture -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if stories_output != blank -%}
+<section class="collection-stories">
+  <div class="container-fluid collection-stories__container">
+    <div class="collection-stories__list">
+{{ stories_output }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection Stories",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Collection Stories"
+    }
+  ]
+}
+{% endschema %}
+{% stylesheet %}
+.collection-stories {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  background-color: #fff;
+}
+.collection-stories__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.collection-stories__list {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 20px 32px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.collection-stories__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+.collection-stories__item:hover {
+  transform: translateY(-2px);
+}
+.collection-stories__image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(0,0,0,0.05);
+  background: rgba(0,0,0,0.02);
+  margin-bottom: 8px;
+}
+.collection-stories__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.collection-stories__placeholder {
+  font-size: 28px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.35);
+}
+.collection-stories__title {
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  max-width: 100px;
+  line-height: 1.35;
+  text-transform: capitalize;
+}
+@media (max-width: 767px) {
+  .collection-stories {
+    padding: 16px 0;
+  }
+  .collection-stories__container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .collection-stories__list {
+    gap: 16px 20px;
+  }
+  .collection-stories__image {
+    width: 64px;
+    height: 64px;
+  }
+}
+@media (max-width: 1200px){
+  .collection-stories__item {
+    flex: 0 0 calc(12.5% - 20px);
+  }
+}
+@media (max-width: 991px) {
+  .collection-stories__item {
+    flex: 0 0 calc(16.66% - 18px);
+  }
+}
+@media (max-width: 767px) {
+  .collection-stories__item {
+    flex: 0 0 calc(25% - 15px);
+  }
+}
+@media (min-width: 992px) {
+  .collection-stories__item {
+    min-width: 96px;
+  }
+  .collection-stories__list {
+    overflow-x: visible;
+    scroll-snap-type: none;
+    justify-content: center;
+  }
+}
+{% endstylesheet %}

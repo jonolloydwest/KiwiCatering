@@ -1,0 +1,9 @@
+{%- if section.settings.logo -%}
+<a href="{{ routes.root_url }}" class="theme-logo">
+  <img src="{{ section.settings.logo | image_url: width: 2048 }}" alt="{{ section.settings.logo.alt | default: shop.name }}" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}">
+</a>
+{%- else -%} 
+<a href="{{ routes.root_url }}" class="shop-name">
+	<span>{{ shop.name }}</span>
+</a>
+{%- endif -%}

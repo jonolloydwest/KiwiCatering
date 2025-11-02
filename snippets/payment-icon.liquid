@@ -1,0 +1,69 @@
+<a href="javascript:void(0)" class="payment-icon">
+    {% if settings.payment_visaimg %}
+      {% assign visa_alt = settings.payment_visaimg.alt | default: shop.name %}
+      {% assign visa_width = settings.payment_visaimg.width | default: 60 %}
+      {% assign visa_height = settings.payment_visaimg.height | default: 40 %}
+      {% assign visa_src = settings.payment_visaimg | image_url: width: 120 %}
+      <img src="{{ visa_src }}" class="payment-icon-img" alt="{{ visa_alt }}" width="{{ visa_width }}" height="{{ visa_height }}" loading="lazy">
+    {% else %}
+      <img src="{{ 'placeholder-image.svg' | asset_url }}" class="payment-icon-img" alt="{{ shop.name }}" width="40" height="25" loading="lazy">
+    {% endif %}
+    {% if settings.payment_masterimg %}
+      {% assign master_alt = settings.payment_masterimg.alt | default: shop.name %}
+      {% assign master_width = settings.payment_masterimg.width | default: 60 %}
+      {% assign master_height = settings.payment_masterimg.height | default: 40 %}
+      {% assign master_src = settings.payment_masterimg | image_url: width: 120 %}
+      <img src="{{ master_src }}" class="payment-icon-img" alt="{{ master_alt }}" width="{{ master_width }}" height="{{ master_height }}" loading="lazy">
+    {% else %}
+      <img src="{{ 'placeholder-image.svg' | asset_url }}" class="payment-icon-img" alt="{{ shop.name }}" width="40" height="25" loading="lazy">
+    {% endif %}
+    {% if settings.payment_paypalimg %}
+      {% assign paypal_alt = settings.payment_paypalimg.alt | default: shop.name %}
+      {% assign paypal_width = settings.payment_paypalimg.width | default: 60 %}
+      {% assign paypal_height = settings.payment_paypalimg.height | default: 40 %}
+      {% assign paypal_src = settings.payment_paypalimg | image_url: width: 120 %}
+      <img src="{{ paypal_src }}" class="payment-icon-img" alt="{{ paypal_alt }}" width="{{ paypal_width }}" height="{{ paypal_height }}" loading="lazy">
+    {% else %}
+      <img src="{{ 'placeholder-image.svg' | asset_url }}" class="payment-icon-img" alt="{{ shop.name }}" width="40" height="25" loading="lazy">
+    {% endif %}
+    {% if settings.payment_expressimg %}
+      {% assign express_alt = settings.payment_expressimg.alt | default: shop.name %}
+      {% assign express_width = settings.payment_expressimg.width | default: 60 %}
+      {% assign express_height = settings.payment_expressimg.height | default: 40 %}
+      {% assign express_src = settings.payment_expressimg | image_url: width: 120 %}
+      <img src="{{ express_src }}" class="payment-icon-img" alt="{{ express_alt }}" width="{{ express_width }}" height="{{ express_height }}" loading="lazy">
+    {% else %}
+      <img src="{{ 'placeholder-image.svg' | asset_url }}" class="payment-icon-img" alt="{{ shop.name }}" width="40" height="25" loading="lazy">
+    {% endif %}
+    {% if settings.payment_discoverimg %}
+      {% assign discover_alt = settings.payment_discoverimg.alt | default: shop.name %}
+      {% assign discover_width = settings.payment_discoverimg.width | default: 60 %}
+      {% assign discover_height = settings.payment_discoverimg.height | default: 40 %}
+      {% assign discover_src = settings.payment_discoverimg | image_url: width: 120 %}
+      <img src="{{ discover_src }}" class="payment-icon-img" alt="{{ discover_alt }}" width="{{ discover_width }}" height="{{ discover_height }}" loading="lazy">
+    {% else %}
+      <img src="{{ 'placeholder-image.svg' | asset_url }}" class="payment-icon-img" alt="{{ shop.name }}" width="40" height="25" loading="lazy">
+    {% endif %}
+</a>
+<style>
+	.payment-icon{
+		display: flex;
+	}
+	.payment-icon-img{
+		max-width: 120px;
+		width: auto;
+		height: auto;
+		{% if settings.enable_rtl %}
+		margin-left: 12px;
+		{% else %}
+		margin-right: 12px;
+		{% endif %}
+	}
+	.payment-icon-img:last-child{
+		{% if settings.enable_rtl %}
+		margin-left: 0;
+		{% else %}
+		margin-right: 0;
+		{% endif %}
+	}
+</style>

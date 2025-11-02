@@ -1,0 +1,180 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------
+   Plug in SEO Plus for Shopify
+
+   Copyright (c) 2020 SureSwift Capital, Inc.
+
+   This file is subject to the license at https://www.pluginseo.com/eula
+  ----------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign p_t_f = 's' -%}
+{%- assign default_page_title = [pageUnderscoreTitle] | escape -%}
+
+{% comment %} object can assign a specific SEO description {% endcomment %} 
+{%- assign shopify_has_title_and_seo_override = false -%}
+
+{%- assign exempted_product = false -%}
+{%- assign piseo_max_product_id = shop.metafields.pluginseo.max_product_id -%}      
+{%- if rootTemplate == 'product' and piseo_max_product_id != blank and product.id > piseo_max_product_id -%}
+  {%- assign exempted_product = true -%}
+{%- endif -%}
+
+{%- if exempted_product -%}
+{%- elsif hasLangify == true and detectedLanguage != shop.metafields["languages"]["default"] -%}
+  {%- assign p_t_f = p_t_f | append: '-lf' -%}
+  {%- if rootTemplate == 'index' -%}
+    <title>[Homepage page title]</title>
+  {%- elsif rootTemplate == '404' -%}
+    <title>[404 page title]</title>
+  {%- elsif rootTemplate == 'search' -%}
+    <title>[Search page title]</title>
+  {%- else -%}
+    {%- assign p_t_f = p_t_f | append: '-ap' -%}
+    <title>{{ langify_title | strip_html | strip_newlines }}</title>
+  {%- endif -%}
+{%- else -%}
+  {%- case rootTemplate -%}
+    {%- when 'index' -%}
+      {%- assign shopify_has_title_and_seo_override = true -%}
+      {%- assign default_page_title = shop.name | escape -%}
+      {%- assign page_title_template = settings.pluginseo_pageTitleIndexTemplate -%}
+      {%- assign p_t_f_temp = '-te_ix' -%}
+    {%- when 'page' -%}
+      {%- assign shopify_has_title_and_seo_override = true -%}
+      {%- assign default_page_title = page.title | escape -%}
+      {%- assign page_title_template = settings.pluginseo_pageTitlePageTemplate -%}
+      {%- assign p_t_f_temp = '-te_pg' -%}
+    {%- when 'search' -%}
+      {%- if search.terms == empty or search.terms == nil -%}
+        {%- assign default_page_title = 'Search' -%}
+      {%- else -%}
+        {%- assign default_page_title = search.terms | escape -%}
+      {%- endif -%}
+      {%- assign page_title_template = settings.pluginseo_pageTitleSearchTemplate -%}
+      {%- assign p_t_f_temp = '-te_se' -%}
+    {%- when 'product' -%}
+      {%- assign shopify_has_title_and_seo_override = true -%}
+      {%- assign default_page_title = product.title | escape -%}
+      {%- assign page_title_template = settings.pluginseo_pageTitleProductTemplate -%}
+      {%- assign p_t_f_temp = '-te_pr' -%}      
+    {%- when 'collection' -%}
+      {%- if collection.handle == 'all' -%}
+        {%- assign page_title_template = settings.pluginseo_pageTitleCatalogTemplate -%}
+      {%- else -%}
+        {%- assign shopify_has_title_and_seo_override = true -%}
+        {%- assign default_page_title = collection.title | escape -%}
+        {%- assign page_title_template = settings.pluginseo_pageTitleCollectionTemplate -%}
+      {%- endif -%}
+      {%- assign p_t_f_temp = '-te_co' -%}
+    {%- when 'blog' -%}
+      {%- assign shopify_has_title_and_seo_override = true -%}
+      {%- assign default_page_title = blog.title | escape -%}
+      {%- assign page_title_template = settings.pluginseo_pageTitleBlogTemplate -%}
+      {%- assign p_t_f_temp = '-te_bl' -%}
+    {%- when 'article' -%}
+      {%- assign shopify_has_title_and_seo_override = true -%}
+      {%- assign default_page_title = article.title | escape -%}
+      {%- assign page_title_template = settings.pluginseo_pageTitleArticleTemplate -%}
+      {%- assign p_t_f_temp = '-te_ar' -%}
+    {%- when '404' -%}
+      {%- assign page_title_template = settings.pluginseo_pageTitle404Template -%}
+      {%- assign p_t_f_temp = '-te_44' -%}
+  {%- endcase -%}
+
+  {%- if page_title_template == blank or page_title_template == nil -%}
+    {%- assign page_title_template = settings.pluginseo_pageTitleDefaultTemplate -%}
+    {%- assign p_t_f_temp = '-te_df' -%}
+  {%- endif -%}
+
+  {%- capture escaped_page_underscore_title -%}{{ [pageUnderscoreTitle] | escape }}{%- endcapture -%}
+  {%- if shopify_has_title_and_seo_override == true -%}
+    {% comment %} Check if the SEO override is different from object title {% endcomment %}
+    {%- capture default_page_title_for_compare -%}{{ default_page_title | truncate: 70, "" | strip_html }}{%- endcapture -%}
+
+    {%- if escaped_page_underscore_title != default_page_title_for_compare -%}
+      {%- assign page_title_to_parse = escaped_page_underscore_title -%}
+    {%- endif -%}
+  {%- else -%}
+      {%- assign page_title_to_parse = escaped_page_underscore_title -%}
+  {%- endif -%}
+
+  {%- if page_title_to_parse == blank or page_title_to_parse == nil -%}
+    {%- assign page_title_to_parse = default_page_title -%}
+    {%- assign page_title_is_default = true -%}
+  {%- endif -%}
+
+  <!-- default to true -->
+  {%- assign page_title_truncate_applicable = true -%}
+  {%- assign page_title_truncate_pages = "collection,product,page,blog,article" | split:"," -%}
+  {%- if page_title_truncate_pages contains rootTemplate -%}
+    <!-- Contain template-->
+    {%- assign page_title_truncate_suffix = rootTemplate | capitalize | append: "s" -%}
+    {%- assign page_title_truncate_field = "pluginseo_pageTitleTruncateEnableFor" | append: page_title_truncate_suffix -%}
+    <!-- setting name: {{page_title_truncate_field}}-->
+    <!-- setting value: {{settings[page_title_truncate_field]}} -->
+    {%- assign page_title_truncate_applicable = settings[page_title_truncate_field] -%}
+  {%- endif -%}
+
+  <!-- page_title_template: {{page_title_template}} -->
+  <!-- page_title_to_parse": {{page_title_to_parse}} -->
+  <!-- page_title_truncate_applicable: {{page_title_truncate_applicable}} -->
+
+  <!-- pluginseo_pageTitleTemplateApplyToAll: {{settings.pluginseo_pageTitleTemplateApplyToAll}} -->
+  <!-- page_title_truncate_applicable: {{page_title_truncate_applicable}} -->
+
+  {%- if settings.pluginseo_pageTitleTemplateApplyToAll == true and page_title_truncate_applicable == true -%}
+    <!-- Custom page title: Yes -->
+    {%- if page_title_template != blank %}
+      {%- assign p_t_f = p_t_f | append: p_t_f_temp -%}
+      {%- capture page_title -%}{% render 'pluginseo-parse', template:page_title_template %}{%- endcapture -%}
+    {%- elsif page_title_to_parse != blank -%}
+      {%- assign p_t_f = p_t_f | append: '-me' -%}
+      {%- capture page_title -%}{% render 'pluginseo-parse', template:page_title_to_parse %}{%- endcapture -%}
+    {%- endif -%}
+  {%- else -%}
+    <!-- Custom page title: No -->
+    {%- if page_title_is_default != true and shopify_has_title_and_seo_override == true %}
+      {%- assign p_t_f = p_t_f | append: '-me' -%}
+      {%- capture page_title -%}{% render 'pluginseo-parse', template:page_title_to_parse %}{%- endcapture -%}
+    {%- elsif page_title_template != blank and page_title_truncate_applicable == true -%}
+      {%- assign p_t_f = p_t_f | append: p_t_f_temp -%}
+      {%- capture page_title -%}{% render 'pluginseo-parse', template:page_title_template %}{%- endcapture -%}
+    {%- else -%}
+      {%- assign p_t_f = p_t_f | append: '-me' -%}
+      {%- capture page_title -%}{% render 'pluginseo-parse', template:page_title_to_parse %}{%- endcapture -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if settings.pluginseo_pageTitleEnableAppender == true -%}
+    {%- capture page_title_append -%}{% render 'pluginseo-parse', template:settings.pluginseo_pageTitleAppenderTemplate %}{%- endcapture -%}
+    {%- capture page_title_with_appendage -%}{{ page_title }} {{ page_title_append }}{%- endcapture -%}
+
+    {%- assign pluginseo_page_title_truncate_chars = settings.pluginseo_page_title_truncate_chars | plus: 0 -%}
+    {%- if pluginseo_page_title_truncate_chars == 0 -%}
+      {%- assign pluginseo_page_title_truncate_chars = 999 -%}
+    {%- endif -%}
+    {%- assign pluginseo_page_title_appender_target_length = settings.pluginseo_page_title_appender_target_length | plus: 0 -%}
+    {%- assign page_title_length = page_title | size | plus: 0 -%}
+    {%- assign page_title_with_appendage_length = page_title_with_appendage | size | plus: 0 -%}
+
+    {%- if page_title_length < pluginseo_page_title_appender_target_length and page_title_with_appendage_length < pluginseo_page_title_truncate_chars -%}
+      {%- assign p_t_f = p_t_f | append: '-ap' -%}
+      {%- capture page_title -%}{{ page_title_with_appendage }}{%- endcapture -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if settings.pluginseo_page_title_truncate_chars != blank -%}
+    {%- assign final_page_title_length = page_title | size | plus: 0 -%}
+    {%- assign pluginseo_page_title_truncate_chars = settings.pluginseo_page_title_truncate_chars | plus: 0 -%}
+    {%- if pluginseo_page_title_truncate_chars == 0 -%}
+      {%- assign pluginseo_page_title_truncate_chars = 999 -%}
+    {%- endif -%}
+
+    {%- if final_page_title_length > pluginseo_page_title_truncate_chars -%}
+      {%- assign p_t_f = p_t_f | append: '-tr' -%}
+    {%- endif -%}
+    {%- capture page_title -%}{{ page_title | truncate: pluginseo_page_title_truncate_chars, "" }}{%- endcapture -%}
+  {%- endif -%}
+  <title>{{ page_title | strip_html | strip_newlines }}</title>
+{%- endif -%}

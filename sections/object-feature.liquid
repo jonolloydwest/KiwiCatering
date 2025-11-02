@@ -1,0 +1,388 @@
+<!-- banner-area start -->
+<section class="custom-about-feature">
+  <div class="container">
+    <div class="row">
+     
+      <div class="col-xl-6 col-lg-6 col-md-5 col-12">
+        <div class="custom-text-banner">
+          <a href="{{ section.settings.feature_button_url }}">
+            {% assign feature_banner_image = section.settings.feature_banner_img %}
+            {% if feature_banner_image %}
+              {% assign feature_banner_alt = section.settings.feature_title1 | default: shop.name %}
+              {% assign feature_banner_width = feature_banner_image.width | default: 1024 %}
+              {% assign feature_banner_height = feature_banner_image.height | default: 800 %}
+              {% assign feature_banner_src = feature_banner_image | image_url: width: 1600 %}
+              <img loading="lazy" src="{{ feature_banner_src }}" alt="{{ feature_banner_alt }}" width="{{ feature_banner_width }}" height="{{ feature_banner_height }}">
+            {% else %}
+              <img loading="lazy" src="{{ 'placeholder-image.svg' | asset_url }}" alt="Feature banner" width="1024" height="800">
+            {% endif %}
+          </a>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-7 col-12 ">
+        <div class="text-feature-wrap">
+          <div class="text-feature">
+            <h2>
+              <span>{{ section.settings.feature_title1 }}</span>
+              <span>{{ section.settings.feature_title2 }}</span>
+            </h2>
+            {% if section.blocks.size > 0 %}
+            <ul class="objFeat">
+              {% for block in section.blocks %}
+              {% if block.settings.feature_point != '' %}
+              <li>
+                <span class="feature-icon">
+                  {% assign feature_icon_image = block.settings["feature-icon_img"] %}
+                  {% if feature_icon_image %}
+                    {% assign feature_icon_alt = block.settings.feature_point | default: shop.name %}
+                    {% assign feature_icon_width = feature_icon_image.width | default: 120 %}
+                    {% assign feature_icon_height = feature_icon_image.height | default: 120 %}
+                    {% assign feature_icon_src = feature_icon_image | image_url: width: 320 %}
+                    <img loading="lazy" src="{{ feature_icon_src }}" alt="{{ feature_icon_alt }}" width="{{ feature_icon_width }}" height="{{ feature_icon_height }}">
+                  {% elsif block.settings.feature_icon != blank %}
+                    {{ block.settings.feature_icon }}
+                  {% else %}
+                    <img loading="lazy" src="{{ 'placeholder-image.svg' | asset_url }}" alt="Icon" width="100" height="100">
+                  {% endif %}
+                 </span>
+                <div class="">
+                  <h6>{{ block.settings.feature_point }}</h6>
+                  <p>{{ block.settings.feature_sub_point }}</p>
+                </div>
+              </li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+            {% endif %}
+            {% if section.settings.feature_text_button != "" %}
+            <a href="{{ section.settings.feature_button_url }}" class="btn btn-style">{{ section.settings.feature_text_button }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- banner-area end -->
+{% schema %}
+{
+  "name": "Object Feature",
+  "settings": [
+  {
+    "type": "header",
+    "content": "Section Padding"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop / tablet"
+  },
+  {
+    "type": "range",
+    "id": "feature_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 80
+  },
+  {
+    "type": "range",
+    "id": "feature_padding_bottom",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 80
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Ipad pro / Ipad"
+  },
+  {
+    "type": "range",
+    "id": "feature_padding_top_ip",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "feature_padding_bottom_ip",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "feature_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 50
+  },
+  {
+    "type": "range",
+    "id": "feature_padding_bottom_xs",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 50
+  },
+  {
+    "type" : "header",
+    "content" : "Section Background Color"
+  },
+  {
+    "type" : "color",
+    "id" : "feature_bgcolor",
+    "label" : "Background Color",
+    "default" : "#fff"
+  },
+  {
+    "type" : "checkbox",
+    "id" : "feature_bg_check",
+    "label" : "Show Backgorund Color",
+    "default" : false
+  },
+  {
+    "type": "header",
+    "content": "Custom Banner Image"
+  },
+  {
+    "type": "image_picker",
+    "id": "feature_banner_img",
+    "label": "Banner Image",
+    "info": "Recommended Size: 1024px x 800px"
+  },
+  {
+    "type": "header",
+    "content": "Content Title"
+  },
+  {
+    "type": "text",
+    "id": "feature_title1",
+    "label": "Title",
+    "default": "Airpords additional"
+  },
+  {
+    "type": "text",
+    "id": "feature_title2",
+    "label": "Title",
+    "default": "feature details"
+  },
+  {
+    "type": "text",
+    "id": "feature_text_button",
+    "label": "Button Title",
+    "default": "Shop now"
+  },
+  {
+    "type": "url",
+    "id": "feature_button_url",
+    "label": "URL"
+  }
+  ],
+  "blocks":[
+  {
+    "type": "feature",
+    "name": "Feature",
+    "settings": [
+    {
+      "type": "header",
+      "content": "Feature point"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_icon",
+      "label": "Feature icon",
+      "info": "https://feathericons.com"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature-icon_img",
+      "label": "Banner Image",
+      "info": "Recommended Size: 100px x 100px"
+    },
+    {
+      "type": "text",
+      "id": "feature_point",
+      "label": "Feature",
+      "default": "24+ hours battery backup"
+    },
+    {
+      "type": "text",
+      "id": "feature_sub_point",
+      "label": "Feature sub point",
+      "default": "V5.0"
+    }
+    ]
+  } 
+  ],
+  "presets":[
+  {
+    "name": "Object Feature",
+    "category": "Custom"
+  }
+  ]
+}
+{% endschema %}
+<style>
+  .custom-about-feature{
+    padding-top: {{ section.settings.feature_padding_top }}px;
+    padding-bottom: {{ section.settings.feature_padding_bottom }}px;
+
+    {% if section.settings.feature_bg_check %}
+    background-color: {{ section.settings.feature_bgcolor }};
+    {% endif %}
+  }
+  @media (max-width: 1199px){
+    .custom-about-feature{
+      padding-top: {{ section.settings.feature_padding_top_ip }}px;
+      padding-bottom: {{ section.settings.feature_padding_bottom_ip }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .custom-about-feature{
+      padding-top: {{ section.settings.feature_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.feature_padding_bottom_xs }}px;
+    }
+    .objFeat {
+      display: grid!important;
+      grid-template-columns: 1fr 1fr;
+      align-items: start!important;
+      align-content: center;
+      justify-content: space-between;
+    }
+    .objFeat div{text-align: center;}
+    .text-feature-wrap .text-feature ul li .feature-icon {
+      margin: 10px auto 25px!important;
+      display: block;
+    }
+  }
+
+  /* feature content css */
+  .custom-about-feature .row{
+    align-items: center;
+  }
+  .text-feature-wrap .text-feature h2 span{
+    margin-top: 10px;
+    display: block;
+  }
+  .text-feature-wrap .text-feature h2 span:first-child{
+    margin-top: 0;
+  }
+  .text-feature-wrap .text-feature h2{
+    font-size: 40px;
+    line-height: 1;
+  }
+  .text-feature-wrap .text-feature ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    {%- if settings.enable_rtl -%}
+    margin-right: -30px;
+    {%- else -%}
+    margin-left: -30px;
+    {%- endif -%}
+  }
+  .text-feature-wrap .text-feature ul li {
+    width: calc(50% - 30px);
+    {%- if settings.enable_rtl -%}
+    margin-right: 30px;
+    {%- else -%}
+    margin-left: 30px;
+    {%- endif -%}
+    margin-top: 60px;
+    align-items: center;
+  }
+  .text-feature-wrap .text-feature ul li .feature-icon {
+    {%- if settings.enable_rtl -%}
+     margin-left: 30px;
+    {%- else -%}
+     margin-right: 30px;
+    {%- endif -%}
+    margin-bottom: 25px;
+  }
+  .text-feature-wrap .text-feature ul li .feature-icon svg{
+    width: 30px;
+    height: 30px;
+    fill: {{ settings.color_primary }};
+  }
+  .text-feature-wrap .text-feature ul li h6{
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .text-feature-wrap .text-feature ul li p{
+    color: #999;
+    font-size: 14px;
+    margin-top: 6px; 
+  }
+  .text-feature-wrap .text-feature a{
+    margin-top: 34px;
+  }
+  @media(max-width: 1199px){
+    .text-feature-wrap .text-feature h2{
+      font-size: 30px;
+    }
+    .text-feature-wrap .text-feature ul {
+      {%- if settings.enable_rtl -%}
+      margin-right: -15px;
+      {%- else -%}
+      margin-left: -15px;
+      {%- endif -%}
+    }
+    .text-feature-wrap .text-feature ul li{
+      width: calc(50% - 15px);
+      margin-top: 30px;
+      {%- if settings.enable_rtl -%}
+      margin-right: 15px;
+      {%- else -%}
+      margin-left: 15px;
+      {%- endif -%}
+    }
+    .text-feature-wrap .text-feature ul li h6{
+      font-size: 16px;
+    }
+    .text-feature-wrap .text-feature ul li .feature-icon{
+      {%- if settings.enable_rtl -%}
+      margin-left: 15px;
+      {%- else -%}
+      margin-right: 15px;
+      {%- endif -%}
+    }
+  }
+  @media(max-width: 991px){
+    .text-feature-wrap .text-feature h2{
+      font-size: 26px;
+    }
+  }
+  @media(max-width: 767px){
+    .text-feature-wrap .text-feature h2{
+      font-size: 20px;
+    }
+    .text-feature-wrap .text-feature ul li{
+      width: calc(100% - 15px);
+      margin-top: 30px !important;
+    }
+    .custom-about-feature .custom-text-banner{
+      margin-top: 30px; 
+    }
+  }
+</style>

@@ -1,0 +1,32 @@
+{% if product.available %}
+<a href="javascript:void(0)" class="btn btn-cart btn btn-style-medium" onClick="instantBuy()">
+  <span>{{ settings.buy_now_title }}</span>
+</a>
+{% else %}
+<a href="javascript:void(0)" class="btn btn-cart btn_theme disabled" disabled="disabled" onClick="instantBuy()" data-toggle="tooltip" data-placement="top" title="Direct to checkout">
+  <span>{{ settings.buy_now_title }}</span>
+</a>
+{% endif %}
+<style>
+    a.btn_theme{
+        color: #fff;
+        font-size: 14px;
+        padding: 10px 15px;
+        background-color: {{ settings.color_primary }};
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 400;
+        border-radius: 0;
+        line-height: normal;
+    }
+    a.btn_theme:hover{
+        background-color: #222;
+    }
+    a.btn_theme[disabled],
+	a.btn_theme.disabled{
+		color: #eaeaea;
+		background-color: #ababab;
+		opacity: .65;
+		pointer-events: none;
+	}
+</style>

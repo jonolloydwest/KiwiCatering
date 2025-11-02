@@ -1,0 +1,54 @@
+<!-- breadcrumb-area start -->
+{% if settings.breadcrumb_banner_enable %}
+{% unless template == 'index' %}
+<div class="breadcrumb-area"{% if settings.breadcrumb_bg_image_enable %} style="background-image: url('{% if settings.breadcrumb_banner_image %}{{ settings.breadcrumb_banner_image | image_url: width: 2048 }}{% else %}{{ 'placeholder-image.svg' | asset_url }}{% endif %}');"{% endif %}>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <!-- breadcrumb-list start -->
+                {% render 'breadcrumb-builtin'%}
+                <!-- breadcrumb-list end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endunless %}
+{% endif %}
+<!-- breadcrumb-area end -->
+<style>
+.breadcrumb-area {
+    padding-top: {{ settings.breadcrumb_padding_top }}px;
+    padding-bottom: {{ settings.breadcrumb_padding_bottom }}px;
+    {% if settings.breadcrumb_bg_image_enable %}
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    {% else %}
+    background-color: {{ settings.breadcrumb_bg_color }};
+    {% endif %}
+    position: relative;
+
+    {% if settings.breadcrumb_bottom_border_enable %}
+    {% endif %}
+}
+.breadcrumb-area::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    {% if settings.enable_rtl %}
+    right: 0;
+    {% else %}
+    left: 0;
+    {% endif %}
+    width: 100%;
+    height: 100%;
+    background-color: {{ settings.breadcrumb_bg_image_overlay_color }};
+    opacity: {{ settings.breadcrumb_bg_image_overlay_color_opacity }};
+}
+@media (max-width: 767px) {
+  .breadcrumb-area {
+    padding-top: {{ settings.breadcrumb_padding_top_xs }}px;
+    padding-bottom: {{ settings.breadcrumb_padding_bottom_xs }}px;
+  }
+}
+</style>

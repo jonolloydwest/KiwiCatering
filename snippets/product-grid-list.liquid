@@ -1,0 +1,32 @@
+{%- assign on_sale = false -%}
+{%- if product.compare_at_price > product.price -%}
+{%- assign on_sale = true -%}
+{%- endif -%} 
+<div class="product-grid-list">
+  <div class="single-product-wrap">
+    <div class="{% if product.available %}product-image{% else %}product-image stock-out{% endif %}">
+      <a class="pro-img" href="{{ product.url | within: collection }}">
+        <img class="img-fluid img1" src="{{ product.featured_image.src | image_url: width: 100, height: 120, crop: 'center' }}" alt="{{ product.featured_image.alt | escape  }}" width="100" height="120">
+      </a>
+    </div>
+    <div class="product-content">
+      <div class="product-ratting">
+        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+      </div>
+      <h6>
+        <a href="{{ product.url | within: collection }}" title="{{ product.title }}">{{ product.title }}</a>
+      </h6>
+      <div class="price-box">
+        <span class="new-price">{{ product.price | money | split: ' - ' }}</span>
+        {% if product.compare_at_price_max > product.price %}
+        <span class="old-price">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+        {% if on_sale %}
+        {% if settings.sale_percent_enable %}
+        <span class="percent-count">-{{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | times: 100.0 | divided_by: product.selected_or_first_available_variant.compare_at_price | money_without_currency | replace: ',', '.' | times: 100 | remove: '.0'}}%</span>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

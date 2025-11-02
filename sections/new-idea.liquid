@@ -1,0 +1,308 @@
+<section class="about-counter" {% if section.settings.counter_banner_enable %}style="background-image: url('{% if section.settings.counter_banner %}{{ section.settings.counter_banner | image_url: width: 2048 }}{% else %}{{ 'placeholder-image.svg' | asset_url }}{% endif %}');"{% endif %}>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="business-counter">
+          <ul class="single-count">
+          {% for block in section.blocks %}
+          <li class="count-wrap">
+            <div class="count-title">
+              {% if block.settings.counter_number != '' %}
+              <h2 class="count">{{ block.settings.counter_number }}</h2>
+              {% endif %}
+              {% if block.settings.counter_title != '' %}
+              <span>{{ block.settings.counter_title }}</span>
+              {% endif %}
+            </div>
+          </li>
+          <style type="text/css">
+          {% if block.settings.counter_main_text_color %}
+          .business-counter ul.single-count li.count-wrap .count-title h2{
+          color: {{ block.settings.counter_main_text_color }};
+          }
+          {% endif %}
+          {% if block.settings.counter_text_color %}
+          .business-counter ul.single-count li.count-wrap .count-title span{
+          color: {{ block.settings.counter_text_color }};
+          }
+          {% endif %}
+          </style>
+          {% endfor %}
+        </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function(){
+    $('.count').counterUp({
+      delay: 10,
+      time: 1000
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Business Counter",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop "
+  },
+  {
+    "type": "range",
+    "id": "section_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 100
+  },
+  {
+    "type": "range",
+    "id": "section_padding_bottom",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 100
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Tablet"
+  },
+  {
+    "type": "range",
+    "id": "section_padding_top_lg",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "section_padding_bottom_lg",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 60
+  },
+    {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "section_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "section_padding_bottom_xs",
+    "label": "Section Padding bottom",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 40
+  },
+    {
+      "type": "header",
+      "content": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "counter_banner",
+      "label": "Background Image",
+      "info": "Recommended Size: 1920 x 800px"
+    },
+    {
+      "type": "paragraph",
+      "content": "Background Image Position Fixed"
+    },
+    {
+      "type": "checkbox",
+      "id": "counter_banner_bgpos_enable",
+      "label": "Show Background Position Fixed",
+      "default": true
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Background Image Overlay Color"
+    },
+    {
+      "type" : "color",
+      "id" : "counter_banner_overlay_bgcolor",
+      "label" : "Background Color",
+      "default" : "#000"
+    },
+    {
+      "type": "range",
+      "id": "counter_banner_overlay_bgcolor_opacity",
+      "label": "Background Color Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.7
+    },
+    {
+      "type": "checkbox",
+      "id": "counter_banner_enable",
+      "label": "Show Background Image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Background Color"
+    },
+    {
+      "type" : "color",
+      "id" : "newidea_bgcolor",
+      "label" : "Background Color",
+      "default" : "#d8d8d8"
+    }
+  ],
+    "blocks":[
+  {
+    "type": "counter_up",
+    "name": "Counter Up",
+    "settings": [
+    {
+      "type": "text",
+      "id": "counter_number",
+      "label": "Counter Number",
+      "default": "21"
+    },
+    {
+      "type": "color",
+      "id": "counter_main_text_color",
+      "label": "Main Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "counter_title",
+      "label": "Counter Title",
+      "default": "Years In Business"
+    },
+    {
+      "type": "color",
+      "id": "counter_text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+    ]
+  }
+  ],
+  "presets":[
+    {
+      "name": "Business Counter",
+      "category": "2. About Us"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .about-counter{
+    border: 1px solid #e2e2e2;
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+
+    {% if section.settings.counter_banner_enable %}
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    {% if section.settings.counter_banner_bgpos_enable %}
+    background-attachment: fixed;
+    {% endif %}
+    position: relative;
+    {% else %}
+    background-color: {{ section.settings.newidea_bgcolor }};
+    {% endif %}
+  }
+  .about-counter:after{
+    content: "";
+    position: absolute;
+    top: 0;
+    {%- if settings.enable_rtl -%}
+    right: 0;
+    {%- else -%}
+    left: 0;
+    {%- endif -%}
+    width: 100%;
+    height: 100%;
+    background-color: {{ section.settings.counter_banner_overlay_bgcolor }};
+    opacity: {{ section.settings.counter_banner_overlay_bgcolor_opacity }};
+  }
+  @media (max-width: 1199px){
+    .about-counter{
+      padding-top: {{ section.settings.section_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width: 767px){
+    .about-counter{
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+    }
+  }
+  
+  /* textcontent */
+  .business-counter{
+    position: relative;
+    text-align: center;
+    z-index: 1;
+  }
+  .business-counter ul.single-count{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .business-counter ul.single-count li.count-wrap {
+    width: 25%;
+  }
+  .business-counter ul.single-count li.count-wrap .count-title h2{
+    font-size: 40px;
+    text-transform: capitalize;
+    
+  }
+  .business-counter ul.single-count li.count-wrap .count-title span{
+    margin-top: 21px;
+  }
+  @media(max-width: 991px){
+    .business-counter ul.single-count li.count-wrap .count-title h2{
+      font-size: 30px;
+    }
+  }
+  @media(max-width: 767px){
+    .business-counter ul.single-count li.count-wrap .count-title h2{
+      font-size: 24px;
+    }
+    .business-counter ul.single-count{
+      margin-top: -30px;
+    }
+    .business-counter ul.single-count li.count-wrap {
+      margin-top: 30px;
+      width: 50%;
+    }
+  }
+
+</style>

@@ -1,0 +1,209 @@
+{%- if settings.topbar_notification_enable -%}
+<section class="top-notification-bar">
+  <div class="container">
+    <div class="row"> 
+      <div class="col">
+        <ul class="notification-entry">
+          <li class="notify-wrap txt-wrap">
+            <p>{{ settings.topbar_notification_text1 }}</p>
+          </li>
+          <li class="notify-wrap link-wrap">
+            <p>{{ settings.topbar_notification_text2 }}<a class="link-text" href="{{ settings.topbar_notification_text_url }}">
+              <b>{{ settings.topbar_notification_text_link }}</b>
+            </a></p>
+          </li> 
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .top-notification-bar{
+    color: {{ settings.notification_txt_color }};
+    background-color: {{ settings.notification_bg_color }};
+    padding: 13px 0;
+    position: relative;
+  }
+  .top-notification-bar ul.notification-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .top-notification-bar ul li.notify-wrap{
+    display: flex;
+    align-items: center;
+    width: 50%;
+  }
+  .top-notification-bar ul li.notify-wrap.link-wrap{
+    justify-content: flex-end;
+  }
+  .top-notification-bar ul li.notify-wrap.currency-wrap{
+    justify-content: flex-end;
+  }
+  .top-notification-bar ul li.notify-wrap.txt-wrap{
+    overflow: hidden;
+  }
+  .top-notification-bar ul li.notify-wrap p{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+  }
+  .top-notification-bar ul li.notify-wrap p b{
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-position: under;
+  }
+  .top-notification-bar ul li.notify-wrap.txt-wrap p{
+    display: inline-block;
+    white-space: nowrap;
+    animation: topbar-marquee 45s linear infinite;
+    will-change: transform;
+    padding-right: 100%;
+  }
+  .top-notification-bar ul li.notify-wrap p a.link-text{
+    position: relative;
+    text-transform: uppercase;
+    color: {{ settings.color_primary }};
+    {% if settings.enable_rtl %}
+    margin-right: 8px;
+    {% else %}
+    margin-left: 8px;
+    {% endif %}
+  }
+  @keyframes topbar-marquee{
+    0%{
+      transform: translateX(100%);
+    }
+    100%{
+      transform: translateX(-100%);
+    }
+  }
+  .top-notification-bar ul li.notify-wrap p a.link-text:after{
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+    background: {{ settings.color_primary }};
+    height: 1px;
+    opacity:0;
+    visibility:hidden;
+    -moz-transition: width 0.2s linear;
+    -o-transition: width 0.2s linear;
+    -webkit-transition: width 0.2s linear;
+    transition: width 0.2s linear;
+  }
+  .top-notification-bar ul li.notify-wrap p a.link-text:hover:after{
+    width: 0%
+  }
+  .top-notification-bar ul li.notify-wrap .mail-wrap{
+    {% if settings.enable_rtl %}
+    margin-right: 15px;
+    {% else %}
+    margin-left: 15px;
+    {% endif %}
+  }
+  .top-notification-bar ul li.notify-wrap .contact-wrap a,
+  .top-notification-bar ul li.notify-wrap .mail-wrap a{
+    color: #fff;
+    display: flex;
+    align-items: center;
+  }
+  .top-notification-bar ul li.notify-wrap .contact-wrap a i,
+  .top-notification-bar ul li.notify-wrap .mail-wrap a i{
+    line-height: 17px;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-name: wobble;
+    animation-timing-function: ease-in-out
+  }
+  @keyframes wobble{
+    30%,70%{
+        transform: rotate(0deg)
+    }
+    35%,65%{
+        transform: rotate(10deg)
+    }
+    40%,60%{
+        transform: rotate(-10deg)
+    }
+    45%,55%{
+        transform: rotate(10deg)
+    }
+    50%{
+        transform: rotate(-10deg)
+    }
+  }
+  .top-notification-bar ul li.notify-wrap .contact-wrap a span,
+  .top-notification-bar ul li.notify-wrap .mail-wrap a span{
+    {% if settings.enable_rtl %}
+    margin-right: 5px;
+    {% else %}
+    margin-left: 5px;
+    {% endif %}
+  }
+  .top-notification-bar ul li.notify-wrap .user-wrap{
+    {% if settings.enable_rtl %}
+    margin-left: 15px;
+    {% else %}
+    margin-right: 15px;
+    {% endif %}
+  }
+  @media (max-width : 1199px){
+    .top-notification-bar{
+      padding: 10px 0;
+    }
+    .top-notification-bar .BOLD-mc-picker > .currentCurrency{
+      font-size: 14px;
+    }
+  }
+  @media (max-width : 991px){
+    .top-notification-bar ul li.notify-wrap{
+      width: 50%;
+    }
+  }
+  @media (max-width : 767px){
+    .top-notification-bar ul.notification-entry{
+      flex-direction: column-reverse;
+    }
+    .top-notification-bar ul li.notify-wrap.txt-wrap{
+      display: flex;
+      padding-top: 5px;
+    }
+    .top-notification-bar ul li.notify-wrap.link-wrap{
+      padding-top: 5px;
+    }
+    .top-notification-bar ul li.notify-wrap.currency-wrap,
+    .top-notification-bar ul li.notify-wrap.link-wrap,
+    .top-notification-bar ul li.notify-wrap{
+      width: 100%;
+      justify-content: center;
+    }
+    .top-notification-bar ul li.notify-wrap .wishlist-wrap{
+      {% if settings.enable_rtl %}
+      margin-left: 0px;
+      {% else %}
+      margin-right: 0px;
+      {% endif %}
+    }
+    .top-notification-bar ul li.notify-wrap p{
+      text-align:center;
+    }
+  }
+  .top-notification-bar ul li.notify-wrap .currency-wrap{
+    display: flex;
+    align-items: center;
+  }
+  .top-notification-bar ul li.notify-wrap .currency-wrap .BOLD-mc-picker-mnt {
+    {% if settings.enable_rtl %}
+    margin-right: 5px;
+    {% else %}
+    margin-left: 5px;
+    {% endif %}
+  }
+</style>
+{% endif %}

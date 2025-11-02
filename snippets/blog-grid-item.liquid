@@ -1,0 +1,19 @@
+<div class="blog-post">
+  {% if article.image %}
+  <a href="{{ article.url }}" class="blog-img banner-hover">
+    <img class="img-fluid" src="{{ article.image | image_url: width: 530, height: 450, crop: 'center' }}" alt="{{ article.title | escape }}" width="530" height="450" />
+    <span class="blog-icon"><i class="ti-link"></i></span>
+    <span class="date-time">
+      <span class="date">{{ article.published_at | date: '%d' }}</span>,
+      <span class="time">{{ article.published_at | date: '%b' }}</span>,
+      <span class="year">{{ article.published_at | date: '%Y' }}</span>
+    </span>
+  </a>
+  <div class="blog-post-content">
+    
+    <a href="{{ article.url }}" class="blog-title">{{ article.title | truncate: 50 }}</a>
+    <p class="blog-desc">{{ article.content | strip_html | strip | truncate: 60 }}</p>
+    <a href="{{ article.url }}" class="btn btn-style2" >{{ settings.blog_read_btn }}</a>
+  </div>
+  {% endif %}
+</div>

@@ -1,0 +1,220 @@
+<section class="insta-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                {% if section.settings.section_title !='' %}
+                <div class="section-capture">
+                    <div class="section-title">
+                        {% if section.settings.section_title !='' %}
+                        <h2>
+                            {{ section.settings.section_title }}
+                        </h2>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="insta-slider simple-slider simple-slider--hide-arrows-mobile" data-slider data-slider-gap="30" data-slider-visible="5" data-slider-visible-lg="5" data-slider-visible-md="4" data-slider-visible-sm="2">
+                    <button type="button" class="slider-nav-btn slider-nav-btn--prev" data-slider-prev aria-label="Previous Instagram post">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </button>
+                    <div class="insta-slider__track simple-slider__track" data-slider-track>
+                    {% for block in section.blocks %}
+                    <div class="item">
+                        <a class="insta-content banner-hover" href="{{ block.settings.insta_url}}">
+                            {% assign insta_alt = section.settings.section_title | default: shop.name %}
+                            {% assign insta_image = block.settings.insta_img %}
+                            {% if insta_image %}
+                              {% assign insta_width = insta_image.width | default: 320 %}
+                              {% assign insta_height = insta_image.height | default: 320 %}
+                              {% assign insta_src = insta_image | image_url: width: 800 %}
+                              <img class="img-fluid" src="{{ insta_src }}" alt="{{ insta_alt }}" width="{{ insta_width }}" height="{{ insta_height }}" loading="lazy">
+                            {% else %}
+                              <img class="img-fluid" src="{{ 'placeholder-image.svg' | asset_url }}" alt="{{ insta_alt }}" width="320" height="320" loading="lazy">
+                            {% endif %}
+                        </a>
+                    </div>
+                    {% endfor %}
+                    </div>
+                    <button type="button" class="slider-nav-btn slider-nav-btn--next" data-slider-next aria-label="Next Instagram post">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+{% schema %}
+{
+    "name": "Instagram Slider",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section Padding"
+        },
+        {
+            "type" : "paragraph",
+            "content" : "Desktop / Laptop / tablet"
+        },
+        {
+            "type": "range",
+            "id": "section_padding_top",
+            "label": "Section Padding Top",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 100
+        },
+        {
+            "type": "range",
+            "id": "section_padding_bottom",
+            "label": "Section Padding Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 100
+        },
+        {
+            "type" : "paragraph",
+            "content" : "tablet"
+        },
+        {
+            "type": "range",
+            "id": "section_padding_top_lg",
+            "label": "Section Padding Top",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 70
+        },
+        {
+            "type": "range",
+            "id": "section_padding_bottom_lg",
+            "label": "Section Padding Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 70
+        },
+        {
+            "type" : "paragraph",
+            "content" : "Mobile"
+        },
+        {
+            "type": "range",
+            "id": "section_padding_top_xs",
+            "label": "Section Padding Top",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 50
+        },
+        {
+            "type": "range",
+            "id": "section_padding_bottom_xs",
+            "label": "Section Padding Bottom",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "default": 50
+        },
+        {
+            "type" : "header",
+            "content" : "Section Title"
+        },
+        {
+            "type": "text",
+            "id": "section_title",
+            "label": "Title",
+            "default": "Instagram Feed"
+        },
+        {
+            "type" : "header",
+            "content" : "Section Background Color"
+        },
+        {
+            "type" : "color",
+            "id" : "insta_bgcolor",
+            "label" : "Background Color",
+            "default" : "#fff"
+        },
+        {
+            "type" : "checkbox",
+            "id" : "insta_check",
+            "label" : "With Backgorund",
+            "default" : true
+        }
+    ],
+    "blocks":[
+        {
+            "type": "slide",
+            "name": "Slide",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "insta_img",
+                    "label": "Image",
+                    "info": "Recommended Size: 110px x 110px"
+                },
+                {
+                    "type": "url",
+                    "id": "insta_url",
+                    "label": "Banner URL"
+                }
+            ]
+        }
+    ],
+    "presets":[
+        {
+            "name": "Instagram Slider",
+            "category": "Instagram"
+        }
+    ]
+}
+{% endschema %}
+<style type="text/css">
+    .insta-wrap {
+        padding-top:{{ section.settings.section_padding_top }}px;
+        padding-bottom:{{ section.settings.section_padding_bottom }}px;
+        {% if section.settings.insta_check %}
+        background-color: {{ section.settings.insta_bgcolor }};
+        {% endif %}
+    }
+    @media (max-width: 1199px) {
+        .insta-wrap {
+            padding-top:{{ section.settings.section_padding_top_lg }}px;
+            padding-bottom:{{ section.settings.section_padding_bottom_lg }}px;
+        }
+    }
+    @media (max-width: 767px) {
+        .insta-wrap {
+            padding-top:{{ section.settings.section_padding_top_xs }}px;
+            padding-bottom:{{ section.settings.section_padding_bottom_xs }}px;
+        }
+    }
+    .insta-content:hover:after{
+        opacity: 1;
+        visibility: visible;
+    }
+    .insta-content.banner-hover:before{
+        background-color: {{ settings.color_secondary | color_modify: 'alpha', 0.5 }};
+    }
+    .insta-content:after{
+        content: '\f16d';
+        position: absolute;
+        bottom: 50%;
+        right: 50%;
+        transform: translate(50%, 50%);
+        color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 2;
+        font: normal normal normal 24px/1 FontAwesome;
+    }
+</style>

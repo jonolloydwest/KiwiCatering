@@ -1,0 +1,328 @@
+{% assign item_style = '' %}{% if cart.item_count == 0 %}{% assign item_style = ' style="display:none;"' %}{% endif %}
+{% assign item_empty = '' %}{% if cart.item_count == 0 %}{% assign item_empty = ' style="display:block;"' %}{% endif %}
+<div class="shopping-widget">
+  <div class="shopping-cart"> 
+    <a class="cart-count" href="{{ routes.cart_url }}">
+      <span class="cart-icon-wrap">
+        <span class="cart-icon">
+          <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81 109"><defs><style>.cls-1{fill:none;stroke:#333;stroke-linecap:round;stroke-miterlimit:10;stroke-width:7px;}</style></defs><title>bag cart</title><rect class="cls-1" x="3.5" y="31.5" width="74" height="74" rx="15" ry="15"/><path class="cls-1" d="M563.5,406.5V375.39A13.84,13.84,0,0,0,559,365.23,16.08,16.08,0,0,0,548,361c-8.53,0-15.5,6.47-15.5,14.39V406.5" transform="translate(-507.5 -357.5)"/><circle cx="25" cy="50" r="6.5"/><circle cx="56" cy="50" r="6.5"/></svg>
+        </span>
+        <span class="item">{{ settings.cart_item_title }} (<span id="cart-total" class="bigcounter">{{ cart.item_count }}</span>)</span>
+        <span id="cart-total" class="bigcounter counter">{{ cart.item_count }}</span>
+      </span>
+      <span class="cart-detail">
+        <span class="cart-title">My cart</span>
+        <span id="cart-total" class="subtotal-price">{{ cart.total_price | money }}</span>
+      </span>
+    </a>
+    <div class="mini-cart">
+      <div class="cart-tempty-title" {{ item_empty }}>
+        <p>{{ settings.empty_cart }}</p>
+        <ul class="cart-item-loop-empty">
+          <li class="cart-item-empty">
+            <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span>
+            <a href="{{ settings.cart_continue_shop_link }}" class="btn btn-style2">{{ settings.cart_continue_shop }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="cart-item-title" {{ item_style }}>
+        <p>
+          <span class="cart-count-desc">{{ settings.cart_desc1 }}</span>
+          <span id="cart-total" class="cart-count-item bigcounter">{{ cart.item_count }}</span>
+          <span class="cart-count-desc">{{ settings.cart_desc2 }}</span>
+        </p>
+      </div>
+      <ul class="cart-item-loop" {{ item_style }}>
+        {% for item in cart.items %}
+        <li class="cart-item">
+          <div class="cart-image">
+            <a href="{{ item.url }}">
+              <img class="img-fluid" src="{{ item | image_url: width: 100, height: 120 }}" alt="{{ item.title | escape }}" width="100" height="120">
+            </a>
+          </div>
+          <div class="cart-title">
+            <h6>
+              <a href="{{ item.url }}" title="{{ item.product.title }}">{{ item.product.title | truncate: 40 }}</a>
+            </h6>
+            <div class="cart-pro-info">
+              <div class="cart-qty-price">
+                <span class="quantity">{{ item.quantity }} × </span>
+                <span class="price-box">
+                  <span class="new-price">{{ item.price | money }}</span>
+                </span>
+              </div>
+              <div class="delete-item-cart">
+                <a class="remove_from_cart" href="javascript:void(0);" onclick="Shopify.removeItem({{ item.variant.id }})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <ul class="subtotal-title-area" {{ item_style }}>
+        <li class="subtotal-info">
+          <div class="subtotal-titles">
+            <h3>{{ settings.cart_sub_total }}</h3>
+            <span id="cart-total" class="subtotal-price">{{ cart.total_price | money }}</span>
+          </div>
+        </li>
+        <li class="mini-cart-btns">
+          <div class="cart-btns">
+            <a href="{{ routes.cart_url }}" class="btn btn-style">{{ settings.cart_view }}</a>
+            <a href="{{ routes.checkout_url }}" class="btn btn-style2">{{ settings.cart_checkout }}</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<style>
+  .shopping-widget .shopping-cart a span.cart-icon-wrap{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+  }
+  .shopping-widget .shopping-cart a span.cart-icon-wrap span.cart-icon svg{
+    stroke: #333;
+    width: 20px;
+    height: 20px;
+  }
+  .shopping-widget .shopping-cart a span.cart-icon-wrap span.bigcounter{
+        color: #fff;
+        font-size: 11px;
+        position: absolute;
+        top: -5px;
+        {% if settings.enable_rtl %}
+        left: -5px;
+        {% else %}
+        right: -5px;
+        {% endif %}
+        width: 15px;
+        height: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: {{ settings.color_primary }};
+        border-radius: 50%;
+        line-height: 1;
+    }
+    .shopping-widget .shopping-cart a span.cart-icon-wrap span.bigcounter{
+        background-color: {{ settings.color_primary }};
+    }
+    .shopping-widget .shopping-cart a span.cart-icon-wrap span.item{
+    color: {{ settings.color_primary }};
+    font-size: 12px;
+    font-weight: 600;
+    {% if settings.enable_rtl %}
+    margin-right: 5px;
+    {% else %}
+    margin-left: 5px;
+    {% endif %}    
+  }
+  .shopping-widget .shopping-cart a span.cart-icon-wrap span.item{
+    display: none;
+  }
+  .shopping-widget .shopping-cart a span.cart-detail{
+    display: none;
+    {% if settings.enable_rtl %}
+    margin-right: 10px;
+    {% else %}
+    margin-left: 10px;
+    {% endif %}
+  }
+  .shopping-widget .shopping-cart a span.cart-detail span.cart-title{
+    display: block;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  .shopping-widget .shopping-cart a span.cart-detail span.subtotal-price{
+    display: block;
+    color: #ddd;
+    margin-top: 5px;
+    text-transform: capitalize;
+  }
+  @media (max-width: 1199px) {
+    .shopping-widget .shopping-cart a span.cart-detail{
+      display: none;
+    }
+  }
+
+  /* mini cart item css */
+  .shopping-cart .mini-cart {
+    position: absolute;
+    top: calc(100% + 15px);
+    {% if settings.enable_rtl %}
+    left: 0;
+    {% else %}
+    right: 0;
+    {% endif %}
+    width: 290px;
+    background-color: #fff;
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.08);
+    -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.08);
+    filter: alpha(opacity=0);
+    -webkit-transition: 400ms ease;
+    -moz-transition: 400ms ease;
+    -o-transition: 400ms ease;
+    transition: 400ms ease;
+  }
+  .shopping-cart:hover .mini-cart {
+    visibility: visible;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+
+  .shopping-cart .mini-cart .cart-tempty-title p,
+  .shopping-cart .mini-cart .cart-item-title p{
+    padding: 10px 15px;
+    text-align: center;
+    line-height: normal;
+  }
+  .shopping-cart .mini-cart .cart-item-title p span.cart-count-item{
+    color: {{ settings.color_primary }};
+    font-weight: 600;
+  }
+
+  /* mini cart empty css */
+  .mini-cart .cart-tempty-title ul.cart-item-loop-empty{
+    text-align: center;
+  }
+  .mini-cart .cart-tempty-title ul.cart-item-loop-empty li.cart-item-empty{
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-top: 1px solid #e2e2e2;
+  }
+  .mini-cart .cart-tempty-title ul.cart-item-loop-empty li.cart-item-empty span svg{
+    stroke: {{ settings.color_primary }};
+  }
+  .mini-cart .cart-tempty-title ul.cart-item-loop-empty li.cart-item-empty span{
+    display: block;
+    font-size: 90px;
+    opacity: 0.5;
+    line-height: 0;
+  }
+  .mini-cart .cart-tempty-title ul.cart-item-loop-empty li.cart-item-empty a{
+    margin-top: 15px;
+  }
+
+  /* scroll css */
+  .mini-cart ul.cart-item-loop{
+    display: flex;
+    flex-direction: column;
+    max-height: 303px;
+    overflow-y: auto;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+    border-top: 1px solid #e2e2e2;
+  }
+  .mini-cart ul.cart-item-loop li.cart-item {
+    width: 100%;
+    display: flex;
+    padding: 15px;
+    border-bottom: 1px solid #e2e2e2;
+  }
+  .mini-cart ul.cart-item-loop li.cart-item:last-child{
+    border-bottom: none;
+  }
+  .mini-cart ul.cart-item-loop li.cart-item .cart-image {
+    width: 70px;
+  }
+  .mini-cart ul.cart-item-loop li.cart-item .cart-image a{
+    border: 1px solid #e2e2e2;
+  }
+  .mini-cart ul.cart-item-loop li.cart-item .cart-title {
+    width: calc(100% - 85px);
+    {% if settings.enable_rtl %}
+    margin-right: 15px;
+    {% else %}
+    margin-left: 15px;
+    {% endif %}
+    overflow: hidden;
+  }
+  .mini-cart ul.cart-item-loop li.cart-item .cart-title h6 {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .mini-cart ul.cart-item-loop li.cart-item .cart-title h6 a{
+    color: {{ settings.color_secondary }};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+  .mini-cart ul.cart-item-loop li.cart-item .cart-title h6 a:hover{
+    color: {{ settings.color_primary }};
+  }
+  .mini-cart ul.cart-item-loop li.cart-item .cart-title .cart-pro-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+  }
+  .mini-cart ul.subtotal-title-area {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+  }
+  .mini-cart ul.subtotal-title-area li {
+    padding: 15px;
+    border-top: 1px solid #e2e2e2;
+  }
+  .mini-cart ul.subtotal-title-area li.subtotal-info{
+    padding: 10px 15px;
+  }
+  .mini-cart ul.subtotal-title-area li .subtotal-titles {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mini-cart ul.subtotal-title-area li .subtotal-titles h3 {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .mini-cart ul.subtotal-title-area li .subtotal-titles span.subtotal-price {
+    color: #222;
+    font-weight: 600;
+  }
+  .mini-cart ul.subtotal-title-area li .cart-btns {
+    margin-top: -15px;
+  }
+  .mini-cart ul.subtotal-title-area li .cart-btns a {
+    width: calc(100% - 0px);
+    margin-top: 15px;
+  }
+  @media(max-width: 767px){
+    .shopping-widget .shopping-cart a span.cart-icon-wrap span.counter{
+      display: block;
+      color: #fff;
+      font-size: 11px;
+      position: absolute;
+      top: -5px;
+      {% if settings.enable_rtl %}
+      left: -5px;
+      {% else %}
+      right: -5px;
+      {% endif %}    
+      width: 15px;
+      height: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      line-height: 1;
+    }
+    .shopping-widget .shopping-cart a span.cart-icon-wrap span.counter{
+      background-color: {{ settings.color_primary }};
+    }
+  }
+</style>

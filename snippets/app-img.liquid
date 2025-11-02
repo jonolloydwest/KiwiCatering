@@ -1,0 +1,58 @@
+{% if settings.app_img_enable %}
+<ul class="app-store">
+  <li class="appstore-img">
+    <a href="javascript:void(0)">
+      {% if settings.google_img %}
+        {% assign google_alt = settings.google_img.alt | default: shop.name %}
+        {% assign google_width = settings.google_img.width | default: 180 %}
+        {% assign google_height = settings.google_img.height | default: 60 %}
+        {% assign google_src = settings.google_img | image_url: width: 360 %}
+        <img src="{{ google_src }}" class="img-fluid" alt="{{ google_alt }}" width="{{ google_width }}" height="{{ google_height }}" loading="lazy">
+      {% else %}
+        <img src="{{ 'placeholder-image.svg' | asset_url }}" class="img-fluid" alt="{{ shop.name }}" width="127" height="35" loading="lazy">
+      {% endif %}
+    </a>
+  </li>
+  <li class="appstore-img">
+    <a href="javascript:void(0)">
+      {% if settings.apple_img %}
+        {% assign apple_alt = settings.apple_img.alt | default: shop.name %}
+        {% assign apple_width = settings.apple_img.width | default: 180 %}
+        {% assign apple_height = settings.apple_img.height | default: 60 %}
+        {% assign apple_src = settings.apple_img | image_url: width: 360 %}
+        <img src="{{ apple_src }}" class="img-fluid" alt="{{ apple_alt }}" width="{{ apple_width }}" height="{{ apple_height }}" loading="lazy">
+      {% else %}
+        <img src="{{ 'placeholder-image.svg' | asset_url }}" class="img-fluid" alt="{{ shop.name }}" width="127" height="35" loading="lazy">
+      {% endif %}
+    </a>
+  </li>
+</ul>
+<style>
+  ul.app-store{
+    display: flex;
+  }
+  ul.app-store li.appstore-img{
+    {% if settings.enable_rtl %}
+    margin-left: 5px;
+    {% else %}
+    margin-right: 5px;
+    {% endif %}
+  }
+  ul.app-store li.appstore-img:last-child{
+    {% if settings.enable_rtl %}
+    margin-left: 0px;
+    {% else %}
+    margin-right: 0px;
+    {% endif %}
+  }
+  ul.app-store li.appstore-img a{
+    display: block;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  ul.app-store li.appstore-img a img{
+    border: 1px solid #3c3c3c;
+    border-radius: 5px;
+  }
+</style>
+{% endif %}

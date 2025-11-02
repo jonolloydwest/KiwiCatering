@@ -1,0 +1,227 @@
+{% comment %}
+  ----------------------------------------------------------------------------------
+   Plug in SEO Plus for Shopify
+
+   Copyright (c) 2020 SureSwift Capital, Inc.
+
+   This file is subject to the license at https://www.pluginseo.com/eula
+  ----------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign supported_filters_n_p = "first, last, concat, reverse, size, uniq, abs, ceil, floor, round, money, money_with_currency, money_without_trailing_zeros, money_without_currency, camelcase, capitalize, downcase, escape, handleize, md5, sha1, sha256, newline_to_br, strip, lstrip, rstrip, strip_html, strip_newlines, upcase, url_encode, url_escape, url_param_escape, hex_to_rgba, json, weight_with_unit" | split: ", " %}
+{% assign supported_filters_s_p = "append, append_not_empty, prepend, prepend_not_empty, join, map, sort, divided_by, minus, plus, times, modulo, hmac_sha1, hmac_sha256, remove, remove_first, split, truncate, truncatewords, date, time_tag, default, format_address, highlight, take" | split: ", " %}
+{% assign supported_filters2_p = "pluralize, replace, replace_first" | split: ", " %}
+{% capture page_underscore_title_var %}%% {{ pageUnderscoreTitle }} %%{% endcapture %}
+{% capture page_underscore_description_var %}%% {{ pageUnderscoreDescription }} %%{% endcapture %}
+
+{% capture parsed %}{{ template | replace: page_underscore_title_var, [pageUnderscoreTitle] }}{% endcapture %}
+{% capture parsed %}{{ parsed | replace: page_underscore_description_var, [pageUnderscoreDescription] }}{% endcapture %}
+
+{% assign split_up = parsed | split: '%%' %}
+
+{% for splu in split_up %}
+  {% capture remainder %}{{ forloop.index | modulo:2 }}{% endcapture %}
+  {% if remainder == '0' %}
+
+    {% assign with_filters = splu | split: ' || ' %}
+
+    {% if with_filters[0] contains 'current_tags' %}
+      {% capture replace_with %}{{ current_tags }}{% endcapture %}
+    {% elsif with_filters[0] contains 'current_page' %}
+      {% capture replace_with %}{{ current_page }}{% endcapture %}
+    {% else %}
+      {% assign liquid_var = with_filters[0] | replace: '.', '%%%' | split: '%%%' %}
+      {% assign entity = liquid_var[0] | strip %}
+      {% assign var1 = liquid_var[1] | strip %}
+      {% if liquid_var.size == 4 %}
+		    {% assign var2 = liquid_var[2] | strip %}
+			  {% assign var3 = liquid_var[3] | strip %}
+		    {% assign replace_with = [entity][var1][var2][var3] %}
+	    {% elsif liquid_var.size == 3 %}
+		    {% assign var2 = liquid_var[2] | strip %}
+		    {% assign replace_with = [entity][var1][var2] %}
+	    {% else %}
+		    {% assign replace_with = [entity][var1] %}
+      {% endif %}
+    {% endif %}
+
+    {% for filter in with_filters offset:1 %}
+	  {% assign filter_strip = filter | strip %}
+
+      {% for supportedFilterNP in supported_filters_n_p %}
+        {% if filter_strip == supportedFilterNP %}
+          {% if supportedFilterNP == 'first' %}
+            {% assign replace_with = replace_with | first %}
+          {% elsif supportedFilterNP == 'last' %}
+            {% assign replace_with = replace_with | last %}
+          {% elsif supportedFilterNP == 'concat' %}
+            {% assign replace_with = replace_with | concat %}
+          {% elsif supportedFilterNP == 'reverse' %}
+            {% assign replace_with = replace_with | reverse %}
+          {% elsif supportedFilterNP == 'size' %}
+            {% assign replace_with = replace_with | size %}
+          {% elsif supportedFilterNP == 'uniq' %}
+            {% assign replace_with = replace_with | uniq %}
+          {% elsif supportedFilterNP == 'abs' %}
+            {% assign replace_with = replace_with | abs %}
+          {% elsif supportedFilterNP == 'ceil' %}
+            {% assign replace_with = replace_with | ceil %}
+          {% elsif supportedFilterNP == 'floor' %}
+            {% assign replace_with = replace_with | floor %}
+          {% elsif supportedFilterNP == 'round' %}
+            {% assign replace_with = replace_with | round %}
+          {% elsif supportedFilterNP == 'money' %}
+            {% assign replace_with = replace_with | money %}
+          {% elsif supportedFilterNP == 'money_with_currency' %}
+            {% assign replace_with = replace_with | money_with_currency %}
+          {% elsif supportedFilterNP == 'money_without_trailing_zeros' %}
+            {% assign replace_with = replace_with | money_without_trailing_zeros %}
+          {% elsif supportedFilterNP == 'money_without_currency' %}
+            {% assign replace_with = replace_with | money_without_currency %}
+          {% elsif supportedFilterNP == 'camelcase' %}
+            {% assign replace_with = replace_with | camelcase %}
+          {% elsif supportedFilterNP == 'capitalize' %}
+            {% assign replace_with = replace_with | capitalize %}
+          {% elsif supportedFilterNP == 'downcase' %}
+            {% assign replace_with = replace_with | downcase %}
+          {% elsif supportedFilterNP == 'escape' %}
+            {% assign replace_with = replace_with | escape %}
+          {% elsif supportedFilterNP == 'handleize' %}
+            {% assign replace_with = replace_with | handleize %}
+          {% elsif supportedFilterNP == 'md5' %}
+            {% assign replace_with = replace_with | md5 %}
+          {% elsif supportedFilterNP == 'sha1' %}
+            {% assign replace_with = replace_with | sha1 %}
+          {% elsif supportedFilterNP == 'sha256' %}
+            {% assign replace_with = replace_with | sha256 %}
+          {% elsif supportedFilterNP == 'newline_to_br' %}
+            {% assign replace_with = replace_with | newline_to_br %}
+          {% elsif supportedFilterNP == 'strip' %}
+            {% assign replace_with = replace_with | strip %}
+          {% elsif supportedFilterNP == 'lstrip' %}
+            {% assign replace_with = replace_with | lstrip %}
+          {% elsif supportedFilterNP == 'rstrip' %}
+            {% assign replace_with = replace_with | rstrip %}
+          {% elsif supportedFilterNP == 'strip_html' %}
+            {% assign replace_with = replace_with | strip_html %}
+          {% elsif supportedFilterNP == 'strip_newlines' %}
+            {% assign replace_with = replace_with | strip_newlines %}
+          {% elsif supportedFilterNP == 'upcase' %}
+            {% assign replace_with = replace_with | upcase %}
+          {% elsif supportedFilterNP == 'url_encode' %}
+            {% assign replace_with = replace_with | url_encode %}
+          {% elsif supportedFilterNP == 'url_escape' %}
+            {% assign replace_with = replace_with | url_escape %}
+          {% elsif supportedFilterNP == 'url_param_escape' %}
+            {% assign replace_with = replace_with | url_param_escape %}
+          {% elsif supportedFilterNP == 'hex_to_rgba' %}
+            {% assign replace_with = replace_with | color_to_rgb %}
+          {% elsif supportedFilterNP == 'json' %}
+            {% assign replace_with = replace_with | json %}
+          {% elsif supportedFilterNP == 'weight_with_unit' %}
+            {% assign replace_with = replace_with | weight_with_unit %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {% for supportedFilter in supported_filters_s_p %}
+        {% assign supported_filter_start = supportedFilter | append: ": '" %}
+        {% if filter contains supported_filter_start %}
+          {% assign param = filter | remove: supported_filter_start | rstrip %}
+          {% assign param_length = param | size | minus: 1 %}
+          {% assign param = param | slice: 0, param_length %}
+          {% assign replace_with_size = replace_with | size %}
+          {% if supportedFilter == 'append' %}
+            {% assign replace_with = replace_with | append: param %}
+          {% elsif supportedFilter == 'append_not_empty' %}
+            {% if replace_with_size > 0 %}
+              {% assign replace_with = replace_with | append: param %}
+            {% endif %}
+          {% elsif supportedFilter == 'prepend' %}
+            {% assign replace_with = replace_with | prepend: param %}
+          {% elsif supportedFilter == 'prepend_not_empty' %}
+            {% if replace_with_size > 0 %}
+              {% assign replace_with = replace_with | prepend: param %}
+            {% endif %}
+          {% elsif supportedFilter == 'join' %}
+            {% assign replace_with = replace_with | join: param %}
+          {% elsif supportedFilter == 'map' %}
+            {% assign replace_with = replace_with | map: param %}
+          {% elsif supportedFilter == 'sort' %}
+            {% assign replace_with = replace_with | sort: param %}
+          {% elsif supportedFilter == 'divided_by' %}
+            {% assign replace_with = replace_with | divided_by: param %}
+          {% elsif supportedFilter == 'minus' %}
+            {% assign replace_with = replace_with | minus: param %}
+          {% elsif supportedFilter == 'plus' %}
+            {% assign replace_with = replace_with | plus: param %}
+          {% elsif supportedFilter == 'times' %}
+            {% assign replace_with = replace_with | times: param %}
+          {% elsif supportedFilter == 'modulo' %}
+            {% assign replace_with = replace_with | modulo: param %}
+          {% elsif supportedFilter == 'hmac_sha1' %}
+            {% assign replace_with = replace_with | hmac_sha1: param %}
+          {% elsif supportedFilter == 'hmac_sha256' %}
+            {% assign replace_with = replace_with | hmac_sha256: param %}
+          {% elsif supportedFilter == 'remove' %}
+            {% assign replace_with = replace_with | remove: param %}
+          {% elsif supportedFilter == 'remove_first' %}
+            {% assign replace_with = replace_with | remove_first: param %}
+          {% elsif supportedFilter == 'split' %}
+            {% assign replace_with = replace_with | split: param %}
+          {% elsif supportedFilter == 'truncate' %}
+            {% assign replace_with = replace_with | truncate: param %}
+          {% elsif supportedFilter == 'truncatewords' %}
+            {% assign replace_with = replace_with | truncatewords: param %}
+          {% elsif supportedFilter == 'date' %}
+            {% assign replace_with = replace_with | date: param %}
+          {% elsif supportedFilter == 'time_tag' %}
+            {% assign replace_with = replace_with | time_tag: param %}
+          {% elsif supportedFilter == 'default' %}
+            {% assign replace_with = replace_with | default: param %}
+          {% elsif supportedFilter == 'format_address' %}
+            {% assign replace_with = replace_with | format_address: param %}
+          {% elsif supportedFilter == 'highlight' %}
+            {% assign replace_with = replace_with | highlight: param %}
+    		  {% elsif supportedFilter == 'take' %}
+      			{% comment %}
+      				Custom: Takes the first X items from an array
+      				Usage:	take: '3'
+      			{% endcomment %}
+      			{% assign taken = '' %}
+      			{% for item in replace_with limit:param %}
+              {% if forloop.first != true %}
+      				  {% assign taken = taken | append: '~~~' %}
+              {% endif %}
+              {% assign taken = taken | append: item %}
+            {% endfor %}
+    		    {% assign replace_with = taken | split: '~~~' %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {% for supportedFilter in supported_filters2_p %}
+      	{% assign supported_filter_start = supportedFilter | append: ": '" %}
+      	{% if filter contains supported_filter_start %}
+      		{% assign params = filter | remove: supported_filter_start | rstrip %}
+      		{% assign param_length = params | size | minus: 1 %}
+      		{% assign params = params | slice: 0, param_length | split: "', '" %}
+    			{% if supportedFilter == 'pluralize' %}
+        	  {% assign replace_with = replace_with | pluralize: params[0], params[1] %}
+          {% elsif supportedFilter == 'replace' %}
+        	  {% assign replace_with = replace_with | replace: params[0], params[1] %}
+          {% elsif supportedFilter == 'replace_first' %}
+        	  {% assign replace_with = replace_with | replace_first: params[0], params[1] %}
+    			{% endif %}
+        {% endif %}
+      {% endfor %}
+
+    {% endfor %}
+
+    {% capture replace_me %}%%{{ splu }}%%{% endcapture %}
+  	{% capture parsed %}{{ parsed | replace: replace_me, replace_with }}{% endcapture %}
+
+	{% endif %}
+{% endfor %}
+
+{{ parsed }}

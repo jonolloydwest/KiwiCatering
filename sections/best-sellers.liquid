@@ -1,0 +1,162 @@
+<section class="collection-category">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="section-capture">
+          <div class="section-title">
+            {% if section.settings.section_best_title !='' %}
+            <h2>{{ section.settings.section_best_title }}</h2>
+            <p>{{ section.settings.section_best_desc }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% assign category_product = collections[section.settings.best_label_product] %}
+        <div class="collection-slider simple-slider" data-slider data-slider-gap="30" data-slider-visible="{{ section.settings.category_best_product_limit }}" data-slider-visible-lg="4" data-slider-visible-md="3" data-slider-visible-sm="1">
+          <button type="button" class="slider-nav-btn slider-nav-btn--prev" data-slider-prev aria-label="Previous best sellers">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+          </button>
+          <div class="collection-slider__track simple-slider__track" data-slider-track>
+          {% assign category_product_limit = section.settings.category_best_product_limit_handle %}
+          {% for product in category_product.products limit: category_product_limit %}
+          <div class="item">
+            {% render 'product-grid-item', product: product, collection: category_product %}
+          </div>
+          {% endfor %}
+          </div>
+          <button type="button" class="slider-nav-btn slider-nav-btn--next" data-slider-next aria-label="Next best sellers">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Best Selling Product",
+  "settings": [
+  {
+    "type" : "header",
+    "content" : "Section Padding"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop / tablet"
+  },
+  {
+    "type": "range",
+    "id": "category_best_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "category_best_padding_bottom",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "category_best_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "category_best_padding_bottom_xs",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "header",
+    "content": "Section Title"
+  },
+  {
+    "type": "text",
+    "id": "section_best_title",
+    "label": "Title",
+    "default": "Best Products"
+  },
+  {
+    "type": "text",
+    "id": "section_best_desc",
+    "label": "Title",
+    "default": "Duis aute irure dolor in reprehenderit in voluptate"
+  },  
+  {
+    "type": "header",
+    "content": "Product"
+  },
+  {
+    "type": "select",
+    "id": "category_best_product_limit",
+    "label": "slides Per View",
+    "options":[
+    {
+      "label": "2 Products",
+      "value": "2"
+    },
+    {
+      "label": "3 Products",
+      "value": "3"
+    },
+    {
+      "label": "4 Products",
+      "value": "4"
+    }
+    ],
+    "default": "4"
+  },
+  {
+    "type": "text",
+    "id": "category_best_product_limit_handle",
+    "label": "Product Limit",
+    "default": "10"
+  },
+  {
+    "type" : "collection",
+    "id" : "best_label_product",
+    "label" : "Best Product"
+  }
+  ],
+  "presets":[
+  {
+    "name": "Best Selling Product",
+    "category": "Collecton"
+  }
+  ]
+}
+{% endschema %}
+<style>
+  .collection-category{
+    padding-top:{{ section.settings.category_best_padding_top }}px;
+    padding-bottom:{{ section.settings.category_best_padding_bottom }}px;
+  }
+
+  @media (max-width: 767px){
+    .collection-category{
+      padding-top:{{ section.settings.category_best_padding_top_xs }}px;
+      padding-bottom:{{ section.settings.category_best_padding_bottom_xs }}px;
+    }
+  }
+</style>

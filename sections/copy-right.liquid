@@ -1,0 +1,135 @@
+<footer class="footer-bottom-area">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="ft-bottom">
+            <li class="copy-right">
+                <p>
+                    <span>{{ section.settings.copy_right_text1 }}</span>
+                    <i class="{{ section.settings.copy_right_icon }}"></i>
+                    <span>{{ section.settings.copy_right_text2 }}</span>
+                </p>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+{% schema %}
+{
+    "name": "Copyright",
+    "settings": [
+    {
+        "type" : "header",
+        "content" : "Section padding"
+    },
+    {
+        "type": "range",
+        "id": "foot_bt_padding_top",
+        "label": "Section Padding Top",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "default": 15
+    },
+    {
+        "type": "range",
+        "id": "foot_bt_padding_bottom",
+        "label": "Section Padding Bottom",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "default": 15
+    },
+    {
+        "type" : "header",
+        "content" : "Background Color"
+    },
+    {
+        "type": "color",
+        "id": "foot_bt_bg_color",
+        "label": "Background Color",
+        "default": "#222"
+    },
+    {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#999"
+    },
+    {
+        "type" : "header",
+        "content" : "Copyright Text"
+    },
+    {
+        "type": "text",
+        "id": "copy_right_text1",
+        "label": "CopyRight Text1",
+        "default": "Copyright"
+    },
+    {
+        "type": "text",
+        "id": "copy_right_icon",
+        "label": "CopyRight Class",
+        "default": "fa fa-copyright"
+    },
+    {
+        "type": "text",
+        "id": "copy_right_text2",
+        "label": "CopyRight Text2",
+        "default": "2020 spacingtech all rights reserved"
+    }
+    ],
+    "presets":[
+    {
+        "name": "Copyright",
+        "category": "copyright"
+    }
+    ]
+}
+{% endschema %}
+
+<style>
+    .footer-bottom-area {
+        padding-top: {{ section.settings.foot_bt_padding_top }}px;
+        padding-bottom: {{ section.settings.foot_bt_padding_bottom }}px;
+        background-color: {{ section.settings.foot_bt_bg_color }};
+    }
+    .footer-bottom-area .copy-right p {
+        color: {{ section.settings.text_color }};
+        font-weight: 400;
+        font-size: 14px;
+        text-transform: capitalize;
+    }
+    .footer-bottom-area .copy-right p span > span{
+        color: {{ settings.color_primary }};
+    }
+    .footer-bottom-area ul.ft-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+@media (max-width: 991px) {
+    .footer-bottom-area ul.ft-bottom{
+        flex-direction: column;
+        justify-content: center;
+        padding-top: 0;
+    }
+    .footer-bottom-area ul.ft-bottom li{
+        margin-top: 10px;
+    }
+    .footer-bottom-area ul.ft-bottom li:first-child{
+        margin-top: 0;
+    }
+}
+@media (max-width: 767px){
+    .footer-bottom-area .copy-right p {
+        font-size: 12px;
+        text-align: center;
+    }
+}
+</style>

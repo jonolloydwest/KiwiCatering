@@ -1,0 +1,309 @@
+<section class="slider-content">
+    <div class="home-slider owl-carousel owl-theme" id="home-slider">
+        {% for block in section.blocks %}
+        <div class="item">
+            <div class="slide-image">
+                {% assign slider_alt = block.settings.slider_title1 | default: shop.name %}
+                {% assign slider_mobile_image = block.settings.slider_img1 %}
+                {% assign slider_desktop_image = block.settings.slider_img %}
+                {% if forloop.first %}
+                  {% assign slider_loading = 'eager' %}
+                {% else %}
+                  {% assign slider_loading = 'lazy' %}
+                {% endif %}
+                {% if slider_mobile_image %}
+                  {% assign slider_mobile_width = slider_mobile_image.width | default: 1440 %}
+                  {% assign slider_mobile_height = slider_mobile_image.height | default: 850 %}
+                  {% assign slider_mobile_src = slider_mobile_image | image_url: width: 1440 %}
+                  <img loading="{{ slider_loading }}" class="medium-up-hidden" src="{{ slider_mobile_src }}" alt="{{ slider_alt }}" width="{{ slider_mobile_width }}" height="{{ slider_mobile_height }}">
+                {% else %}
+                  <img loading="{{ slider_loading }}" class="medium-up-hidden" src="{{ 'placeholder-image.svg' | asset_url }}" alt="{{ slider_alt }}" width="1440" height="850">
+                {% endif %}
+                {% if slider_desktop_image %}
+                  {% assign slider_desktop_width = slider_desktop_image.width | default: 1920 %}
+                  {% assign slider_desktop_height = slider_desktop_image.height | default: 850 %}
+                  {% assign slider_desktop_src = slider_desktop_image | image_url: width: 2048 %}
+                  <img loading="{{ slider_loading }}" class="small-hidden" src="{{ slider_desktop_src }}" alt="{{ slider_alt }}" width="{{ slider_desktop_width }}" height="{{ slider_desktop_height }}">
+                {% else %}
+                  <img loading="{{ slider_loading }}" class="small-hidden" src="{{ 'placeholder-image.svg' | asset_url }}" alt="{{ slider_alt }}" width="1920" height="850">
+                {% endif %}
+                <div class="slider-text-info">
+                    {% if block.settings.slider_sub_title != '' %}
+                    <span style="color:{{ block.settings.slider_sub_title_color }};">{{ block.settings.slider_sub_title }}</span>
+                    {% endif %}
+                    {% if block.settings.slider_title != '' %}
+                    <h2 style="color:{{ block.settings.slider_title_color }};">
+                        <span>{{ block.settings.slider_title1 }}</span>
+                        <span>{{ block.settings.slider_title2 }}</span>
+                    </h2>
+                    {% endif %}                    
+                    <div class="slider-button">
+                        {% if block.settings.slider_button != '' %}
+                        <a class="btn btn-style-medium" href="{{ block.settings.slider_banner_url }}">{{ block.settings.slider_button }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<!-- Hero Section End -->
+<script>
+  (function() {
+    var sectionId = '{{ section.id }}';
+    var sliderSelector = '#shopify-section-' + sectionId + ' #home-slider';
+
+    function initSlider() {
+      if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.owlCarousel) {
+        return;
+      }
+      var $slider = window.jQuery(sliderSelector);
+      if (!$slider.length || $slider.hasClass('owl-loaded')) {
+        return;
+      }
+      $slider.owlCarousel({
+        loop: true,
+        margin: 0,
+        items: 1,
+        {%- if settings.enable_rtl -%}
+        rtl: true,
+        {%- else -%}
+        fade: true,
+        {%- endif -%}
+        nav: true,
+        navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+        lazyLoad: true,
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 8000
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initSlider);
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.detail && event.detail.sectionId === sectionId) {
+        initSlider();
+      }
+    });
+  })();
+</script>
+{% schema %}
+{
+    "name": "Slider For Banner",
+    "blocks":[
+        {
+            "type": "slide",
+            "name": "Slide",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "slider_img",
+                    "label": "Desktop Image",
+                    "info": "Recommended Size: 1920px x 850px"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "slider_img1",
+                    "label": "Mobile Image"
+                },
+                {
+                    "type": "url",
+                    "id": "slider_banner_url",
+                    "label": "Banner URL"
+                },
+                {
+                    "type": "header",
+                    "content": "Slider Title"
+                },
+                {
+                    "type": "text",
+                    "id": "slider_title1",
+                    "label": "Title",
+                    "default": "You can pair"
+                },
+                {
+                    "type": "text",
+                    "id": "slider_title2",
+                    "label": "Title",
+                    "default": "with products"
+                },
+                {
+                    "type": "color",
+                    "id": "slider_title_color",
+                    "label": "Title color",
+                    "default": "#303a0a"
+                },
+                {
+                    "type": "header",
+                    "content": "Slider Sub Title"
+                },
+                {
+                    "type": "text",
+                    "id": "slider_sub_title",
+                    "label": "Sub Title",
+                    "default": "Here to make heads turn"
+                },
+                {
+                    "type": "color",
+                    "id": "slider_sub_title_color",
+                    "label": "Sub Title color",
+                    "default": "#252525"
+                },
+                {
+                    "type": "header",
+                    "content": "Slider Button"
+                },
+                {
+                    "type": "text",
+                    "id": "slider_button",
+                    "label": "Button Text",
+                    "default": "Shop now"
+                }
+            ]
+        }
+    ],
+    "presets":[
+        {
+            "name": "Slider For Banner",
+            "category": "1. Slider"
+        }
+    ]
+}
+{% endschema %}
+<style>
+    .slider-content .home-slider .slide-image{
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info{
+        position: absolute;
+        {%- if settings.enable_rtl -%}
+        right: 15%;
+        {%- else -%}
+        left: 15%;
+        {%- endif -%}
+    }
+    .slider-content .home-slider .owl-item.active .slide-image .slider-text-info > span{
+        -webkit-animation-duration: .5s;
+        animation-duration: .5s;
+    }
+    .slider-content .home-slider .owl-item.active .slide-image .slider-text-info a{
+        -webkit-animation-duration: .8s;
+        animation-duration: .8s;
+    }
+    .slider-content .home-slider .owl-item.active .slide-image .slider-text-info h2{
+        -webkit-animation-duration: 1.1s;
+        animation-duration: 1.1s;
+    }
+    .slider-content .home-slider .owl-item.active .slide-image .slider-text-info p{
+        -webkit-animation-duration: 1.4s;
+        animation-duration: 1.4s;
+    }
+    .slider-content .home-slider .owl-item.active .slide-image .slider-text-info h2,
+    .slider-content .home-slider .owl-item.active .slide-image .slider-text-info > span,
+    .slider-content .home-slider .owl-item.active .slide-image .slider-text-info a{
+        opacity: 1;
+        visibility: visible;
+        -webkit-animation-name: slide-down;
+        animation-name: slide-down;
+        -webkit-animation-fill-mode: forwards;
+        -moz-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+    }
+    @keyframes slide-down{0%{opacity:0;filter:alpha(opacity=0);transform:translateY(-100%)}100%{opacity:1;filter:alpha(opacity=100);transform:translateY(0)}}@-webkit-keyframes slide-down{0%{opacity:0;filter:alpha(opacity=0);transform:translateY(-100%)}100%{opacity:1;filter:alpha(opacity=100);transform:translateY(0)}
+    }
+    .slider-content .home-slider .owl-item .slide-image .slider-text-info > span,
+    .slider-content .home-slider .owl-item .slide-image .slider-text-info h2,
+    .slider-content .home-slider .owl-item .slide-image .slider-text-info a{
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .slider-content .home-slider .slide-image .slider-text-info > span{
+        font-size: 30px;
+        line-height: 1;
+        font-weight: 300;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info h2{
+        font-size: 80px;
+        font-weight: 600;
+        line-height: 1;
+        margin-top: 30px;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info h2 span{
+        display: block;
+        margin-top: 10px;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info h2 span:first-child{
+        margin-top: 0;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info .slider-button a.btn-link{
+        {%- if settings.enable_rtl -%}
+        margin-right: 30px;
+        {%- else -%}
+        margin-left: 30px;
+        {%- endif -%}
+    }
+    .slider-content .home-slider .slide-image .slider-text-info .slider-button{
+        margin-top: 35px;
+        display: flex;
+        align-items: center;
+    }
+    @media (max-width: 1599px) and (min-width: 1200px){
+        .slider-content .home-slider .slide-image .slider-text-info h2{
+            font-size: 50px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info > span{
+            font-size: 24px;
+        }
+    }
+    @media (max-width: 1199px){
+        .slider-content .home-slider .slide-image .slider-text-info > span{
+            font-size: 18px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info h2{
+            font-size: 40px;
+            margin-top: 20px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info .slider-button{
+            margin-top: 25px;
+        }
+    }
+    @media (max-width: 991px){
+        .slider-content .home-slider .slide-image .slider-text-info h2{
+            font-size: 30px;
+        }
+    }
+    @media(min-width:768px){
+      .medium-up-hidden{display:none!important;}
+    }
+    @media (max-width: 767px){
+      .small-hidden{display:none!important;}
+        .slider-content .home-slider .slide-image .slider-text-info{
+          left: 50%!important;
+          transform: translate(-50%, 0);
+          width: 100%;
+          text-align: center;
+          margin: auto;
+          bottom: 20px;
+        }
+        .slider-content .home-slider .slide-image img{
+            height: 520px;
+            object-fit: cover;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info > span{
+            font-size: 16px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info h2{
+            font-size: 24px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info h2 span{
+            margin-top: 5px; 
+        }
+      .slider-content .home-slider .slide-image .slider-text-info .slider-button {
+        justify-content: center;
+      }
+    }
+</style>

@@ -1,0 +1,20 @@
+{%- if settings.company_logo -%}
+  {% assign header_logo_alt = settings.company_logo.alt | default: shop.name %}
+  <a href="{{ routes.root_url }}" class="theme-logo">
+    {{ settings.company_logo
+      | image_url: width: 560
+      | image_tag: width: 280, widths: '180,200,220,240,260,280,320', class: 'header-logo', alt: header_logo_alt, loading: 'eager'
+    }}
+  </a>
+{%- else -%}
+  <a href="{{ routes.root_url }}" class="shop-name">
+    <span>{{ shop.name }}</span>
+  </a>
+{%- endif -%}
+<style>
+  .logo a.shop-name span {
+    color: #000;
+    font-size: 24px;
+    font-weight: 600;
+  }
+</style>

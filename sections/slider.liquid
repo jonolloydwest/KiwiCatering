@@ -1,0 +1,245 @@
+<section class="slider-content">
+    <div class="home-slider simple-slider" data-slider data-slider-visible="1" data-slider-autoplay="8000" data-slider-gap="0">
+        <button type="button" class="slider-nav-btn slider-nav-btn--prev" data-slider-prev aria-label="Previous slide">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </button>
+        <div class="home-slider__track simple-slider__track" data-slider-track>
+        {% for block in section.blocks %}
+        <div class="item">
+ <a  href="{{ block.settings.slider_banner_url }}">
+            <div class="slide-image">
+                {% assign slider_alt = block.settings.slider_title1 | default: shop.name %}
+                {% assign slider_mobile_image = block.settings.slider_img1 %}
+                {% assign slider_desktop_image = block.settings.slider_img %}
+                {% if forloop.first %}
+                  {% assign slider_loading = 'eager' %}
+                {% else %}
+                  {% assign slider_loading = 'lazy' %}
+                {% endif %}
+                {% if slider_mobile_image %}
+                  {% assign slider_mobile_width = slider_mobile_image.width | default: 1440 %}
+                  {% assign slider_mobile_height = slider_mobile_image.height | default: 850 %}
+                  {% assign slider_mobile_src = slider_mobile_image | image_url: width: 1440 %}
+                  <img loading="{{ slider_loading }}" class="medium-up-hidden" src="{{ slider_mobile_src }}" alt="{{ slider_alt }}" width="{{ slider_mobile_width }}" height="{{ slider_mobile_height }}">
+                {% else %}
+                  <img loading="{{ slider_loading }}" class="medium-up-hidden" src="{{ 'placeholder-image.svg' | asset_url }}" alt="{{ slider_alt }}" width="1440" height="850">
+                {% endif %}
+                {% if slider_desktop_image %}
+                  {% assign slider_desktop_width = slider_desktop_image.width | default: 1920 %}
+                  {% assign slider_desktop_height = slider_desktop_image.height | default: 850 %}
+                  {% assign slider_desktop_src = slider_desktop_image | image_url: width: 2048 %}
+                  <img loading="{{ slider_loading }}" class="small-hidden" src="{{ slider_desktop_src }}" alt="{{ slider_alt }}" width="{{ slider_desktop_width }}" height="{{ slider_desktop_height }}">
+                {% else %}
+                  <img loading="{{ slider_loading }}" class="small-hidden" src="{{ 'placeholder-image.svg' | asset_url }}" alt="{{ slider_alt }}" width="1920" height="850">
+                {% endif %}
+                <div class="slider-text-info">
+                    {% if block.settings.slider_sub_title != '' %}
+                    <span style="color:{{ block.settings.slider_sub_title_color }};">{{ block.settings.slider_sub_title }}</span>
+                    {% endif %}
+                    {% if block.settings.slider_title != '' %}
+                    <h2 style="color:{{ block.settings.slider_title_color }};">
+                        <span>{{ block.settings.slider_title1 }}</span>
+                        <span>{{ block.settings.slider_title2 }}</span>
+                    </h2>
+                    {% endif %}                    
+                    <div class="slider-button">
+                        {% if block.settings.slider_button != '' %}
+                        <a class="btn btn-style-medium" href="{{ block.settings.slider_banner_url }}">{{ block.settings.slider_button }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+ </a>
+        </div>
+        {% endfor %}
+        </div>
+        <button type="button" class="slider-nav-btn slider-nav-btn--next" data-slider-next aria-label="Next slide">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </button>
+    </div>
+</section>
+<!-- Hero Section End -->
+{% schema %}
+{
+    "name": "Main Slider",
+    "blocks":[
+        {
+            "type": "slide",
+            "name": "Slide",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "slider_img",
+                    "label": "Desktop Image",
+                    "info": "Recommended Size: 1920px x 850px"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "slider_img1",
+                    "label": "Mobile Image"
+                },
+                {
+                    "type": "url",
+                    "id": "slider_banner_url",
+                    "label": "Banner URL"
+                },
+                {
+                    "type": "header",
+                    "content": "Slider Title"
+                },
+                {
+                    "type": "text",
+                    "id": "slider_title1",
+                    "label": "Title",
+                    "default": "You can pair"
+                },
+                {
+                    "type": "text",
+                    "id": "slider_title2",
+                    "label": "Title",
+                    "default": "with products"
+                },
+                {
+                    "type": "color",
+                    "id": "slider_title_color",
+                    "label": "Title color",
+                    "default": "#303a0a"
+                },
+                {
+                    "type": "header",
+                    "content": "Slider Sub Title"
+                },
+                {
+                    "type": "text",
+                    "id": "slider_sub_title",
+                    "label": "Sub Title",
+                    "default": "Here to make heads turn"
+                },
+                {
+                    "type": "color",
+                    "id": "slider_sub_title_color",
+                    "label": "Sub Title color",
+                    "default": "#252525"
+                },
+                {
+                    "type": "header",
+                    "content": "Slider Button"
+                },
+                {
+                    "type": "text",
+                    "id": "slider_button",
+                    "label": "Button Text",
+                    "default": "Shop now"
+                }
+            ]
+        }
+    ],
+    "presets":[
+        {
+            "name": "Main Slider",
+            "category": "1. Slider"
+        }
+    ]
+}
+{% endschema %}
+<style>
+    .slider-content .home-slider .slide-image{
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info{
+        position: absolute;
+        {%- if settings.enable_rtl -%}
+        right: 15%;
+        {%- else -%}
+        left: 15%;
+        {%- endif -%}
+    }
+    .slider-content .home-slider .slide-image .slider-text-info > span{
+        font-size: 30px;
+        line-height: 1;
+        font-weight: 300;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info h2{
+        font-size: 80px;
+        font-weight: 600;
+        line-height: 1;
+        margin-top: 30px;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info h2 span{
+        display: block;
+        margin-top: 10px;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info h2 span:first-child{
+        margin-top: 0;
+    }
+    .slider-content .home-slider .slide-image .slider-text-info .slider-button a.btn-link{
+        {%- if settings.enable_rtl -%}
+        margin-right: 30px;
+        {%- else -%}
+        margin-left: 30px;
+        {%- endif -%}
+    }
+    .slider-content .home-slider .slide-image .slider-text-info .slider-button{
+        margin-top: 35px;
+        display: flex;
+        align-items: center;
+    }
+    @media (max-width: 1599px) and (min-width: 1200px){
+        .slider-content .home-slider .slide-image .slider-text-info h2{
+            font-size: 50px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info > span{
+            font-size: 24px;
+        }
+    }
+    @media (max-width: 1199px){
+        .slider-content .home-slider .slide-image .slider-text-info > span{
+            font-size: 18px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info h2{
+            font-size: 40px;
+            margin-top: 20px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info .slider-button{
+            margin-top: 25px;
+        }
+    }
+    @media (max-width: 991px){
+        .slider-content .home-slider .slide-image .slider-text-info h2{
+            font-size: 30px;
+        }
+    }
+    @media(min-width:768px){
+      .medium-up-hidden{display:none!important;}
+    }
+    @media (max-width: 767px){
+      .small-hidden{display:none!important;}
+        .slider-content .home-slider .slide-image .slider-text-info{
+          left: 50%!important;
+          transform: translate(-50%, 0);
+          width: 100%;
+          text-align: center;
+          margin: auto;
+          bottom: 20px;
+        }
+        .slider-content .home-slider .slide-image img{
+            height: 520px;
+            object-fit: cover;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info > span{
+            font-size: 16px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info h2{
+            font-size: 24px;
+        }
+        .slider-content .home-slider .slide-image .slider-text-info h2 span{
+            margin-top: 5px; 
+        }
+      .slider-content .home-slider .slide-image .slider-text-info .slider-button {
+        justify-content: center;
+      }
+    }
+</style>

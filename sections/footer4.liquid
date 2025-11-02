@@ -1,0 +1,345 @@
+<section class="footer-top-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+        <div class="footer-list-wrap">
+          <ul class="footer-list">
+            <li class="ftlink-li footer-info">
+              {%- render 'company-logo-footer' -%}
+            </li>
+            {% for block in section.blocks %}
+            <li class="ftlink-li linklist">
+              <ul class="footer-sublist">
+                {% assign footer_menu = block.settings.footer_menu_handle %}
+                {% for link in linklists[footer_menu].links %}
+                {% if linklists[footer_menu].links != '' %}
+                <li class="ftsublink-li">
+                  <a href="{{ link.url }}" class="ft-sublink">{{ link.title }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+            {% endfor %}
+            <li class="ftlink-li newsletter">
+              <div class="news-content">
+                  {% form 'customer' %}
+                  {{ form.errors | default_errors }}
+                  {% if form.posted_successfully? %}
+                  <p class="text-success">
+                    <span>{{ settings.newsletter_success_text }}</span>
+                    <span>{{ settings.newsletter_coupan_code }}</span>
+                  </p>
+                  {% endif %}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <div class="subscribe-block">
+                    <input type="email" name="contact[email]" class="email mail" id="E-mail" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ settings.email_placeholder }}" autocapitalize="off" required>
+                    <div class="email-submit">
+                      <button type="submit" class="btn btn-style-medium" name="commit" id="Subscribe">
+                        {{ settings.email_button }}
+                      </button>
+                    </div>
+                  </div>
+                  {% endform %}
+                </div>
+            </li>
+            {%- render 'social-midea' -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Desktop / Laptop "
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type" : "paragraph",
+      "content" : " tablet"
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_top_lg",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_bottom_lg",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type" : "paragraph",
+      "content" : "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_top_xs",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "foot_padding_bottom_xs",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Section Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_bg_img",
+      "label": "Background Image",
+      "info": "Recommended Size: 1920 x 770px"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_bg_img_enable",
+      "label": "Show Background Image",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "footer_bg_color",
+      "label": "Background Color",
+      "default": "#fff"
+    }
+  ],
+  "blocks":[
+    {
+      "type": "footer_menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "footer_menu_handle",
+          "label": "Select Menu"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .footer-top-area{
+    {% if section.settings.footer_bg_img_enable %}
+    background-image: url('{% if section.settings.footer_bg_img %}{{ section.settings.footer_bg_img | image_url: width: 2048 }}{% else %}{{ 'placeholder-image.svg' | asset_url }}{% endif %}');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    {% else %}
+    background-color: {{ section.settings.footer_bg_color }};
+    {% endif %}
+  }
+  .footer-top-area .footer-list-wrap{
+    padding-top: {{ section.settings.foot_padding_top }}px;
+    padding-bottom: {{ section.settings.foot_padding_bottom }}px;
+  }
+  @media (max-width : 1199px){
+    .footer-top-area .footer-list-wrap{
+      padding-top: {{ section.settings.foot_padding_top_lg }}px;
+      padding-bottom: {{ section.settings.foot_padding_bottom_lg }}px;
+    }
+  }
+  @media (max-width : 767px){
+    .footer-top-area .footer-list-wrap{
+      padding-top: {{ section.settings.foot_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.foot_padding_bottom_xs }}px;
+    }
+  }
+
+  /* footer-info css */
+  .footer-info-wrap ul.footer-info li.logo p{
+    margin-top: 17px;
+    color: #999;
+  }
+  @media (max-width : 1199px){
+    .footer-info-wrap ul.footer-info li.logo p{
+      font-size: 14px;
+      width: 100%;
+    }
+  }
+
+  /* footer-list css */
+  .footer-list-wrap ul.footer-list{
+    text-align: center;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li.linklist{
+    margin-top: 26px;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist {
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: -15px;
+    {% if settings.enable_rtl %}
+    margin-right: -30px;
+    {% else %}
+    margin-left: -30px;
+    {% endif %}
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li {
+    position: relative;
+    {% if settings.enable_rtl %}
+    padding-left: 20px;
+    margin-right: 20px;
+    {% else %}
+    padding-right: 20px;
+    margin-left: 20px;
+    {% endif %}
+    margin-top: 15px;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li:last-child{
+    {% if settings.enable_rtl %}
+    padding-left: 0px;
+    {% else %}
+    padding-right: 0px;
+    {% endif %}
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li:after{
+    content: '';
+    position: absolute;
+    transform: translateY(50%);
+    bottom: 50%;
+    right: 0;
+    height: 14px;
+    width: 1px;
+    background-color: rgb(255 255 255 / 10%);
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li:last-child:after{
+    display: none;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a{
+    color: #999;
+    font-size: 16px;
+    position: relative;
+    font-family: 'Rubik', sans-serif;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a:hover{
+    color: #fff;
+  }
+
+  @media(max-width: 991px){
+    .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a{
+      font-size: 16px;
+    }   
+  }
+  @media(max-width: 767px){
+    .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist {
+      {% if settings.enable_rtl %}
+      margin-left: -15px;
+      {% else %}
+      margin-right: -15px;
+      {% endif %}
+    }
+    .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li {
+      {% if settings.enable_rtl %}
+      margin-left: 15px;
+      {% else %}
+      margin-right: 15px;
+      {% endif %}
+    }
+    .footer-list-wrap ul.footer-list li.ftlink-li ul.footer-sublist li.ftsublink-li a{
+      font-size: 14px;
+    }
+  }
+
+  /* newsletter */
+  .footer-list-wrap ul.footer-list li.ftlink-li.newsletter {
+    margin-top: 24px;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li.newsletter .subscribe-block{
+    position: relative;
+    width: 50%;
+    margin: 0 auto; 
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li.newsletter .subscribe-block input{
+    width: 100%;
+    height: 50px;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li.newsletter .subscribe-block .email-submit button{
+    position: absolute;
+    {% if settings.enable_rtl %}
+    left: 0;
+    {% else %}
+    right: 0;
+    {% endif %}
+    top: 0;
+  }
+  .footer-list-wrap ul.footer-list li.ftlink-li.newsletter .subscribe-block .email-submit button:hover{
+    opacity: .9;
+    border-color: {{ settings.color_primary }};
+    background-color: {{ settings.color_primary }};
+  }
+  @media(max-width: 767px){
+    .footer-list-wrap ul.footer-list li.ftlink-li.newsletter .subscribe-block{
+      width: 100%;
+    }
+    .footer-list-wrap ul.footer-list li.ftlink-li.newsletter .subscribe-block input{
+      height: 44px;
+    }
+  }
+  /* social media */
+ .footer-list-wrap ul.social-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    position: relative;
+    z-index: 1;
+  }
+</style>

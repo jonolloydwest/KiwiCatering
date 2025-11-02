@@ -1,0 +1,31 @@
+{% comment %}
+  version: 1.8.0
+{% endcomment %}
+ 
+{%- comment -%}
+  ----------------------------------------------------------------------------------
+   Plug in SEO Plus for Shopify
+
+   Copyright (c) 2020 SureSwift Capital, Inc.
+
+  This file is subject to the license at https://www.pluginseo.com/eula
+  ----------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- comment -%} theme-check-disable UnusedAssign {%- endcomment -%}
+{%- assign licensed_to = '0f28f2e2-e9d8-4c22-a640-98c4685dc675' -%}
+{%- assign api_url = 'https://api.pluginseo.com' -%}
+{%- assign app_proxy_path = '/apps/pseo-app-proxy-prd' -%}
+{%- assign pluginseo_verbose = false -%}
+{%- assign page_underscore_title = 'page' | append: '_' | append: 'title' -%}
+{%- assign page_underscore_description = 'page' | append: '_' | append: 'description' -%}
+{%- assign root_template = template | split: '.' | first -%}
+{%- comment -%} theme-check-enable UnusedAssign {%- endcomment -%}
+
+{%- render 'pluginseo-langify' -%}
+{%- render 'pluginseo-page-title' -%}
+{%- render 'pluginseo-meta-description' -%}
+{%- render 'pluginseo-structured-data' -%}
+{%- render 'pluginseo-not-found' -%}
+
+<meta name="pluginseo" content="Plug in SEO Plus" data-ptf="{{- pTF -}}" data-mdf="{{- mDF -}}" />

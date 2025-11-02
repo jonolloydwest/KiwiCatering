@@ -1,0 +1,537 @@
+<div class="shop-sidebar-inner">
+  <div class="shop-sidebar sidebar-filter">
+    <div class="clear-content">
+      <h6 class="title">{{ settings.filter_title }}</h6>
+      <a href="{{ routes.all_products_collection_url }}" class="clear">{{ settings.clear_title }}</a>  
+    </div>
+    <ul class="filter-selected">
+      <li class="tag-selected-filter"></li>
+    </ul>
+  </div>
+  <div class="shop-sidebar sidebar-wedget">
+    {%- if settings.categories_title != '' -%}
+    <h6 class="title">{{ settings.categories_title }}</h6>
+    <a class="title" data-toggle="collapse" href="#collapse-{{ settings.categories_title }}">{{ settings.categories_title }}</a>
+    {%- endif -%}
+    <div class="collapse scroll-top" id="collapse-{{ settings.categories_title }}">
+      <ul class="scrollbar">
+        {% for c in collections %}
+        {%- if c.products_count >= 1 -%}
+        <li class="{% if collection and collection.handle == c.handle %}active{% endif %}">
+          {%- if collection and collection.handle == c.handle -%}
+          <input type="checkbox" checked="checked" name="{{ c.title }}" class="cust-checkbox">
+          {%- else -%}
+          <input type="checkbox" class="cust-checkbox" name="{{ c.title }}">
+          {%- endif -%}
+          <a href="{{ c.url }}" class="cust-checkbox-label" title="{{ c.title }}">
+            <span class="filter-name">{{ c.title | truncate: 20 }}</span>            
+            <span class="count-check">{% if c.products_count < 10 %} {{ c.products_count | prepend: "0" }} {% else %} {{ c.products_count }}{% endif %}</span>
+            <span class="cust-check"></span>
+          </a>
+        </li>
+        {%- endif -%}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% if collection.all_tags.size > 1 %}
+  {% for tag in collection.all_tags %}
+  {% if tag contains '_' %}
+  {% assign split_tag = tag | split: '_' %}
+  {% unless filter_tags contains split_tag.first %}
+  {% capture filter_tags %}{{ filter_tags }}+{{ split_tag.first }}{% endcapture %}
+  {% endunless %}
+  {% endif %}
+  {% endfor %}
+  {% assign filter_tags = filter_tags | slice: 1, filter_tags.size | split: '+' %}
+  
+  <form id="custom-collection-filter" action="{{ collection.url }}">
+    {% assign i = 0 %}
+    {% for tag in filter_tags %}
+    <div class="shop-sidebar sidebar-wedget {{ tag | capitalize }}">
+      {% assign i = i | plus:1 %}
+      <h6 class="title">{{ tag | capitalize }}</h6>
+      <a class="title" data-toggle="collapse" href="#collapse{{ i }}">{{ tag | capitalize }}</a>
+      <div class="collapse scroll-top" id="collapse{{ i }}">
+        <ul class="multiple-filters scrollbar">
+          {% for aTag in collection.all_tags %}
+          {% assign temp_tag = aTag | split: '_' %}
+          {% if tag == temp_tag.first %}
+          <li class="{{ tag }}">
+            <label class="cust-checkbox-label {{ tag }}">
+              <span class="filter-name">{{ temp_tag.last | truncate: 20 }}</span>
+              {% if current_tags contains aTag %}
+              <input type="checkbox" checked="checked" data-tag="{{aTag}}" data-remove-tag="{{temp_tag.last}}" name="{{ temp_tag.first }}" value="{{ aTag }}" class="cust-checkbox active-filter">
+              {% else %}
+              <input type="checkbox" data-tag="{{aTag}}" data-remove-tag="{{temp_tag.last}}" name="{{ temp_tag.first }}" value="{{ aTag }}" class="cust-checkbox">
+              {% endif %}
+              <span class="cust-check" data-tag="{{aTag}}" data-remove-tag="{{temp_tag.last}}" style="background: {{ temp_tag.last | truncate: 20}} no-repeat center; background-size: initial;" title="{{ temp_tag.last | truncate: 20 }}"></span>
+            </label>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  </form>
+  {% if section.settings.showing_sidebar_image %}
+  <div class="banner-block">
+    <a href="{{ section.settings.sidebar_img_url }}" class="banner-hover">
+      {% assign sidebar_image = section.settings.sidebar_img %}
+      {% if sidebar_image %}
+      {% assign sidebar_width = sidebar_image.width | default: 430 %}
+      {% assign sidebar_height = sidebar_image.height | default: 500 %}
+      {% assign sidebar_src = sidebar_image | image_url: width: 1200 %}
+      <img class="img-fluid" src="{{ sidebar_src }}" alt="{{ shop.name }}" width="{{ sidebar_width }}" height="{{ sidebar_height }}" loading="lazy">
+      {% else %}
+      <img class="img-fluid" src="{{ 'placeholder-image.svg' | asset_url }}" alt="{{ shop.name }}" width="430" height="500" loading="lazy">
+      {% endif %}
+    </a>
+  </div>
+   {% endif %}
+<script>
+    var arr=[];
+    $('.multiple-filters li input').each(function() {
+        
+        $(this).on('click',function(i) {
+          $('.ajax-filter-loader').css('display','block');
+           
+
+          if($(this).hasClass('active-filter')){
+            
+            var remove_elements = $(this).attr('data-tag');
+            
+            var new_url = removeItemAll(arr,remove_elements);
+            $(this).removeClass('active-filter');
+            $(this).next('span').removeClass('active-filter');
+            $('#'+remove_elements).remove();
+            
+          }else{
+            
+            if($('.st-active-filter').length >= 1){
+   
+              arr.push($(this).attr('data-tag'));
+              $(this).addClass('active-filter');
+              $(this).next('span').addClass('active-filter');
+              var new_url = arr.join("+");
+
+            }else{
+              
+               arr.push($(this).attr('data-tag'));
+               $(this).addClass('active-filter');
+               $(this).next('span').addClass('active-filter');
+               var new_url = arr.join("+");
+              
+            }
+            var new_data_tag = $(this).attr('data-tag');
+            var remove_ele = $(this).attr('data-remove-tag');
+            $('.tag-selected-filter').append('<a href="javascript:void(0);" class="remove-filter" id='+new_data_tag+' data-tag='+new_data_tag+'><span class="remove-filter-selected">'+remove_ele+'<i class="ion-close-round"></i></span></a>');
+          }
+          
+          
+          
+          {% if collection.handle %}
+            var shop = '/collections/{{ collection.handle }}/';
+          {% elsif collection.products.first.type == collection.title %}
+            var shop = '{{ collection.title | url_for_type }}';
+          {% elsif collection.products.first.vendor == collection.title %}
+            var shop = '{{ collection.title | url_for_vendor }}';
+          {% endif %}
+            
+          if(typeof new_url === "undefined" ){
+            var redirect_url =  shop;
+          }else{
+            var redirect_url =  shop + new_url;
+          }
+          //console.log(redirect_url);
+          
+            $.get({
+              url: redirect_url,
+              success: function (data) {
+            setTimeout(function(){ 
+                  var get_data = $(data).find('.shop-grid').html();
+                  ///console.log(get_data);
+                  $('.get-data-products').html(get_data);
+                  $('.st-col-item').css('display','block');
+                  $('.ajax-filter-loader').css('display','none');
+                  SPR.registerCallbacks();
+                  SPR.initRatingHandler();
+                  SPR.initDomEls();
+                  SPR.loadProducts();
+                  SPR.loadBadges();
+                }, 300);
+
+              }
+           });
+           window.history.pushState({path:redirect_url},'',redirect_url);
+           
+          
+           if($('.remove-filter').length >= 1){
+             $('.sidebar-filter').css('display','block');
+          }else{
+             $('.sidebar-filter').css('display','none');
+          }
+           
+          
+           
+          
+        });
+        
+     });
+      
+     $(document).on("click",".remove-filter",function() {
+         
+        $('.ajax-filter-loader').css('display','block');
+         var remove_elements = $(this).attr('data-tag');
+         var url = location.href
+         var lastURLSegment = url.substr(url.lastIndexOf('/') + 1);
+         console.log(arr);
+         var new_url = removeItemAll(arr,remove_elements);
+         if(arr.length == 1){
+          var  redirect_url = new_url;
+        }else{
+          var  redirect_url = new_url.join("+");
+        }
+         console.log(redirect_url);
+         {% if collection.handle %}
+            var shop = '/collections/{{ collection.handle }}/';
+          {% elsif collection.products.first.type == collection.title %}
+            var shop = '{{ collection.title | url_for_type }}';
+          {% elsif collection.products.first.vendor == collection.title %}
+            var shop = '{{ collection.title | url_for_vendor }}';
+          {% endif %}
+          
+          if(typeof new_url === "undefined" ){
+            ///alert('sdsd');
+            var redirect_new_url =  shop;
+            
+          }else{
+            var redirect_url =  shop + redirect_url;
+          }
+            
+         $.get({
+              url: redirect_url,
+              success: function (data) {
+            setTimeout(function(){ 
+                  var get_data = $(data).find('.shop-grid').html();
+                  ///console.log(get_data);
+                  $('.get-data-products').html(get_data);
+                  $('.st-col-item').css('display','block');
+                $('.ajax-filter-loader').css('display','none');
+                  SPR.registerCallbacks();
+                  SPR.initRatingHandler();
+                  SPR.initDomEls();
+                  SPR.loadProducts();
+                  SPR.loadBadges();
+                }, 300);
+              }
+           });
+           window.history.pushState({path:redirect_url},'',redirect_url);
+           $(this).remove();
+           $('.active-filter').each(function(){
+              //console.log($(this).val());
+             if($(this).val() == remove_elements){
+                  $(this).removeClass('active-filter');
+                  $(this).next('span').removeClass('active-filter');
+             }
+           });
+          if($('.st-active-filter').length >= 1){
+            $('.sidebar-filter').css('display','block');
+          }else{
+            $('.sidebar-filter').css('display','none');
+          }
+     });
+    
+
+    (function($){
+        
+      var url = location.href;
+      var lastURLSegment = url.substr(url.lastIndexOf('/') + 1);
+      var active_filter = lastURLSegment.split("+");
+      console.log(active_filter);
+      if(active_filter.length != null){
+       
+          $('.cust-checkbox').each(function(){
+            
+            if(jQuery.inArray($(this).val(), active_filter) != -1){
+              //alert('fff');
+                
+                var remove_ele = $(this).val().split("_");
+               
+                $(this).addClass('active-filter');
+                $(this).next('span').addClass('active-filter');
+                $('.tag-selected-filter').append('<a href="javascript:void(0);" class="remove-filter" id='+active_filter+' data-tag='+active_filter+'><span class="remove-filter-selected">'+remove_ele[1]+'<i class="ion-close-round"></i></span></a>');
+                $('.tag-selected-filter').addClass('st-active-filter');
+                arr.push($(this).val());
+            }
+          });
+
+          if($('.remove-filter').length >= 1){
+             $('.sidebar-filter').css('display','block');
+          }else{
+             $('.sidebar-filter').css('display','none');
+          }
+        
+      }
+      
+    })(jQuery);
+  
+    function removeItemAll(arr, value) {
+      var i = 0;
+      while (i < arr.length) {
+        if (arr[i] === value) {
+          arr.splice(i, 1);
+        } else {
+          
+          ++i;
+        }
+      }
+      return arr;
+    }
+
+  </script>
+  {% endif %}
+</div>
+<script>
+  $(".sidebar-wedget li.active a").removeAttr("href");
+</script>
+<style>
+  .shop-sidebar-inner .shop-sidebar{
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e2e2e2;
+  }
+  .shop-sidebar-inner form .shop-sidebar:last-child{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .shop-sidebar .title{
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    text-transform: capitalize;
+  }
+  .shop-sidebar a.title{
+    display: none;
+  }
+  .shop-sidebar .collapse:not(.show){
+    display: block;
+  }
+  .shop-sidebar .scroll-top{
+    padding-top: 30px;
+  }
+  .shop-sidebar ul.scrollbar{
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  .shop-sidebar ul.scrollbar li{
+    padding: 8px 0px;
+  }
+  .shop-sidebar ul.scrollbar li:last-child{
+    padding-bottom: 0;
+  }
+  .shop-sidebar ul.scrollbar li:first-of-type{
+    border-top: none;
+    padding-top: 0;
+  }
+  .shop-sidebar ul.scrollbar li.color{
+    padding: 0;
+    margin-top: 5px;
+    margin-right: 5px;
+    display: inline-block; 
+  }
+  .shop-sidebar ul.scrollbar li.color label.cust-checkbox-label.color span.filter-name{
+    display: none;
+  }  
+  .shop-sidebar ul.scrollbar li.color label.cust-checkbox-label.color{
+    padding: 0;
+    width: 20px;
+    height: 20px; 
+  }
+  .shop-sidebar ul.scrollbar li.color label.cust-checkbox-label .cust-check{
+    width: 19px;
+    height: 19px;
+  }
+  .shop-sidebar ul.scrollbar li.color label.cust-checkbox-label .cust-check{
+    border: none;
+  }
+  @media (max-width: 767px){
+    .shop-sidebar-inner .shop-sidebar{
+      border-bottom: none;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+    .shop-sidebar .scroll-top{
+      padding-top: 20px;
+    }
+    .shop-sidebar .title{
+      display: none;
+    }
+    .shop-sidebar a.title{
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      -webkit-transition: all 0s ease-in-out 0s;
+      -o-transition: all 0s ease-in-out 0s;
+      transition: all 0s ease-in-out 0s;
+    }
+    .shop-sidebar a.title[aria-expanded="false"]{
+      color: #222;
+    }
+    .shop-sidebar a.title[aria-expanded="true"]{
+      color: {{ settings.color_primary }};
+    }
+    .shop-sidebar a.title::after{
+      font-size: 12px;
+      color: #999;
+      content: "\e61a";
+      font-family: 'themify';
+    }
+    .shop-sidebar a.title[aria-expanded="true"]::after{
+      content: "\e622";
+      color: {{ settings.color_primary }};
+    }
+    .shop-sidebar .collapse:not(.show){
+      display: none;
+    }
+    .shop-sidebar-inner .banner-block{
+        display: none;
+    }
+}
+
+  /* clear content */
+  .shop-sidebar.sidebar-filter .clear-content{
+    position: relative;
+  }
+  .shop-sidebar.sidebar-filter .clear-content .title{
+    display: block;
+  }
+  .shop-sidebar.sidebar-filter a.clear{
+    position: absolute;
+    {% if settings.enable_rtl %}
+    left: 15px;
+    {% else %}
+    right: 15px;
+    {% endif %}
+    bottom: 50%;
+    transform: translateY(50%);
+    -webkit-transition: all 0.0s ease-in-out 0s;
+    -o-transition: all 0.0s ease-in-out 0s;
+    transition: all 0.0s ease-in-out 0s;
+  }
+  .sidebar-filter ul.filter-selected li{
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    {% if settings.enable_rtl %}
+    margin-right: -5px;
+    {% else %}
+    margin-left: -5px;
+    {% endif %}
+  }
+  .sidebar-filter ul.filter-selected li a{
+    color: #fff;
+    display: flex;
+    font-size: 12px;
+    align-items: center;
+    padding: 5px 5px;
+    {% if settings.enable_rtl %}
+    margin: 5px 5px 0 0;
+    {% else %}
+    margin: 5px 0 0 5px;
+    {% endif %}
+    border-radius: 3px;
+    background-color: {{ settings.color_primary }};
+    text-transform: capitalize;
+    line-height: 1;
+  }
+  .sidebar-filter ul.filter-selected li a span{
+    display: flex;
+    align-items: center;
+  }
+  .sidebar-filter ul.filter-selected li a span i{
+    font-size: 10px;
+    {% if settings.enable_rtl %}
+    margin-right: 5px;
+    {% else %}
+    margin-left: 5px;
+    {% endif %}
+  }
+
+  /* variant content css */
+  .shop-sidebar ul.scrollbar li .cust-checkbox-label{
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    {% if settings.enable_rtl %}
+    padding-right: 30px;
+    padding-left: 15px;
+    {% else %}
+    padding-left: 30px;
+      padding-right: 15px;
+    {% endif %}
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-transform: capitalize;
+  }
+  .shop-sidebar ul.scrollbar li label.cust-checkbox-label{
+    margin-bottom: 0;
+  }
+  .shop-sidebar ul.scrollbar li .cust-checkbox-label span.filter-name{
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .shop-sidebar ul.scrollbar li .cust-checkbox-label span.count-check{
+    font-size: 13px;
+  }
+  .shop-sidebar ul.scrollbar li input.cust-checkbox,
+  .shop-sidebar ul.scrollbar li .cust-checkbox-label input.cust-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .shop-sidebar ul.scrollbar li .cust-checkbox-label .cust-check {
+    position: absolute;
+    {% if settings.enable_rtl %}
+    right: 0;
+    {% else %}
+    left: 0;
+    {% endif %}
+    width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #999;
+    border-radius: 50px;
+    background-color: #fff;
+  }
+  .shop-sidebar ul.scrollbar li:hover .cust-checkbox-label .cust-check,
+  .shop-sidebar ul.scrollbar li.active .cust-checkbox-label .cust-check{
+    box-shadow: inset 0 0px 3px rgba(0, 0, 0, 0.2);
+  }
+  .shop-sidebar ul.scrollbar li.active .cust-checkbox.active-filter a.cust-checkbox-label .cust-check:after,
+  .shop-sidebar ul.scrollbar li .cust-checkbox-label .cust-check.active-filter:after,
+  .shop-sidebar ul.scrollbar li.active a.cust-checkbox-label .cust-check:after {
+    content: "\f00c";
+    font: normal normal normal 10px/1 FontAwesome;
+    color: #222;
+  }
+  .shop-sidebar ul.scrollbar li.color .cust-checkbox-label .cust-check.active-filter:after{
+    color: #fff;
+  }
+</style>

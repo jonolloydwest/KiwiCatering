@@ -1,0 +1,366 @@
+<!-- Browuse categoryies -->
+<section class="slider-category" {% if section.settings.slider_cat_bg_img_enable %}style="background-image: url('{% if section.settings.slider_cat_bg_img %}{{ section.settings.slider_cat_bg_img | image_url: width: 2048 }}{% else %}{{ 'placeholder-image.svg' | asset_url }}{% endif %}');"{% endif %}> 
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+      {% if section.settings.slider_cat_title !='' %}
+      <div class="section-title section-title--home-heading">
+        {% assign slider_title_words = section.settings.slider_cat_title | strip | split: ' ' %}
+        {% assign slider_title_color = settings.color_primary | default: '#52b357' %}
+        <h2>
+          {% for word in slider_title_words %}
+            {% assign downcase_word = word | downcase %}
+            {% if downcase_word == 'shop' %}
+              <span class="title-highlight">{{ word }}</span>
+            {% else %}
+              <span>{{ word }}</span>
+            {% endif %}
+            {% unless forloop.last %} {% endunless %}
+          {% endfor %}
+        </h2>
+      </div>
+      {% endif %}
+      <div class="cat-slider owl-carousel owl-theme" id="category-slider">
+        {% for block in section.blocks %}
+        {% assign category_product = collections[block.settings.slider_category_handle] %}
+        <div class="item">
+          <div class="category-wrap">
+            <a href="{{ category_product.url }}">
+            <span class="cat-img">
+              {% assign collection_image = block.settings.collection_img %}
+              {% assign collection_alt = block.settings.collection_title | default: category_product.title | default: shop.name %}
+              {% if collection_image == blank and category_product and category_product.image %}
+              {% assign collection_image = category_product.image %}
+              {% endif %}
+              {% if collection_image %}
+              {% assign collection_width = collection_image.width | default: 270 %}
+              {% assign collection_height = collection_image.height | default: 185 %}
+              {% assign collection_src = collection_image | image_url: width: 1200 %}
+              <img class="img-fluid" src="{{ collection_src }}" alt="{{ collection_alt }}" width="{{ collection_width }}" height="{{ collection_height }}" loading="lazy">
+              {% else %}
+              <img class="img-fluid" src="{{ 'placeholder-image.svg' | asset_url }}" alt="{{ collection_alt }}" width="270" height="185" loading="lazy">
+              {% endif %}
+            </span>
+              <span class="cat-title">{{ category_product.title }}</span>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    var sectionId = '{{ section.id }}';
+
+    function getSlider(scope) {
+      if (!window.jQuery) {
+        return null;
+      }
+      var $scope = scope ? window.jQuery(scope) : window.jQuery(document);
+      return $scope.find('#category-slider');
+    }
+
+    function destroySlider($slider) {
+      if ($slider && $slider.length && $slider.hasClass('owl-loaded')) {
+        $slider.trigger('destroy.owl.carousel');
+      }
+    }
+
+    function initSlider(scope, attempt) {
+      var attempts = attempt || 0;
+      if (!window.jQuery || typeof window.jQuery.fn.owlCarousel !== 'function') {
+        if (attempts > 10) {
+          return;
+        }
+        setTimeout(function () {
+          initSlider(scope, attempts + 1);
+        }, 200);
+        return;
+      }
+
+      var $slider = getSlider(scope);
+      if (!$slider || !$slider.length) {
+        return;
+      }
+
+      if ($slider.hasClass('owl-loaded')) {
+        $slider.trigger('refresh.owl.carousel');
+        return;
+      }
+
+      $slider.owlCarousel({
+        loop: false,
+        rewind: true,
+        margin: 30,
+        nav: true,
+        navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+        dots: false,
+        {%- if settings.enable_rtl -%}
+        rtl: true,
+        {%- endif -%}
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+          0: {
+            items: 1,
+            margin: 15
+          },
+          479: {
+            items: 1,
+            margin: 15
+          },
+          768: {
+            items: 3
+          },
+          979: {
+            items: 4
+          },
+          1199: {
+            items: 5
+          }
+        }
+      });
+    }
+
+    function onDomReady(callback) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback);
+      } else {
+        callback();
+      }
+    }
+
+    onDomReady(function () {
+      initSlider();
+    });
+
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.detail && event.detail.sectionId === sectionId) {
+        initSlider(event.target);
+      }
+    });
+
+    document.addEventListener('shopify:section:unload', function (event) {
+      if (event.detail && event.detail.sectionId === sectionId) {
+        destroySlider(getSlider(event.target));
+      }
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "Category",
+  "settings": [
+  {
+    "type" : "header",
+    "content" : "Section Padding"
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Desktop / Laptop / tablet"
+  },
+  {
+    "type": "range",
+    "id": "cat_padding_top",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type": "range",
+    "id": "cat_padding_bottom",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 60
+  },
+  {
+    "type" : "paragraph",
+    "content" : "Mobile"
+  },
+  {
+    "type": "range",
+    "id": "cat_padding_top_xs",
+    "label": "Section Padding Top",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type": "range",
+    "id": "cat_padding_bottom_xs",
+    "label": "Section Padding Bottom",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "px",
+    "default": 40
+  },
+  {
+    "type" : "header",
+    "content" : "Section Background Image"
+  },
+  {
+    "type": "image_picker",
+    "id": "slider_cat_bg_img",
+    "label": "Background Image",
+    "info": "Recommended Size: 1920 x 532px"
+  },
+  {
+    "type": "checkbox",
+    "id": "slider_cat_bg_img_enable",
+    "label": "Show Background Image",
+    "default": false
+  },
+  {
+    "type" : "header",
+    "content" : "Section Background Color"
+  },
+  {
+    "type" : "color",
+    "id" : "slider_cat_bgcolor",
+    "label" : "Background Color",
+    "default" : "#fff"
+  },
+  {
+    "type" : "checkbox",
+    "id" : "slider_cat_bgcolor_enable",
+    "label" : "With Backgorund",
+    "default" : true
+  },
+  {
+    "type" : "header",
+    "content" : "Section Title"
+  },
+  {
+    "type": "text",
+    "id": "slider_cat_title",
+    "label": "Title",
+    "default": "Shop By Category"
+  }
+  ],
+  "blocks" : [
+  {
+    "name" : "slider-category",
+    "type" : "product_tab",
+    "settings" : [
+    {
+      "type": "collection",
+      "id": "slider_category_handle",
+      "label": "Select Your Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "collection_img",
+      "label": "Collection image",
+      "info": "Recommended Size: 270px x 185px"
+    }
+    ]
+  }
+  ],
+  "presets":[
+  {
+    "name": "Category",
+    "category": "Shop By Category"
+  }
+  ]
+}
+{% endschema %}
+<style>
+  .slider-category {
+    padding-top:{{ section.settings.cat_padding_top }}px;
+    padding-bottom:{{ section.settings.cat_padding_bottom }}px;
+
+    {% if section.settings.slider_cat_bgcolor_enable %}
+    background-color: {{ section.settings.slider_cat_bgcolor }};
+    {% endif %}
+
+    {% if section.settings.slider_cat_bg_img_enable %}
+    background-repeat: no-repeat;
+    {% endif %}
+  }
+  @media (max-width: 767px) {
+    .slider-category {
+      padding-top:{{ section.settings.cat_padding_top_xs }}px;
+      padding-bottom:{{ section.settings.cat_padding_bottom_xs }}px;
+    }
+  }
+
+  .cat-slider .category-wrap{
+    text-align: center;
+  }
+  .cat-slider .category-wrap a{
+    position: relative;
+    display: block;
+  }
+  .cat-slider .category-wrap a span.cat-img{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    padding-top: 68%;
+  }
+  .cat-slider .category-wrap a span.cat-img img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cat-slider .category-wrap a:hover span.cat-img img{
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+  }
+  .cat-slider .category-wrap a span.cat-title{
+    display: block;
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    width: calc(100% - 30px);
+    pointer-events: none;
+    text-transform: capitalize;
+  }
+  .cat-slider .category-wrap a span.cat-img img,
+  .cat-slider .category-wrap a:hover span.cat-img img{
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+  .slider-category .section-title--home-heading{
+    margin-bottom: 60px;
+    text-align: center;
+  }
+  .slider-category .section-title--home-heading h2{
+    color: inherit;
+  }
+  .slider-category .section-title--home-heading .title-highlight{
+    color: {{ settings.color_primary | default: '#52b357' }};
+  }
+  @media (max-width: 1199px) {
+    .slider-category .section-title--home-heading{
+      margin-bottom: 40px;
+    }
+  }
+  @media (max-width: 767px) {
+    .slider-category .section-title--home-heading{
+      margin-bottom: 30px;
+    }
+  }
+</style>
