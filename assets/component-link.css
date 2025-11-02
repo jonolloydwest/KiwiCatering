@@ -1,0 +1,21 @@
+/* Global link styling aligned to brand tokens */
+a {
+  color: var(--brand-primary);
+  text-decoration: underline; /* Ensure links remain clearly identified */
+}
+
+/* Hover state mirrors legacy emphasis with darker brand tone */
+a:hover {
+  color: var(--brand-primary-dark);
+}
+
+/* Visited links shift to alternate brand color for clarity */
+a:visited {
+  color: var(--brand-primary-alt);
+}
+
+/* Focus outline supports keyboard navigation and accessibility */
+a:focus {
+  outline: 2px solid var(--brand-secondary);
+  outline-offset: 2px;
+}
