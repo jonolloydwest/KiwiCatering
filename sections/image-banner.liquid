@@ -23,10 +23,47 @@
   {%- endstyle -%}
 {%- endif -%}
 
+{%- liquid
+  assign content_width_setting = section.settings.content_width | default: 'default'
+-%}
 {%- style -%}
-  #Banner-{{ section.id }}::after {
-    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+  #Banner-{{ section.id }}::after,
+  #Banner-{{ section.id }} .banner__media::after {
+    content: none;
   }
+
+  #Banner-{{ section.id }} .banner__overlay {
+    position: absolute;
+    inset: 0;
+    background: {% if section.settings.overlay_color != blank %}{{ section.settings.overlay_color }}{% else %}#000000{% endif %};
+    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  {%- if section.settings.full_width_content -%}
+    #Banner-{{ section.id }} .banner__content {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  {%- endif -%}
+
+  {%- case content_width_setting -%}
+    {%- when 'narrow' -%}
+      #Banner-{{ section.id }} .banner__box {
+        max-width: 40rem;
+      }
+    {%- when 'wide' -%}
+      #Banner-{{ section.id }} .banner__box {
+        max-width: 82rem;
+      }
+    {%- when 'full' -%}
+      #Banner-{{ section.id }} .banner__box {
+        max-width: none;
+        width: 100%;
+      }
+  {%- endcase -%}
 {%- endstyle -%}
 
 {%- liquid
@@ -53,8 +90,9 @@
 
 <div
   id="Banner-{{ section.id }}"
-  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if section.settings.full_width_content %} banner--full-width-content{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}{% if section.settings.custom_css_class != blank %} {{ section.settings.custom_css_class | strip | escape }}{% endif %}"
 >
+  <div class="banner__overlay" aria-hidden="true"></div>
   {%- if section.settings.image != blank -%}
     <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- liquid
@@ -115,24 +153,31 @@
       }}
     </div>
   {%- endif -%}
-  <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
+  <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% unless section.settings.full_width_content %} page-width{% endunless %}{% if section.settings.full_width_content %} banner__content--full-bleed{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    <div class="banner__content-inner{% if content_width_setting != 'default' %} banner__content-inner--{{ content_width_setting }}{% endif %}" data-banner-content="inner">
+      <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient" data-banner-box>
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
-            <h2
-              class="banner__heading inline-richtext {{ block.settings.heading_size }}"
-              {{ block.shopify_attributes }}
-            >
-              {{ block.settings.heading }}
-            </h2>
+            {%- if block.settings.heading != blank -%}
+              <h2
+                class="banner__heading inline-richtext {{ block.settings.heading_size }}"
+                data-banner-block="heading"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.heading }}
+              </h2>
+            {%- endif -%}
           {%- when 'text' -%}
-            <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
-              <p>{{ block.settings.text }}</p>
-            </div>
+            {%- if block.settings.text != blank -%}
+              <div class="banner__text rte {{ block.settings.text_style }}" data-banner-block="text" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
           {%- when 'buttons' -%}
             <div
               class="banner__buttons{% if block.settings.button_label_1 != blank and block.settings.button_label_2 != blank %} banner__buttons--multiple{% endif %}"
+              data-banner-block="buttons"
               {{ block.shopify_attributes }}
             >
               {%- if block.settings.button_label_1 != blank -%}
@@ -162,6 +207,7 @@
             </div>
         {%- endcase -%}
       {%- endfor -%}
+      </div>
     </div>
   </div>
 </div>
@@ -194,6 +240,12 @@
       "unit": "%",
       "label": "t:sections.image-banner.settings.image_overlay_opacity.label",
       "default": 0
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
     },
     {
       "type": "select",
@@ -312,6 +364,36 @@
       "label": "t:sections.image-banner.settings.desktop_content_alignment.label"
     },
     {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content max width",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Theme default"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "full",
+          "label": "Full width"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width_content",
+      "default": false,
+      "label": "Stretch content to full width"
+    },
+    {
       "type": "checkbox",
       "id": "show_text_box",
       "default": true,
@@ -322,6 +404,11 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_css_class",
+      "label": "Additional CSS class"
     },
     {
       "type": "header",

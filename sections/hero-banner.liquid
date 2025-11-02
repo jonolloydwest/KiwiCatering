@@ -1,0 +1,125 @@
+{{ 'hero-banner.css' | asset_url | stylesheet_tag | default: '' | replace: '', '' }}
+
+{% liquid
+  assign image = section.settings.image
+  assign heading = section.settings.heading | default: shop.name
+  assign subheading = section.settings.subheading
+  assign cta_label = section.settings.cta_label
+  assign cta_url = section.settings.cta_url
+  assign alignment = section.settings.alignment | default: 'center'
+  assign overlay_opacity = section.settings.overlay_opacity | default: 40
+  assign overlay_alpha = overlay_opacity | divided_by: 100.0
+%}
+
+<section
+  class="hero-banner hero-banner--{{ alignment }}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="hero-banner__media">
+    {% if image != blank %}
+      <img
+        src="{{ image | image_url: width: 2048 }}"
+        alt="{{ heading | escape }}"
+        width="{{ image.width }}"
+        height="{{ image.height }}"
+        loading="lazy"
+      >
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-banner__placeholder' }}
+    {% endif %}
+    <div
+      class="hero-banner__overlay"
+      style="opacity: {{ overlay_alpha }};"
+      aria-hidden="true"
+    ></div>
+  </div>
+
+  <div class="hero-banner__content">
+    <div class="hero-banner__inner">
+      {% if heading != blank %}
+        <h2 class="hero-banner__heading">{{ heading }}</h2>
+      {% endif %}
+
+      {% if subheading != blank %}
+        <p class="hero-banner__subheading">{{ subheading }}</p>
+      {% endif %}
+
+      {% if cta_label != blank and cta_url != blank %}
+        <a class="button hero-banner__cta" href="{{ cta_url }}">
+          {{ cta_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sustainable catering starts here"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Elevate every event with compostable serveware, conscious ingredients, and next-day nationwide delivery."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Shop the range"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Content alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 35
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero banner"
+    }
+  ]
+}
+{% endschema %}
