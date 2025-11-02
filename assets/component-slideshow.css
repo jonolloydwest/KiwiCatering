@@ -199,3 +199,160 @@ slideshow-component:not(.page-width) .slider-buttons {
   opacity: 0;
   transform: scale(0.8);
 }
+
+/* Legacy Dev visual styling */
+.slideshow--dev {
+  position: relative;
+  background-color: rgb(var(--color-background));
+}
+
+.slideshow--dev .slideshow__slide {
+  justify-content: center;
+  min-height: clamp(32rem, 55vw, 70rem);
+}
+
+.slideshow--dev .slideshow__media {
+  position: relative;
+  overflow: hidden;
+}
+
+.slideshow--dev .slideshow__overlay {
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  transition: opacity var(--duration-default) ease;
+  background-color: rgba(var(--brand-color-primary, 15, 77, 62), 0.35);
+}
+
+.slideshow--dev .slideshow__text-wrapper {
+  display: flex;
+  align-items: center;
+  padding: clamp(var(--spacing-lg, var(--space-brand-lg, 2.4rem)), 3vw, var(--spacing-xxxl, var(--space-brand-xxxl, 6.4rem)));
+}
+
+.slideshow--dev .slideshow__text-wrapper--left {
+  justify-content: flex-start;
+}
+
+.slideshow--dev .slideshow__text-wrapper--center {
+  justify-content: center;
+}
+
+.slideshow--dev .slideshow__text-wrapper--right {
+  justify-content: flex-end;
+}
+
+.slideshow--dev .slideshow__text-wrapper-mobile--left {
+  justify-content: flex-start;
+}
+
+.slideshow--dev .slideshow__text-wrapper-mobile--center {
+  justify-content: center;
+}
+
+.slideshow--dev .slideshow__text-wrapper-mobile--right {
+  justify-content: flex-end;
+}
+
+.slideshow--dev .slideshow__text.banner__box {
+  gap: var(--spacing-sm, var(--space-brand-sm, 1.2rem));
+  padding: clamp(var(--spacing-md, var(--space-brand-md, 1.6rem)), 2vw, var(--spacing-xl, var(--space-brand-xl, 3.2rem)));
+  background: rgba(var(--color-background), 0.0);
+  border-radius: 0;
+  box-shadow: none;
+  width: var(--slideshow-content-width, 60%);
+  max-width: 70rem;
+}
+
+.slideshow--dev .slideshow__text--caption-left {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.slideshow--dev .slideshow__text--caption-center {
+  text-align: center;
+  align-items: center;
+}
+
+.slideshow--dev .slideshow__text--caption-right {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.slideshow--dev .banner__heading {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight, 600);
+  font-size: clamp(3rem, 4vw + 1.5rem, 7.2rem);
+  line-height: 1.05;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: rgb(var(--color-foreground));
+}
+
+.slideshow--dev .banner__text p {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: calc(var(--font-body-scale) * 1.6rem);
+  line-height: calc(1.4 + 0.2 / var(--font-body-scale));
+  letter-spacing: 0.02em;
+  color: rgba(var(--color-foreground), 0.9);
+}
+
+.slideshow--dev .banner__buttons {
+  margin-top: var(--spacing-md, var(--space-brand-md, 1.6rem));
+}
+
+.slideshow--dev .banner__buttons .button {
+  min-width: clamp(16rem, 18vw, 22rem);
+}
+
+@media screen and (max-width: 989px) {
+  .slideshow--dev .slideshow__slide {
+    min-height: clamp(28rem, 65vw, 54rem);
+  }
+
+  .slideshow--dev .slideshow__text.banner__box {
+    width: 100%;
+    max-width: 100%;
+    padding: var(--spacing-lg, var(--space-brand-lg, 2.4rem)) var(--spacing-md, var(--space-brand-md, 1.6rem));
+  }
+
+  .slideshow--dev .slideshow__text-wrapper {
+    padding: var(--spacing-xl, var(--space-brand-xl, 3.2rem)) var(--spacing-md, var(--space-brand-md, 1.6rem));
+  }
+
+  .slideshow--dev .banner__heading {
+    font-size: clamp(2.6rem, 6vw + 1rem, 4.2rem);
+    letter-spacing: 0.04em;
+  }
+
+  .slideshow--dev .banner__text p {
+    font-size: calc(var(--font-body-scale) * 1.4rem);
+    line-height: calc(1.45 + 0.2 / var(--font-body-scale));
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .slideshow--dev .slideshow__text-wrapper {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .slideshow--dev .banner__heading {
+    letter-spacing: 0.03em;
+  }
+
+  .slideshow--dev .slideshow__text--caption-mobile-left {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .slideshow--dev .slideshow__text--caption-mobile-center {
+    text-align: center;
+    align-items: center;
+  }
+
+  .slideshow--dev .slideshow__text--caption-mobile-right {
+    text-align: right;
+    align-items: flex-end;
+  }
+}

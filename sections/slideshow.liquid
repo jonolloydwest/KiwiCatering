@@ -98,7 +98,7 @@
   {%- endif -%}
 
   <div
-    class="slideshow banner banner--{{ section.settings.slide_height }} grid grid--1-col slider slider--everywhere{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.blocks.first.settings.image == blank %} slideshow--placeholder{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+    class="slideshow slideshow--dev banner banner--{{ section.settings.slide_height }} grid grid--1-col slider slider--everywhere{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.blocks.first.settings.image == blank %} slideshow--placeholder{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
     id="Slider-{{ section.id }}"
     aria-live="polite"
     aria-atomic="true"
@@ -106,13 +106,15 @@
     data-speed="{{ section.settings.change_slides_speed }}"
   >
     {%- for block in section.blocks -%}
-      <style>
-        #Slide-{{ section.id }}-{{ forloop.index }} .banner__media::after {
-          opacity: {{ block.settings.image_overlay_opacity | divided_by: 100.0 }};
-        }
-      </style>
+      {%- liquid
+        assign overlay_opacity = block.settings.image_overlay_opacity | default: 0 | divided_by: 100.0 | round: 2
+        assign overlay_color = block.settings.overlay_color | default: '#000000'
+        assign caption_position = block.settings.caption_position | default: 'left'
+        assign caption_position_mobile = block.settings.caption_position_mobile | default: caption_position
+        assign content_width = block.settings.content_width | default: 60
+      -%}
       <div
-        class="slideshow__slide grid__item grid--1-col slider__slide"
+        class="slideshow__slide grid__item grid--1-col slider__slide slideshow__slide--caption-{{ caption_position }} slideshow__slide--caption-mobile-{{ caption_position_mobile }}"
         id="Slide-{{ section.id }}-{{ forloop.index }}"
         {{ block.shopify_attributes }}
         role="group"
@@ -157,9 +159,17 @@
               {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
           {%- endif -%}
+          <div
+            class="slideshow__overlay"
+            aria-hidden="true"
+            style="background-color: {{ overlay_color | escape }}; opacity: {{ overlay_opacity }}; position: absolute; inset: 0; pointer-events: none;"
+          ></div>
         </div>
-        <div class="slideshow__text-wrapper banner__content banner__content--{{ block.settings.box_align }} page-width{% if block.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll and forloop.index == 1 %} scroll-trigger animate--slide-in{% endif %}">
-          <div class="slideshow__text banner__box content-container content-container--full-width-mobile color-{{ block.settings.color_scheme }} gradient slideshow__text--{{ block.settings.text_alignment }} slideshow__text-mobile--{{ block.settings.text_alignment_mobile }}">
+        <div class="slideshow__text-wrapper banner__content banner__content--{{ block.settings.box_align }} page-width slideshow__text-wrapper--{{ caption_position }} slideshow__text-wrapper-mobile--{{ caption_position_mobile }}{% if block.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll and forloop.index == 1 %} scroll-trigger animate--slide-in{% endif %}">
+          <div
+            class="slideshow__text banner__box content-container content-container--full-width-mobile color-{{ block.settings.color_scheme }} gradient slideshow__text--{{ block.settings.text_alignment }} slideshow__text-mobile--{{ block.settings.text_alignment_mobile }} slideshow__text--caption-{{ caption_position }} slideshow__text--caption-mobile-{{ caption_position_mobile }}"
+            style="--slideshow-content-width: {{ content_width }}%;"
+          >
             {%- if block.settings.heading != blank -%}
               <h2 class="banner__heading inline-richtext {{ block.settings.heading_size }}">
                 {{ block.settings.heading }}
@@ -406,6 +416,12 @@
           "default": 0
         },
         {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay color",
+          "default": "#000000"
+        },
+        {
           "type": "header",
           "content": "t:sections.slideshow.blocks.slide.settings.header_text.content"
         },
@@ -527,6 +543,26 @@
         },
         {
           "type": "select",
+          "id": "caption_position",
+          "label": "Caption position (desktop)",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "select",
           "id": "text_alignment",
           "options": [
             {
@@ -564,7 +600,37 @@
           ],
           "default": "center",
           "label": "t:sections.slideshow.blocks.slide.settings.text_alignment_mobile.label"
-        },        
+        },
+        {
+          "type": "select",
+          "id": "caption_position_mobile",
+          "label": "Caption position (mobile)",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "content_width",
+          "min": 30,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Content width",
+          "default": 60
+        },
         {
           "type": "color_scheme",
           "id": "color_scheme",
