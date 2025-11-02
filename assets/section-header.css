@@ -1,0 +1,91 @@
+/* Header styling aligned to brand spacing and typography tokens */
+.section-header {
+  padding: var(--spacing-sm, var(--space-brand-sm, 1.2rem)) var(--spacing-md, var(--space-brand-md, 1.6rem));
+  background-color: rgb(var(--brand-color-surface, 243, 247, 242));
+}
+
+.section-header .header {
+  gap: var(--spacing-lg, var(--space-brand-lg, 2.4rem));
+  padding: var(--spacing-xs, var(--space-brand-xs, 0.8rem)) 0;
+}
+
+.header__heading-logo-wrapper {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-2xs, var(--space-brand-2xs, 0.4rem));
+}
+
+.header__heading-link {
+  line-height: 1;
+}
+
+.header__inline-menu > ul {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg, var(--space-brand-lg, 2.4rem));
+}
+
+.header__menu-item {
+  font-family: var(--font-heading, var(--font-brand-heading-family, var(--font-heading-family, inherit)));
+  font-weight: var(--font-heading-weight, 600);
+  letter-spacing: 0.04em;
+  color: rgb(var(--brand-color-secondary, 51, 51, 51));
+}
+
+.header__menu-item:focus-visible,
+.header__menu-item:hover {
+  color: rgb(var(--brand-color-primary, 32, 129, 37));
+  text-decoration: underline;
+  text-decoration-thickness: 0.2rem;
+  text-underline-offset: 0.3rem;
+}
+
+.header__icons {
+  gap: var(--spacing-sm, var(--space-brand-sm, 1.2rem));
+}
+
+.menu-drawer,
+.menu-drawer__submenu {
+  background-color: rgb(var(--brand-color-surface, 243, 247, 242));
+  color: rgb(var(--brand-color-secondary, 51, 51, 51));
+}
+
+.menu-drawer__menu-item,
+.menu-drawer__close-button {
+  font-family: var(--font-heading, var(--font-brand-heading-family, var(--font-heading-family, inherit)));
+  color: rgb(var(--brand-color-secondary, 51, 51, 51));
+}
+
+.menu-drawer__menu-item:focus-visible,
+.menu-drawer__menu-item:hover,
+.menu-drawer__close-button:focus-visible,
+.menu-drawer__close-button:hover {
+  background-color: rgba(var(--brand-color-primary, 32, 129, 37), 0.08);
+  color: rgb(var(--brand-color-primary, 32, 129, 37));
+}
+
+@media screen and (max-width: 989px) {
+  .section-header .header {
+    gap: var(--spacing-md, var(--space-brand-md, 1.6rem));
+  }
+
+  .header__inline-menu > ul {
+    gap: var(--spacing-md, var(--space-brand-md, 1.6rem));
+  }
+}
+
+@media screen and (min-width: 990px) {
+  sticky-header > .header.page-width,
+  .header-wrapper > .header.page-width {
+    max-width: min(var(--page-width), calc(100% - 10rem));
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  .header:not(.drawer-menu).page-width {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
