@@ -7,11 +7,25 @@
 
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
+    {%- assign shop_navigation = linklists['shop-menu'] -%}
     {%- for link in section.settings.menu.links -%}
+      {%- assign is_shop_mega = false -%}
+      {%- assign child_links = link.links -%}
+      {%- assign child_levels = link.levels -%}
+      {%- if shop_navigation != blank and shop_navigation.links != blank -%}
+        {%- if link.handle == 'shop' or link.handle == 'shop-menu' -%}
+          {%- assign child_links = shop_navigation.links -%}
+          {%- assign child_levels = 2 -%}
+          {%- assign is_shop_mega = true -%}
+        {%- endif -%}
+      {%- endif -%}
       <li>
-        {%- if link.links != blank -%}
+        {%- if child_links != blank -%}
           <header-menu>
-            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+            <details
+              id="Details-HeaderMenu-{{ forloop.index }}"
+              class="mega-menu{% if is_shop_mega %} mega-menu--shop{% endif %}"
+            >
               <summary
                 id="HeaderMenu-{{ link.handle }}"
                 class="header__menu-item list-menu__item link focus-inset"
@@ -27,46 +41,198 @@
               </summary>
               <div
                 id="MegaMenu-Content-{{ forloop.index }}"
-                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup{% if is_shop_mega %} mega-menu__content--shop{% endif %}"
                 tabindex="-1"
               >
-                <ul
-                  class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
-                  role="list"
-                >
-                  {%- for childlink in link.links -%}
-                    <li>
-                      <a
-                        id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
-                        href="{{ childlink.url }}"
-                        class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
-                        {% if childlink.current %}
-                          aria-current="page"
-                        {% endif %}
-                      >
-                        {{ childlink.title | escape }}
-                      </a>
-                      {%- if childlink.links != blank -%}
-                        <ul class="list-unstyled" role="list">
-                          {%- for grandchildlink in childlink.links -%}
-                            <li>
-                              <a
-                                id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
-                                href="{{ grandchildlink.url }}"
-                                class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"
-                                {% if grandchildlink.current %}
-                                  aria-current="page"
-                                {% endif %}
-                              >
-                                {{ grandchildlink.title | escape }}
-                              </a>
-                            </li>
-                          {%- endfor -%}
-                        </ul>
+                {%- if is_shop_mega -%}
+                  <div class="mega-menu__panel page-width">
+                    <div class="mega-menu__grid">
+                      {%- for childlink in child_links -%}
+                        {%- assign menu_image = blank -%}
+                        {%- assign menu_collection = blank -%}
+                        {%- if childlink.type == 'collection_link' or childlink.type == 'collection' -%}
+                          {%- assign menu_collection = childlink.object -%}
+                          {%- if menu_collection == blank and childlink.handle != blank -%}
+                            {%- assign menu_collection = collections[childlink.handle] -%}
+                          {%- endif -%}
+                          {%- if menu_collection != blank -%}
+                            {%- if menu_collection.image != blank -%}
+                              {%- assign menu_image = menu_collection.image -%}
+                            {%- elsif menu_collection.featured_image != blank -%}
+                              {%- assign menu_image = menu_collection.featured_image -%}
+                            {%- endif -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        {%- if menu_collection == blank -%}
+                          {%- assign normalized_title = childlink.title | downcase -%}
+                          {%- assign override_handle = blank -%}
+                          {%- if childlink.handle == 'cream-chargers' or normalized_title contains 'cream charger' -%}
+                            {%- assign override_handle = 'cream-chargers' -%}
+                          {%- elsif childlink.handle == 'palm-leaf-plates' or normalized_title contains 'palm leaf plate' -%}
+                            {%- assign override_handle = 'palm-leaf-plates' -%}
+                          {%- endif -%}
+                          {%- if override_handle != blank -%}
+                            {%- assign menu_collection = collections[override_handle] -%}
+                            {%- if menu_collection != blank -%}
+                              {%- if menu_collection.image != blank -%}
+                                {%- assign menu_image = menu_collection.image -%}
+                              {%- elsif menu_collection.featured_image != blank -%}
+                                {%- assign menu_image = menu_collection.featured_image -%}
+                              {%- endif -%}
+                            {%- endif -%}
+                          {%- endif -%}
+                        {%- elsif childlink.type == 'product_link' or childlink.type == 'product' -%}
+                          {%- if childlink.object != blank and childlink.object.featured_image != blank -%}
+                            {%- assign menu_image = childlink.object.featured_image -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        {%- assign child_url = childlink.url -%}
+                        {%- if child_url == blank and childlink.object != blank -%}
+                          {%- assign child_url = childlink.object.url -%}
+                        {%- endif -%}
+                        {%- if child_url == blank and menu_collection != blank -%}
+                          {%- assign child_url = menu_collection.url -%}
+                        {%- endif -%}
+                        <div class="mega-menu__column">
+                          {%- if child_url != blank -%}
+                            <a
+                              id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                              href="{{ child_url }}"
+                              class="mega-menu__category-link link{% if childlink.current %} mega-menu__category-link--active{% endif %}"
+                              {% if childlink.current %}
+                                aria-current="page"
+                              {% endif %}
+                            >
+                              {%- if menu_image -%}
+                                {{
+                                  menu_image
+                                  | image_url: width: 640
+                                  | image_tag:
+                                    class: 'mega-menu__category-image',
+                                    loading: 'lazy',
+                                    alt: childlink.title | escape
+                                }}
+                              {%- else -%}
+                                <div class="mega-menu__category-image mega-menu__category-image--placeholder" aria-hidden="true">
+                                  <span>{{ childlink.title | escape }}</span>
+                                </div>
+                              {%- endif -%}
+                              <span class="mega-menu__category-title">
+                                {{ childlink.title | escape }}
+                              </span>
+                            </a>
+                          {%- else -%}
+                            <div class="mega-menu__category-link mega-menu__category-link--static">
+                              {%- if menu_image -%}
+                                {{
+                                  menu_image
+                                  | image_url: width: 640
+                                  | image_tag:
+                                    class: 'mega-menu__category-image',
+                                    loading: 'lazy',
+                                    alt: childlink.title | escape
+                                }}
+                              {%- else -%}
+                                <div class="mega-menu__category-image mega-menu__category-image--placeholder" aria-hidden="true">
+                                  <span>{{ childlink.title | escape }}</span>
+                                </div>
+                              {%- endif -%}
+                              <span class="mega-menu__category-title">
+                                {{ childlink.title | escape }}
+                              </span>
+                            </div>
+                          {%- endif -%}
+                          {%- if childlink.links != blank -%}
+                            <ul class="mega-menu__sublist" role="list">
+                              {%- for grandchildlink in childlink.links -%}
+                                {%- assign grandchild_url = grandchildlink.url -%}
+                                {%- if grandchild_url == blank and grandchildlink.object != blank -%}
+                                  {%- assign grandchild_url = grandchildlink.object.url -%}
+                                {%- endif -%}
+                                <li>
+                                  {%- if grandchild_url != blank -%}
+                                    <a
+                                      id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
+                                      href="{{ grandchild_url }}"
+                                      class="mega-menu__sublink link{% if grandchildlink.current %} mega-menu__sublink--active{% endif %}"
+                                      {% if grandchildlink.current %}
+                                        aria-current="page"
+                                      {% endif %}
+                                    >
+                                      {{ grandchildlink.title | escape }}
+                                    </a>
+                                  {%- else -%}
+                                    <span class="mega-menu__sublink mega-menu__sublink--static">
+                                      {{ grandchildlink.title | escape }}
+                                    </span>
+                                  {%- endif -%}
+                                </li>
+                              {%- endfor -%}
+                            </ul>
+                          {%- endif -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- else -%}
+                  <ul
+                    class="mega-menu__list page-width{% if child_levels == 1 %} mega-menu__list--condensed{% endif %}"
+                    role="list"
+                  >
+                    {%- for childlink in child_links -%}
+                      {%- assign child_url = childlink.url -%}
+                      {%- if child_url == blank and childlink.object != blank -%}
+                        {%- assign child_url = childlink.object.url -%}
                       {%- endif -%}
-                    </li>
-                  {%- endfor -%}
-                </ul>
+                      <li>
+                        {%- if child_url != blank -%}
+                          <a
+                            id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                            href="{{ child_url }}"
+                            class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                            {% if childlink.current %}
+                              aria-current="page"
+                            {% endif %}
+                          >
+                            {{ childlink.title | escape }}
+                          </a>
+                        {%- else -%}
+                          <span class="mega-menu__link mega-menu__link--level-2 mega-menu__link--static">
+                            {{ childlink.title | escape }}
+                          </span>
+                        {%- endif -%}
+                        {%- if childlink.links != blank -%}
+                          <ul class="list-unstyled" role="list">
+                            {%- for grandchildlink in childlink.links -%}
+                              {%- assign grandchild_url = grandchildlink.url -%}
+                              {%- if grandchild_url == blank and grandchildlink.object != blank -%}
+                                {%- assign grandchild_url = grandchildlink.object.url -%}
+                              {%- endif -%}
+                              <li>
+                                {%- if grandchild_url != blank -%}
+                                  <a
+                                    id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
+                                    href="{{ grandchild_url }}"
+                                    class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"
+                                    {% if grandchildlink.current %}
+                                      aria-current="page"
+                                    {% endif %}
+                                  >
+                                    {{ grandchildlink.title | escape }}
+                                  </a>
+                                {%- else -%}
+                                  <span class="mega-menu__link mega-menu__link--static">
+                                    {{ grandchildlink.title | escape }}
+                                  </span>
+                                {%- endif -%}
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
               </div>
             </details>
           </header-menu>
