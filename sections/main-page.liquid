@@ -14,13 +14,50 @@
   }
 {%- endstyle -%}
 
+{%- liquid
+  assign recipe_blog = blogs['recipes'] | default: nil
+  assign recipe_article = nil
+  if recipe_blog and recipe_blog.articles_count > 0
+    assign recipe_article = recipe_blog.articles | where: 'handle', page.handle | first
+  endif
+-%}
+
 <div class="page-width page-width--narrow section-{{ section.id }}-padding">
-  <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-    {{ page.title | escape }}
-  </h1>
-  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    {{ page.content }}
-  </div>
+  {%- if recipe_article -%}
+    <article class="main-page-article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      <h1 class="main-page-title page-title h0">
+        {{ recipe_article.title | escape }}
+      </h1>
+      {%- if recipe_article.image -%}
+        <figure class="main-page-article__image{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          <img
+            srcset="
+              {%- if recipe_article.image.width >= 400 -%}{{ recipe_article.image | image_url: width: 400 }} 400w,{%- endif -%}
+              {%- if recipe_article.image.width >= 800 -%}{{ recipe_article.image | image_url: width: 800 }} 800w,{%- endif -%}
+              {%- if recipe_article.image.width >= 1200 -%}{{ recipe_article.image | image_url: width: 1200 }} 1200w,{%- endif -%}
+              {{ recipe_article.image | image_url }} {{ recipe_article.image.width }}w
+            "
+            src="{{ recipe_article.image | image_url: width: 800 }}"
+            sizes="(min-width: 750px) 680px, calc(100vw - 2rem)"
+            alt="{{ recipe_article.image.alt | default: recipe_article.title | escape }}"
+            loading="lazy"
+            width="{{ recipe_article.image.width }}"
+            height="{{ recipe_article.image.height }}"
+          >
+        </figure>
+      {%- endif -%}
+      <div class="rte main-page-article__content">
+        {{ recipe_article.content }}
+      </div>
+    </article>
+  {%- else -%}
+    <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {{ page.title | escape }}
+    </h1>
+    <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {{ page.content }}
+    </div>
+  {%- endif -%}
 </div>
 
 {% schema %}
