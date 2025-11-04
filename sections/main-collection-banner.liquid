@@ -30,8 +30,16 @@
       elsif collection.handle contains 'palm-leaf'
         assign eyebrow_text = 'ECO TABLEWARE'
         assign intro_text = '<p>Serve canapés, mains, and desserts on naturally compostable palm leaf plates that elevate eco-conscious presentations.</p>'
+      elsif collection.handle == 'all'
+        assign eyebrow_text = 'CATERING ESSENTIALS'
+        assign intro_text = "<p>Browse the full Kiwi Catering line-up of cream chargers, dispensers, and eco-conscious serveware ready for fast service.</p>"
       else
-        assign intro_text = '<p>Discover curated {{ collection.title | downcase }} selected to keep your kitchen moving.</p>'
+        capture generic_intro
+          echo '<p>Discover curated '
+          echo collection.title | downcase
+          echo ' selected to keep your kitchen moving.</p>'
+        endcapture
+        assign intro_text = generic_intro | strip
       endif
     -%}
     <div class="collection-hero__text-wrapper legacy-collection-hero">

@@ -342,6 +342,65 @@
   margin-top: 2.2rem;
 }
 
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe {
+  gap: 0;
+  align-items: center;
+  text-align: center;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .footer-block__newsletter,
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .footer__social {
+  margin-top: 0;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .footer-block__newsletter {
+  gap: 0;
+  align-items: center;
+  text-align: center;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .footer__social {
+  justify-content: center;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .footer__subscribe-lede,
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .footer__subscribe-location {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .footer__follow-on-shop {
+  justify-content: center;
+  align-items: center;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .newsletter-form__field-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--brand {
+  align-items: center;
+  text-align: center;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--brand .footer__logo {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--brand .footer__brand-summary,
+#shopify-section-sections--19493626347708__footer .footer__grid-item--brand .footer__list-social {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--brand .footer__list-social {
+  justify-content: center;
+}
+
 .footer--dev-home .footer__menu-link {
   font-size: 1.4rem;
   font-weight: 500;

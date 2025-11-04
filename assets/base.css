@@ -1555,8 +1555,8 @@ button.shopify-payment-button__button--unbranded:not([disabled]):active {
 
 .button--secondary,
 .button--tertiary {
-  background-color: rgb(var(--brand-color-secondary));
-  color: rgb(var(--brand-color-secondary-contrast));
+  background-color: #fff;
+  color: rgb(82, 179, 87);
 }
 
 .button--secondary::before,
@@ -1568,23 +1568,27 @@ button.shopify-payment-button__button--unbranded:not([disabled]):active {
 
 .button--secondary:not([disabled]):hover,
 .button--tertiary:not([disabled]):hover {
-  background-color: color-mix(in srgb, rgb(var(--brand-color-secondary)) 88%, white 12%);
+  background-color: color-mix(in srgb, #ffffff 94%, rgb(82, 179, 87) 6%);
+  color: rgb(82, 179, 87);
 }
 
 .button--secondary:not([disabled]):active,
 .button--tertiary:not([disabled]):active {
-  background-color: color-mix(in srgb, rgb(var(--brand-color-secondary)) 78%, black 22%);
+  background-color: color-mix(in srgb, #ffffff 88%, rgb(82, 179, 87) 12%);
+  color: rgb(82, 179, 87);
 }
 
 @supports not (color: color-mix(in srgb, red 88%, white 12%)) {
   .button--secondary:not([disabled]):hover,
   .button--tertiary:not([disabled]):hover {
-    background-color: rgb(var(--brand-color-secondary));
+    background-color: #ffffff;
+    color: rgb(82, 179, 87);
   }
 
   .button--secondary:not([disabled]):active,
   .button--tertiary:not([disabled]):active {
-    background-color: rgb(var(--brand-color-secondary));
+    background-color: #f2f7f3;
+    color: rgb(82, 179, 87);
   }
 }
 

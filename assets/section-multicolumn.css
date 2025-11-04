@@ -322,16 +322,20 @@ body.template-index .collection--dev-home--multicolumn-heading .collection__titl
   background: linear-gradient(90deg, rgb(var(--brand-color-primary)), rgba(var(--color-foreground), 0.75)) !important;
 }
 
-#shopify-section-value_props .collection__title {
+#shopify-section-value_props .collection__title,
+[id^='shopify-section-template--'][id$='__value_props'] .collection__title {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
+  justify-content: center !important;
   text-align: center !important;
   gap: clamp(0.8rem, 1.2vw, 1.4rem) !important;
   margin-bottom: clamp(3rem, 4vw, 3.8rem) !important;
+  width: 100% !important;
 }
 
-#shopify-section-value_props .collection__title .title {
+#shopify-section-value_props .collection__title .title,
+[id^='shopify-section-template--'][id$='__value_props'] .collection__title .title {
   display: inline-block !important;
   margin: 0 auto !important;
   font-size: clamp(2.6rem, 3.8vw, 3.4rem) !important;
@@ -343,7 +347,8 @@ body.template-index .collection--dev-home--multicolumn-heading .collection__titl
   line-height: 1.1 !important;
 }
 
-#shopify-section-value_props .collection__title .title::after {
+#shopify-section-value_props .collection__title .title::after,
+[id^='shopify-section-template--'][id$='__value_props'] .collection__title .title::after {
   content: '' !important;
   display: block !important;
   width: clamp(10rem, 18vw, 14rem) !important;
