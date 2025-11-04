@@ -299,15 +299,18 @@
         {%- else -%}
           {%- assign fallback_logo_width = header_logo_max_width_setting | default: 220 -%}
           {%- assign fallback_logo_height = header_logo_max_height_setting | default: 80 -%}
-          {%- assign fallback_logo_src = fallback_logo_file | file_img_url: '400x' -%}
           <div class="header__heading-logo-wrapper"{% if header_logo_wrapper_style != blank %} style="{{ header_logo_wrapper_style | strip }}"{% endif %}>
+            {%- capture fallback_logo_url -%}
+              {{ fallback_logo_file | file_img_url: '400x' }}
+            {%- endcapture -%}
             <img
-              src="{{ fallback_logo_src }}"
-              alt="{{ shop.name | escape }}"
+              src="{{ fallback_logo_url | strip }}"
+              class="header__heading-logo motion-reduce"
               width="{{ fallback_logo_width }}"
               height="{{ fallback_logo_height }}"
-              style="{{ header_logo_image_style }}"
+              alt="{{ header_logo_alt }}"
               loading="eager"
+              style="{{ header_logo_image_style }}"
             >
           </div>
         {%- endif -%}
@@ -351,15 +354,18 @@
         {%- else -%}
           {%- assign fallback_logo_width = header_logo_max_width_setting | default: 220 -%}
           {%- assign fallback_logo_height = header_logo_max_height_setting | default: 80 -%}
-          {%- assign fallback_logo_src = fallback_logo_file | file_img_url: '400x' -%}
           <div class="header__heading-logo-wrapper"{% if header_logo_wrapper_style != blank %} style="{{ header_logo_wrapper_style | strip }}"{% endif %}>
+            {%- capture fallback_logo_url -%}
+              {{ fallback_logo_file | file_img_url: '400x' }}
+            {%- endcapture -%}
             <img
-              src="{{ fallback_logo_src }}"
-              alt="{{ shop.name | escape }}"
+              src="{{ fallback_logo_url | strip }}"
+              class="header__heading-logo motion-reduce"
               width="{{ fallback_logo_width }}"
               height="{{ fallback_logo_height }}"
-              style="{{ header_logo_image_style }}"
+              alt="{{ header_logo_alt }}"
               loading="eager"
+              style="{{ header_logo_image_style }}"
             >
           </div>
         {%- endif -%}

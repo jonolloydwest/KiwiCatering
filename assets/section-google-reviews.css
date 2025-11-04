@@ -29,7 +29,7 @@
   align-items: center;
   gap: 0.6rem;
   font-weight: 600;
-  color: rgb(var(--brand-color-primary-deep, 32, 129, 37));
+  color: rgb(var(--brand-color-primary));
 }
 
 .google-reviews__stars {

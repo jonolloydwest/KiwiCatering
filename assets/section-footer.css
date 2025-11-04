@@ -412,7 +412,7 @@
 }
 
 #shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__input::placeholder {
-  color: rgba(var(--brand-color-ink, var(--color-foreground)), 0.55);
+  color: rgba(var(--brand-color-ink, var(--color-foreground)), 0.6);
 }
 
 #shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__label {
@@ -1211,7 +1211,7 @@
 }
 
 .footer--legacy .policies li::before {
-  color: rgba(var(--color-foreground), 0.5);
+  color: rgba(var(--color-foreground), 0.6);
 }
 
 @media screen and (min-width: 750px) {

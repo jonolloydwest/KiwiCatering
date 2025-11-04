@@ -340,18 +340,10 @@
       }
     {% endstyle %}
 
-    <link rel="preload" href="{{ 'base.css' | asset_url }}" as="style">
-    <link rel="stylesheet" href="{{ 'base.css' | asset_url }}" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{{ 'base.css' | asset_url }}"></noscript>
-
-    <link rel="preload" href="{{ 'component-slider.css' | asset_url }}" as="style">
-    <link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}"></noscript>
-
-    <link rel="preload" href="{{ 'component-slideshow.css' | asset_url }}" as="style">
-    <link rel="stylesheet" href="{{ 'component-slideshow.css' | asset_url }}" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{{ 'component-slideshow.css' | asset_url }}"></noscript>
-    <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+    {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-slider.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-slideshow.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-cart-items.css' | asset_url | stylesheet_tag }}
 
     {%- if settings.cart_type == 'drawer' -%}
       {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}

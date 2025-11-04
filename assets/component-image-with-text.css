@@ -548,7 +548,7 @@
   font-size: 1.3rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(var(--color-foreground), 0.55);
+  color: rgba(var(--color-foreground), 0.6);
 }
 
 .multirow--dev-home .image-with-text__heading {

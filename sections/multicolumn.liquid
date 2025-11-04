@@ -143,6 +143,7 @@
               {%- endif -%}
               {%- assign icon_image = block.settings.image -%}
               {%- assign icon_alt_text = block.settings.icon_alt | default: block.settings.title | strip_html | escape -%}
+              {%- assign icon_markup = '' -%}
               {%- if icon_image != blank or block.settings.icon_url != blank -%}
                 {%- if icon_image != blank -%}
                   {%- assign icon_markup = icon_image
@@ -155,21 +156,48 @@
                       class: 'multicolumn-card__icon-image'
                   -%}
                 {%- else -%}
-                  {%- assign icon_src = block.settings.icon_url | strip -%}
-                  {%- if icon_src contains '/files/' -%}
-                    {%- assign icon_file_handle = icon_src | split: '/files/' | last | split: '?' | first -%}
-                    {%- assign icon_src = icon_file_handle | file_url -%}
+                  {%- assign icon_url_input = block.settings.icon_url | strip -%}
+                  {%- assign icon_src = '' -%}
+                  {%- if icon_url_input contains '/files/' -%}
+                    {%- assign icon_file_handle = icon_url_input | split: '/files/' | last | split: '?' | first -%}
+                    {%- assign icon_extension = icon_file_handle | split: '.' | last | downcase -%}
+                    {%- if icon_extension == 'svg' -%}
+                      {%- assign icon_src = icon_file_handle | file_url -%}
+                    {%- else -%}
+                      {%- assign icon_src = icon_file_handle | file_img_url: '144x' -%}
+                    {%- endif -%}
+                  {%- elsif icon_url_input contains '/assets/' -%}
+                    {%- assign icon_asset_handle = icon_url_input | split: '/assets/' | last | split: '?' | first -%}
+                    {%- assign icon_extension = icon_asset_handle | split: '.' | last | downcase -%}
+                    {%- if icon_extension == 'svg' -%}
+                      {%- assign icon_src = icon_asset_handle | asset_url -%}
+                    {%- else -%}
+                      {%- assign icon_src = icon_asset_handle | asset_img_url: '144x' -%}
+                    {%- endif -%}
+                  {%- elsif icon_url_input != blank -%}
+                    {%- assign icon_extension = icon_url_input | split: '.' | last | split: '?' | first | downcase -%}
+                    {%- if icon_url_input contains '://' -%}
+                      {%- assign icon_src = icon_url_input -%}
+                    {%- else -%}
+                      {%- if icon_extension == 'svg' -%}
+                        {%- assign icon_src = icon_url_input | asset_url -%}
+                      {%- else -%}
+                        {%- assign icon_src = icon_url_input | asset_img_url: '144x' -%}
+                      {%- endif -%}
+                    {%- endif -%}
                   {%- endif -%}
-                  {%- capture icon_markup -%}
-                    <img
-                      src="{{ icon_src | escape }}"
-                      alt="{{ icon_alt_text }}"
-                      loading="lazy"
-                      width="72"
-                      height="72"
-                      class="multicolumn-card__icon-image"
-                    >
-                  {%- endcapture -%}
+                  {%- if icon_src != blank -%}
+                    {%- capture icon_markup -%}
+                      <img
+                        src="{{ icon_src }}"
+                        alt="{{ icon_alt_text }}"
+                        loading="lazy"
+                        width="72"
+                        height="72"
+                        class="multicolumn-card__icon-image"
+                      >
+                    {%- endcapture -%}
+                  {%- endif -%}
                 {%- endif -%}
                 <div class="multicolumn-card__icon multicolumn-card__icon--top">
                   {{ icon_markup | strip }}

@@ -3,5 +3,24 @@
 }
 
 .related-products__heading {
-  margin: 0 0 2.5rem;
+  display: block;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+  font-size: clamp(2.6rem, 3.8vw, 3.4rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  color: rgb(var(--color-foreground));
+  position: relative;
+}
+
+.related-products__heading::after {
+  content: '';
+  display: block;
+  width: clamp(10rem, 18vw, 14rem);
+  height: 0.3rem;
+  margin: clamp(1.4rem, 2.6vw, 2rem) auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgb(var(--brand-color-primary)), rgba(var(--color-foreground), 0.75));
 }

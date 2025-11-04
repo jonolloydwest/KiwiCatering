@@ -847,7 +847,7 @@ a.product__text {
   background-color: rgb(var(--color-background));
   border: 0.1rem solid rgba(var(--color-foreground), 0.1);
   border-radius: 50%;
-  color: rgba(var(--color-foreground), 0.55);
+  color: rgba(var(--color-foreground), 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1041,7 +1041,7 @@ a.product__text {
   background-color: rgb(var(--color-background));
   border: 0.1rem solid rgba(var(--color-foreground), 0.1);
   border-radius: 50%;
-  color: rgba(var(--color-foreground), 0.55);
+  color: rgba(var(--color-foreground), 0.6);
   display: flex;
   align-items: center;
   justify-content: center;

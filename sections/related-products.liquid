@@ -38,47 +38,19 @@
       {% assign rendered_product_ids = '' %}
       {% capture rendered_product_ids %}|{{ product.id }}|{% endcapture %}
       {% capture cards %}
-        {% if recommendations.products_count > 0 %}
-          {% assign shuffled_recommendations = recommendations.products | shuffle %}
-          {% for recommendation in shuffled_recommendations %}
+        {% assign total_recommendations = recommendations.products_count | default: 0 %}
+        {% if total_recommendations > 0 %}
+          {% assign start_index = product.id | modulo: total_recommendations %}
+          {% for recommendation in recommendations.products %}
             {% if render_count == max_products %}
               {% break %}
             {% endif %}
-            {% unless rendered_product_ids contains '|{{ recommendation.id }}|' %}
-              {% capture card_markup %}
-                {% render 'card-product',
-                  card_product: recommendation,
-                  media_aspect_ratio: section.settings.image_ratio,
-                  image_shape: section.settings.image_shape,
-                  show_secondary_image: section.settings.show_secondary_image,
-                  show_vendor: section.settings.show_vendor,
-                  show_rating: section.settings.show_rating,
-                  skip_styles: skip_card_product_styles,
-                  quick_add: 'standard',
-                  section_id: section.id
-                %}
-              {% endcapture %}
-              <li class="grid__item">
-                {{ card_markup }}
-              </li>
-              {% assign render_count = render_count | plus: 1 %}
-              {% capture rendered_product_ids %}{{ rendered_product_ids }}|{{ recommendation.id }}|{% endcapture %}
-              {% assign skip_card_product_styles = true %}
-            {% endunless %}
-          {% endfor %}
-        {% endif %}
-        {% if render_count < max_products %}
-          {% assign fallback_collection = collections['all'] %}
-          {% if fallback_collection != blank %}
-            {% assign fallback_products = fallback_collection.products | where: 'available', true | shuffle %}
-            {% for fallback_product in fallback_products %}
-              {% if render_count == max_products %}
-                {% break %}
-              {% endif %}
-              {% unless rendered_product_ids contains '|{{ fallback_product.id }}|' %}
+            {% if forloop.index0 >= start_index %}
+              {% assign candidate_product = recommendation %}
+              {% unless rendered_product_ids contains '|{{ candidate_product.id }}|' %}
                 {% capture card_markup %}
                   {% render 'card-product',
-                    card_product: fallback_product,
+                    card_product: candidate_product,
                     media_aspect_ratio: section.settings.image_ratio,
                     image_shape: section.settings.image_shape,
                     show_secondary_image: section.settings.show_secondary_image,
@@ -89,14 +61,129 @@
                     section_id: section.id
                   %}
                 {% endcapture %}
+                {% assign prepared_card_markup = card_markup %}
+                {% unless prepared_card_markup contains 'card card-wrapper' %}
+                  {% assign prepared_card_markup = card_markup | replace_first: 'card-wrapper', 'card card-wrapper' %}
+                {% endunless %}
                 <li class="grid__item">
-                  {{ card_markup }}
+                  {{ prepared_card_markup }}
                 </li>
                 {% assign render_count = render_count | plus: 1 %}
-                {% capture rendered_product_ids %}{{ rendered_product_ids }}|{{ fallback_product.id }}|{% endcapture %}
+                {% capture rendered_product_ids %}{{ rendered_product_ids }}|{{ candidate_product.id }}|{% endcapture %}
                 {% assign skip_card_product_styles = true %}
               {% endunless %}
+            {% endif %}
+          {% endfor %}
+          {% if render_count < max_products %}
+            {% for recommendation in recommendations.products %}
+              {% if render_count == max_products %}
+                {% break %}
+              {% endif %}
+              {% if forloop.index0 < start_index %}
+                {% assign candidate_product = recommendation %}
+                {% unless rendered_product_ids contains '|{{ candidate_product.id }}|' %}
+                  {% capture card_markup %}
+                    {% render 'card-product',
+                      card_product: candidate_product,
+                      media_aspect_ratio: section.settings.image_ratio,
+                      image_shape: section.settings.image_shape,
+                      show_secondary_image: section.settings.show_secondary_image,
+                      show_vendor: section.settings.show_vendor,
+                      show_rating: section.settings.show_rating,
+                      skip_styles: skip_card_product_styles,
+                      quick_add: 'standard',
+                      section_id: section.id
+                    %}
+                  {% endcapture %}
+                {% assign prepared_card_markup = card_markup %}
+                {% unless prepared_card_markup contains 'card card-wrapper' %}
+                  {% assign prepared_card_markup = card_markup | replace_first: 'card-wrapper', 'card card-wrapper' %}
+                {% endunless %}
+                <li class="grid__item">
+                  {{ prepared_card_markup }}
+                </li>
+                  {% assign render_count = render_count | plus: 1 %}
+                  {% capture rendered_product_ids %}{{ rendered_product_ids }}|{{ candidate_product.id }}|{% endcapture %}
+                  {% assign skip_card_product_styles = true %}
+                {% endunless %}
+              {% endif %}
             {% endfor %}
+          {% endif %}
+        {% endif %}
+        {% if render_count < max_products %}
+          {% assign fallback_collection = collections['all'] %}
+          {% if fallback_collection != blank %}
+            {% assign fallback_products = fallback_collection.products | where: 'available', true %}
+            {% assign fallback_size = fallback_products | size %}
+            {% if fallback_size > 0 %}
+              {% assign fallback_start_index = product.id | modulo: fallback_size %}
+              {% for fallback_product in fallback_products %}
+                {% if render_count == max_products %}
+                  {% break %}
+                {% endif %}
+                {% if forloop.index0 >= fallback_start_index %}
+                  {% unless rendered_product_ids contains '|{{ fallback_product.id }}|' %}
+                    {% capture card_markup %}
+                      {% render 'card-product',
+                        card_product: fallback_product,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        image_shape: section.settings.image_shape,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        show_vendor: section.settings.show_vendor,
+                        show_rating: section.settings.show_rating,
+                        skip_styles: skip_card_product_styles,
+                        quick_add: 'standard',
+                        section_id: section.id
+                      %}
+                    {% endcapture %}
+                    {% assign prepared_card_markup = card_markup %}
+                    {% unless prepared_card_markup contains 'card card-wrapper' %}
+                      {% assign prepared_card_markup = card_markup | replace_first: 'card-wrapper', 'card card-wrapper' %}
+                    {% endunless %}
+                    <li class="grid__item">
+                      {{ prepared_card_markup }}
+                    </li>
+                    {% assign render_count = render_count | plus: 1 %}
+                    {% capture rendered_product_ids %}{{ rendered_product_ids }}|{{ fallback_product.id }}|{% endcapture %}
+                    {% assign skip_card_product_styles = true %}
+                  {% endunless %}
+                {% endif %}
+              {% endfor %}
+              {% if render_count < max_products %}
+                {% for fallback_product in fallback_products %}
+                  {% if render_count == max_products %}
+                    {% break %}
+                  {% endif %}
+                  {% if forloop.index0 < fallback_start_index %}
+                    {% unless rendered_product_ids contains '|{{ fallback_product.id }}|' %}
+                      {% capture card_markup %}
+                        {% render 'card-product',
+                          card_product: fallback_product,
+                          media_aspect_ratio: section.settings.image_ratio,
+                          image_shape: section.settings.image_shape,
+                          show_secondary_image: section.settings.show_secondary_image,
+                          show_vendor: section.settings.show_vendor,
+                          show_rating: section.settings.show_rating,
+                          skip_styles: skip_card_product_styles,
+                          quick_add: 'standard',
+                          section_id: section.id
+                        %}
+                      {% endcapture %}
+                    {% assign prepared_card_markup = card_markup %}
+                    {% unless prepared_card_markup contains 'card card-wrapper' %}
+                      {% assign prepared_card_markup = card_markup | replace_first: 'card-wrapper', 'card card-wrapper' %}
+                    {% endunless %}
+                    <li class="grid__item">
+                      {{ prepared_card_markup }}
+                    </li>
+                      {% assign render_count = render_count | plus: 1 %}
+                      {% capture rendered_product_ids %}{{ rendered_product_ids }}|{{ fallback_product.id }}|{% endcapture %}
+                      {% assign skip_card_product_styles = true %}
+                    {% endunless %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endif %}
           {% endif %}
         {% endif %}
       {% endcapture %}

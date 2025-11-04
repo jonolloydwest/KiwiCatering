@@ -772,8 +772,8 @@ hr {
 
 .placeholder {
   background-color: rgba(var(--color-foreground), 0.04);
-  color: rgba(var(--color-foreground), 0.55);
-  fill: rgba(var(--color-foreground), 0.55);
+  color: rgba(var(--color-foreground), 0.6);
+  fill: rgba(var(--color-foreground), 0.6);
 }
 
 details > * {
@@ -2494,7 +2494,7 @@ input[type='checkbox'] {
 
 .announcement-bar,
 .announcement-bar__announcement {
-  color: rgb(var(--color-foreground));
+  color: rgb(var(--brand-color-primary-deep, var(--brand-color-primary)));
   width: 100%;
   height: 100%;
   display: flex;

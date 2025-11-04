@@ -148,10 +148,10 @@
   border-radius: var(--brand-radius-glass, 2.6rem);
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 26px 48px -20px rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-alpha));
+  box-shadow: none;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  transition: transform var(--duration-short) ease, box-shadow var(--duration-short) ease;
+  transition: transform var(--duration-short) ease;
   overflow: hidden;
   isolation: isolate;
 }
@@ -159,7 +159,7 @@
 .product-card-wrapper:hover,
 .product-card-wrapper:focus-within {
   transform: translateY(-0.4rem);
-  box-shadow: 0 32px 52px -24px rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-hover-alpha));
+  box-shadow: none;
 }
 
 .product-card-wrapper .card {
@@ -709,8 +709,7 @@
   border: 0.1rem solid rgba(var(--color-foreground), 0.12);
   border-radius: var(--border-radius);
   background-color: rgb(var(--color-background));
-  transition: border-color var(--duration-short) ease, box-shadow var(--duration-short) ease,
-    transform var(--duration-short) ease;
+  transition: border-color var(--duration-short) ease, transform var(--duration-short) ease;
 }
 
 .card.card--dev-style.card--media .card__inner {
@@ -787,14 +786,14 @@
 @media (hover: hover) {
   .card.card--dev-style:hover {
     border-color: rgba(var(--color-foreground), 0.2);
-    box-shadow: 0 1.2rem 2.4rem -1.2rem rgba(var(--color-foreground), 0.16);
+    box-shadow: none;
     transform: translateY(-0.2rem);
   }
 }
 
 .card.card--dev-style:focus-within {
   border-color: rgba(var(--color-foreground), 0.28);
-  box-shadow: 0 0 0 0.2rem rgba(var(--color-foreground), 0.12);
+  box-shadow: none;
 }
 
 .collection--dev-home .product-grid .grid__item {
@@ -810,10 +809,10 @@
   border-radius: var(--brand-radius-glass);
   background: rgba(var(--brand-surface-glass), var(--brand-surface-glass-alpha));
   border: 1px solid rgba(var(--brand-surface-glass), var(--brand-surface-glass-border-alpha));
-  box-shadow: 0 26px 48px -20px rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-alpha));
+  box-shadow: none;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  transition: transform var(--duration-medium) ease, box-shadow var(--duration-medium) ease;
+  transition: transform var(--duration-medium) ease;
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -889,12 +888,12 @@
 @media (hover: hover) {
   .collection--dev-home .product-grid .card-wrapper:hover {
     transform: translateY(-0.4rem);
-    box-shadow: 0 32px 52px -24px rgba(var(--brand-surface-glass-shadow), var(--brand-surface-glass-shadow-hover-alpha));
+    box-shadow: none;
   }
 }
 
 .collection--dev-home .product-grid .card-wrapper:focus-within {
-  box-shadow: 0 0 0 0.2rem rgba(var(--brand-surface-glass-shadow), 0.2);
+  box-shadow: none;
 }
 
 @media screen and (max-width: 1199px) {

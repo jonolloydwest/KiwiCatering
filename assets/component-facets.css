@@ -238,7 +238,7 @@
 }
 
 .facets__and-helptext {
-  color: rgba(var(--color-foreground), 0.5);
+  color: rgba(var(--color-foreground), 0.6);
   font-size: calc(var(--font-heading-scale) * 1.2rem);
   line-height: calc(var(--font-heading-scale) * 1.2rem);
 }
