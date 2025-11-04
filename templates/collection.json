@@ -6,7 +6,8 @@
         "collection_stories_block_1": {
           "type": "story_item",
           "settings": {
-            "collection": "cream-chargers"
+            "collection": "cream-chargers",
+            "title": "Cream Chargers"
           }
         },
         "collection_stories_block_2": {

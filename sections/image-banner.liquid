@@ -18,9 +18,15 @@
         padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
         content: '';
         display: block;
-      }
     }
-  {%- endstyle -%}
+  }
+{%- endstyle -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    margin-top: 0;
+  }
+{%- endstyle -%}
 {%- endif -%}
 
 {%- liquid

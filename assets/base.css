@@ -301,8 +301,8 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
 .announcement-bar-section .utility-bar__grid.page-width {
   max-width: 100%;
   margin: 0;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
 }
 
 @media screen and (min-width: 750px) {
@@ -320,8 +320,8 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
   .announcement-bar-section .utility-bar__grid.page-width {
     max-width: 100%;
     margin: 0;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
   }
 
   .header.page-width {

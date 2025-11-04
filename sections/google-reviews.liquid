@@ -1,0 +1,283 @@
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'section-google-reviews.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'google-reviews.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign has_blocks = false
+  if section.blocks.size > 0
+    assign has_blocks = true
+  endif
+-%}
+
+<section
+  class="google-reviews color-{{ section.settings.color_scheme }} gradient"
+  data-google-reviews
+  data-section-id="{{ section.id }}"
+  {% if section.settings.reviews_feed_url != blank %}
+    data-feed-url="{{ section.settings.reviews_feed_url | escape }}"
+  {% endif %}
+  data-max-reviews="{{ section.settings.max_reviews | default: 6 }}"
+>
+  <div class="page-width-desktop isolate section-{{ section.id }}-padding">
+    <div class="google-reviews__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      <h2 class="google-reviews__title">{{ section.settings.heading | default: 'What Our Customers Say' }}</h2>
+      <span class="google-reviews__title-accent" aria-hidden="true"></span>
+      <div class="google-reviews__aggregate">
+        <span class="google-reviews__aggregate-rating">
+          <span class="google-reviews__stars" aria-hidden="true">
+            {% for i in (1..5) %}
+              <svg viewBox="0 0 24 24"><path d="M12 17.3l6.18 3.7-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            {% endfor %}
+          </span>
+          <span class="google-reviews__rating-value">4.8</span>
+        </span>
+        <span class="google-reviews__aggregate-meta">204 Google Reviews</span>
+      </div>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="google-reviews__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="slider-mobile-gutter google-reviews__slider{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" data-google-reviews-slider>
+      <ul
+        id="Slider-{{ section.id }}"
+        class="google-reviews__list"
+        role="list"
+      >
+        {%- if has_blocks -%}
+          {%- for block in section.blocks -%}
+            <li class="google-reviews__item slider__slide" {{ block.shopify_attributes }}>
+              <article class="google-reviews__card">
+                <div class="google-reviews__rating">
+                  {%- assign rating = block.settings.rating | default: 5 -%}
+                  {%- for i in (1..rating) -%}
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 17.3l6.18 3.7-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                  {%- endfor -%}
+                  <span>{{ rating | append: '.0' }}</span>
+                </div>
+                <p class="google-reviews__text">
+                  {{ block.settings.review | escape }}
+                </p>
+                <div class="google-reviews__footer">
+                  <span class="google-reviews__author">{{ block.settings.author | escape }}</span>
+                  {%- if block.settings.meta != blank -%}
+                    <span class="google-reviews__meta">{{ block.settings.meta | escape }}</span>
+                  {%- endif -%}
+                </div>
+              </article>
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          <li class="google-reviews__item slider__slide">
+            <article class="google-reviews__card">
+              <div class="google-reviews__rating">
+                {% for i in (1..5) %}
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 17.3l6.18 3.7-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                {% endfor %}
+                <span>5.0</span>
+              </div>
+              <p class="google-reviews__text">
+                “Our customers love the new layout, and the loading speed has improved dramatically. Highly recommend the Kiwi Catering team.”
+              </p>
+              <div class="google-reviews__footer">
+                <span class="google-reviews__author">Sample Reviewer</span>
+                <span class="google-reviews__meta">Verified Google Review</span>
+              </div>
+            </article>
+          </li>
+        {%- endif -%}
+      </ul>
+      <div class="slider-buttons no-js-hidden google-reviews__slider-buttons">
+        <button
+          type="button"
+          class="slider-button slider-button--prev"
+          name="previous"
+          aria-label="{{ 'general.pagination.previous' | t }}"
+          data-slider-prev
+        >
+          <span class="google-reviews__slider-icon" aria-hidden="true">&lt;</span>
+        </button>
+        <button
+          type="button"
+          class="slider-button slider-button--next"
+          name="next"
+          aria-label="{{ 'general.pagination.next' | t }}"
+          data-slider-next
+        >
+          <span class="google-reviews__slider-icon" aria-hidden="true">&gt;</span>
+        </button>
+      </div>
+    </div>
+
+    {%- if section.settings.google_profile_url != blank -%}
+      <div class="google-reviews__cta">
+        <a
+          class="google-reviews__link"
+          href="{{ section.settings.google_profile_url }}"
+          target="_blank"
+          rel="noopener"
+        >
+          View all Google reviews
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h5V3H5c-1.1 0-2 .9-2 2v5h2V5zm0 14v-5H3v5c0 1.1.9 2 2 2h5v-2H5zm14 0h-5v2h5c1.1 0 2-.9 2-2v-5h-2v5z"/>
+          </svg>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Google reviews",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Google verified"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Real feedback from venues, caterers, and retailers across Aotearoa."
+    },
+    {
+      "type": "url",
+      "id": "google_profile_url",
+      "label": "Link to Google reviews profile"
+    },
+    {
+      "type": "text",
+      "id": "reviews_feed_url",
+      "label": "Reviews feed URL",
+      "info": "Optional HTTPS endpoint returning Google review JSON. Provide after setting up an API integration."
+    },
+    {
+      "type": "range",
+      "id": "max_reviews",
+      "label": "Maximum reviews to display",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review text",
+          "default": "Outstanding service, fast shipping, and the most reliable cream chargers we've used. The team goes above and beyond every time."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Reviewer name",
+          "default": "Jess M."
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Reviewer details",
+          "default": "Restaurant Owner"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Google reviews",
+      "blocks": [
+        {
+          "type": "review"
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review": "From compostable plates to dispensers, Kiwi Catering nails the mix of quality and sustainability we need for corporate events.",
+            "author": "Aaron T.",
+            "meta": "Corporate Caterer",
+            "rating": 5
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review": "Impressed with stock availability and the helpful guidance on product swaps. Deliveries always land when promised.",
+            "author": "Monique L.",
+            "meta": "Cafe Manager",
+            "rating": 5
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,5 +1,44 @@
 {{ 'section-main-page.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign wholesale_title = page.title | downcase
+  assign is_wholesale_trade_page = false
+  if page.handle == 'wholesale-and-trade-enquiries' or page.handle == 'wholesale-trade-enquiries' or page.handle == 'wholesale-trade'
+    assign is_wholesale_trade_page = true
+  elsif wholesale_title contains 'wholesale' and wholesale_title contains 'trade'
+    assign is_wholesale_trade_page = true
+  endif
+
+  assign hero_title = ''
+  assign hero_eyebrow = ''
+  assign hero_intro = ''
+
+  if page.handle == 'about-us' or page.handle == 'about'
+    assign hero_eyebrow = 'Our Story'
+    assign hero_title = page.title | default: 'About Us'
+    assign hero_intro = 'From compostable serveware to premium cream chargers, Kiwi Catering supports New Zealand hospitality teams with reliable, planet-conscious sourcing.'
+  elsif page.handle == 'contact' or page.handle == 'contact-us'
+    assign hero_eyebrow = 'Talk to Us'
+    assign hero_title = page.title | default: 'Contact Us'
+    assign hero_intro = 'Need guidance on product selection, shipping windows, or trade pricing? Our Auckland specialists respond within one business day.'
+  endif
+
+  if is_wholesale_trade_page
+    assign hero_eyebrow = 'Trade Partnerships'
+    assign hero_title = page.title | default: 'Wholesale & Trade Enquiries'
+    assign hero_intro = 'Scale your menu rollouts with bulk pricing, pallet-ready stock, and fulfilment support tailored to nationwide hospitality partners.'
+  endif
+
+  assign has_custom_hero = false
+  if hero_title != ''
+    assign has_custom_hero = true
+  endif
+-%}
+
+{%- if is_wholesale_trade_page -%}
+  {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -12,6 +51,117 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  {%- if has_custom_hero -%}
+    .page-hero {
+      position: relative;
+      max-width: var(--page-width);
+      margin: 0 auto clamp(32px, 6vw, 64px);
+      padding: clamp(32px, 6vw, 64px) clamp(24px, 6vw, 56px);
+      border-radius: 3.2rem;
+      background: linear-gradient(135deg, rgba(var(--brand-color-primary), 0.13), rgba(var(--brand-color-primary-dark, 6, 26, 12), 0.08));
+      box-shadow: 0 28px 54px -32px rgba(20, 45, 24, 0.32);
+      overflow: hidden;
+    }
+
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.55), transparent 46%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .page-hero__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.2rem, 2vw, 2.6rem);
+      max-width: 60rem;
+    }
+
+    .page-hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(var(--brand-color-primary), 0.16);
+      color: rgb(var(--brand-color-primary-dark, 6, 26, 12));
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      width: max-content;
+    }
+
+    .page-hero__title {
+      margin: 0;
+      font-size: clamp(3.2rem, 5vw, 4.2rem);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .page-hero__intro {
+      margin: 0;
+      color: rgba(var(--color-foreground), 0.78);
+      font-size: 1.6rem;
+      line-height: 1.7;
+      max-width: 54rem;
+    }
+  {%- endif -%}
+  {%- if is_wholesale_trade_page -%}
+    .wholesale-contact-section {
+      padding: 32px 0;
+    }
+
+    @media screen and (min-width: 750px) {
+      .wholesale-contact-section {
+        padding: 48px 0;
+      }
+    }
+
+    @media screen and (min-width: 990px) {
+      .wholesale-contact-section .contact__wrapper {
+        align-items: stretch;
+      }
+
+      .wholesale-contact-section .contact__intro {
+        height: 100%;
+        padding-bottom: 2rem;
+      }
+
+      .wholesale-contact-section .contact__card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .wholesale-contact-section .contact__form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+        flex: 1;
+        min-height: 100%;
+      }
+
+      .wholesale-contact-section .contact__fields {
+        flex-grow: 1;
+        min-height: 0;
+      }
+
+      .wholesale-contact-section .contact__form .field,
+      .wholesale-contact-section .contact__form .text-area {
+        flex-grow: 0;
+      }
+
+      .wholesale-contact-section .contact__button {
+        margin-top: auto;
+        padding-top: 1rem;
+      }
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 {%- liquid
@@ -22,8 +172,22 @@
   endif
 -%}
 
-<div class="page-width page-width--narrow section-{{ section.id }}-padding">
-  {%- if recipe_article -%}
+{%- if has_custom_hero -%}
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      {%- if hero_eyebrow != '' -%}
+        <span class="page-hero__eyebrow">{{ hero_eyebrow }}</span>
+      {%- endif -%}
+      <h1 class="page-hero__title">{{ hero_title }}</h1>
+      {%- if hero_intro != '' -%}
+        <p class="page-hero__intro">{{ hero_intro }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{%- if recipe_article -%}
+  <div class="page-width page-width--narrow section-{{ section.id }}-padding">
     <article class="main-page-article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       <h1 class="main-page-title page-title h0">
         {{ recipe_article.title | escape }}
@@ -50,15 +214,178 @@
         {{ recipe_article.content }}
       </div>
     </article>
-  {%- else -%}
-    <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ page.title | escape }}
-    </h1>
+  </div>
+{%- elsif page.handle != 'contact' and page.handle != 'contact-us' -%}
+  <div class="page-width page-width--narrow section-{{ section.id }}-padding">
+    {%- if has_custom_hero -%}
+      <h1 class="visually-hidden">{{ page.title | escape }}</h1>
+    {%- else -%}
+      <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+        {{ page.title | escape }}
+      </h1>
+    {%- endif -%}
     <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       {{ page.content }}
     </div>
-  {%- endif -%}
-</div>
+  </div>
+{%- endif -%}
+
+{%- if is_wholesale_trade_page -%}
+  {%- assign wholesale_form_id = 'WholesaleContactForm' -%}
+  <div class="color-scheme-1 gradient">
+    <div class="contact contact--layout page-width wholesale-contact-section">
+      <div class="contact__wrapper">
+        <div class="contact__intro{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          <span class="contact__eyebrow">Wholesale &amp; Trade</span>
+          <h2 class="title inline-richtext h1">
+            Partner with Kiwi Catering
+          </h2>
+          <div class="contact__copy rte">
+            <p>Share your business details and our wholesale team will be in touch with tailored pricing, bulk availability, and fulfilment support.</p>
+          </div>
+          <div class="contact__details">
+            <div class="contact-detail">
+              <span class="contact-detail__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                  <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A16 16 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01z" />
+                </svg>
+              </span>
+              <div class="contact-detail__body">
+                <p class="contact-detail__label">Call us</p>
+                <a class="contact-detail__value" href="tel:0800374699">0800 374 699</a>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <span class="contact-detail__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                  <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z" />
+                </svg>
+              </span>
+              <div class="contact-detail__body">
+                <p class="contact-detail__label">Email</p>
+                <a class="contact-detail__value" href="mailto:sales@kiwicatering.co.nz">sales@kiwicatering.co.nz</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact__card{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- form 'contact', id: wholesale_form_id, class: 'contact__form isolate' -%}
+            {%- if form.posted_successfully? -%}
+              <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
+                {{- 'icon-success.svg' | inline_asset_content -}}
+                {{ 'templates.contact.form.post_success' | t }}
+              </h2>
+            {%- elsif form.errors -%}
+              <div class="form__message">
+                <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+                  {{- 'icon-error.svg' | inline_asset_content -}}
+                  {{ 'templates.contact.form.error_heading' | t }}
+                </h2>
+              </div>
+              <ul class="form-status-list caption-large" role="list">
+                <li>
+                  <a href="#WholesaleContact-email" class="link">
+                    {{ form.errors.translated_fields.email | capitalize }}
+                    {{ form.errors.messages.email }}
+                  </a>
+                </li>
+              </ul>
+            {%- endif -%}
+            <div class="contact__fields">
+              <div class="field">
+                <input
+                  class="field__input"
+                  autocomplete="name"
+                  type="text"
+                  id="WholesaleContact-name"
+                  name="contact[{{ 'templates.contact.form.name' | t }}]"
+                  value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                  placeholder="{{ 'templates.contact.form.name' | t }}"
+                >
+                <label class="field__label" for="WholesaleContact-name">{{ 'templates.contact.form.name' | t }}</label>
+              </div>
+              <div class="field field--with-error">
+                <input
+                  autocomplete="email"
+                  type="email"
+                  id="WholesaleContact-email"
+                  class="field__input"
+                  name="contact[email]"
+                  spellcheck="false"
+                  autocapitalize="off"
+                  value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                  aria-required="true"
+                  {% if form.errors contains 'email' %}
+                    aria-invalid="true"
+                    aria-describedby="WholesaleContact-email-error"
+                  {% endif %}
+                  placeholder="{{ 'templates.contact.form.email' | t }}"
+                >
+                <label class="field__label" for="WholesaleContact-email">
+                  {{- 'templates.contact.form.email' | t }}
+                  <span aria-hidden="true">*</span></label
+                >
+                {%- if form.errors contains 'email' -%}
+                  <small class="contact__field-error" id="WholesaleContact-email-error">
+                    <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                    <span class="form__message">
+                      <span class="svg-wrapper">
+                        {{- 'icon-error.svg' | inline_asset_content -}}
+                      </span>
+                      {{- form.errors.translated_fields.email | capitalize }}
+                      {{ form.errors.messages.email -}}
+                    </span>
+                  </small>
+                {%- endif -%}
+              </div>
+            </div>
+            <div class="field">
+              <input
+                type="tel"
+                id="WholesaleContact-phone"
+                class="field__input"
+                autocomplete="tel"
+                name="contact[{{ 'templates.contact.form.phone' | t }}]"
+                pattern="[0-9\\-\\+\\s]*"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                placeholder="{{ 'templates.contact.form.phone' | t }}"
+              >
+              <label class="field__label" for="WholesaleContact-phone">{{ 'templates.contact.form.phone' | t }}</label>
+            </div>
+            <div class="field">
+              <input
+                type="text"
+                id="WholesaleContact-company"
+                class="field__input"
+                name="contact[Company name]"
+                value="{% if form['Company name'] %}{{ form['Company name'] }}{% endif %}"
+                placeholder="Company name"
+              >
+              <label class="field__label" for="WholesaleContact-company">Company name</label>
+            </div>
+            <div class="field">
+              <textarea
+                rows="8"
+                id="WholesaleContact-message"
+                class="text-area field__input"
+                name="contact[{{ 'templates.contact.form.comment' | t }}]"
+                placeholder="{{ 'templates.contact.form.comment' | t }}"
+              >{{ form.body }}</textarea>
+              <label class="form__label field__label" for="WholesaleContact-message">
+                {{- 'templates.contact.form.comment' | t -}}
+              </label>
+            </div>
+            <div class="contact__button">
+              <button type="submit" class="button">
+                Submit enquiry
+              </button>
+            </div>
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
 
 {% schema %}
 {

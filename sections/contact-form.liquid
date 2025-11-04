@@ -17,27 +17,41 @@
 {%- liquid
   assign eyebrow_text = section.settings.eyebrow_text
   assign intro_text = section.settings.intro_text
+  assign hide_intro_block = false
+  if template contains 'page.contact'
+    assign hide_intro_block = true
+  endif
 -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact contact--layout page-width section-{{ section.id }}-padding">
     <div class="contact__wrapper">
       <div class="contact__intro{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        {%- if eyebrow_text != blank -%}
-          <span class="contact__eyebrow">{{ eyebrow_text }}</span>
-        {%- endif -%}
-        {%- if section.settings.heading != blank -%}
-          <h2 class="title inline-richtext {{ section.settings.heading_size }}">
-            {{ section.settings.heading }}
-          </h2>
+        {%- unless hide_intro_block -%}
+          {%- if eyebrow_text != blank -%}
+            <span class="contact__eyebrow">{{ eyebrow_text }}</span>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="title inline-richtext {{ section.settings.heading_size }}">
+              {{ section.settings.heading }}
+            </h2>
+          {%- else -%}
+            <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+          {%- endif -%}
+          {%- if intro_text != blank -%}
+            <div class="contact__copy rte">
+              {{ intro_text }}
+            </div>
+          {%- endif -%}
         {%- else -%}
-          <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
-        {%- endif -%}
-        {%- if intro_text != blank -%}
-          <div class="contact__copy rte">
-            {{ intro_text }}
-          </div>
-        {%- endif -%}
+          {%- assign hidden_heading = section.settings.heading -%}
+          {%- if hidden_heading == blank -%}
+            {%- assign hidden_heading = 'templates.contact.form.title' | t -%}
+          {%- endif -%}
+          <h2 class="visually-hidden">
+            {{ hidden_heading }}
+          </h2>
+        {%- endunless -%}
         <div class="contact__details">
           {%- if section.settings.phone_value != blank -%}
             <div class="contact-detail">

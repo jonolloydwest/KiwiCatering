@@ -6,7 +6,8 @@
         "collection_stories_home_block_1": {
           "type": "story_item",
           "settings": {
-            "collection": "cream-chargers"
+            "collection": "cream-chargers",
+            "title": "Cream Chargers"
           }
         },
         "collection_stories_home_block_2": {
@@ -76,8 +77,248 @@
         "color_scheme": "scheme-3",
         "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
-        "show_text_below": false
+        "show_text_below": false,
+        "padding_top": 0,
+        "padding_bottom": 0
       }
+    },
+    "google_reviews_home": {
+      "type": "google-reviews",
+      "settings": {
+        "eyebrow": "",
+        "heading": "What Our Customers Say",
+        "subtitle": "",
+        "google_profile_url": "",
+        "reviews_feed_url": "",
+        "max_reviews": 6,
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 40
+      },
+      "blocks": {
+        "google_reviews_home_block_1": {
+          "type": "review",
+          "settings": {
+            "review": "Great store! Order online and get same day delivery in a very timely manner. Ordered a cream dispenser as well, which was very reasonably priced and came with different attachments to squirt cream out in different shapes! Can't wait to try them all out and see what they look like. Thanks a bunch kiwi catering supplies",
+            "author": "Rue Rue",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_2": {
+          "type": "review",
+          "settings": {
+            "review": "Called them on the phone and they were very friendly and helpful. They even do next-day delivery! They also have the best prices for whipped cream dispensers and chargers. Definitely my go-to option",
+            "author": "Fiona Murphy",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_3": {
+          "type": "review",
+          "settings": {
+            "review": "Great product, sturdy packaging, prompt and reliable delivery. Best price for their products compared with other NZ websites. Got my friends on to ordering their catering needs via them too. Highly recommend",
+            "author": "Caitlin Brown",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_4": {
+          "type": "review",
+          "settings": {
+            "review": "Wanted to give making a Pavlova for New Year a go, so hopefully buying the right tools will create wonders! So far, website ordering has been straightforward and easy to navigate. Hoping processing and shipping will be quite quick despite the Christmas and New Year holiday period :)",
+            "author": "Dine V.",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_5": {
+          "type": "review",
+          "settings": {
+            "review": "Love ordering from them, super cheap! Such great prices, and always get delivered within 3-5 days :)",
+            "author": "Lily Ferris",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_6": {
+          "type": "review",
+          "settings": {
+            "review": "We were regularly purchasing whipped cream cans in our groceries and wanted to make a change to a reusable system using fresh cream. The Kiwi Catering Cream dispenser is perfect for this - we are very happy with this purchase, easy to use, fast delivery (Rural South Island) and affordable - Thank you Kiwi Catering!",
+            "author": "Kylie McEwen",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_7": {
+          "type": "review",
+          "settings": {
+            "review": "Super helpful! Great in a pinch. Quality products and service. Can recommend to anyone.",
+            "author": "Jared Monk",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_8": {
+          "type": "review",
+          "settings": {
+            "review": "Fantastic company - fast overnight shipping! Will be buying more items for sure!",
+            "author": "Fiona McKey",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_9": {
+          "type": "review",
+          "settings": {
+            "review": "Great service, was very fast and quick at delivering my order :)",
+            "author": "Brittany Mye",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_10": {
+          "type": "review",
+          "settings": {
+            "review": "This company has a fabulous customer support team and they respond to queries without too much delay. I like that it is a New Zealand company.",
+            "author": "Julie",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_11": {
+          "type": "review",
+          "settings": {
+            "review": "Great customer service, competitive prices, same day pick up or delivery. Highly reccomend!",
+            "author": "Lucy Michelle Sellers",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_12": {
+          "type": "review",
+          "settings": {
+            "review": "Good pricing, products and shipping time. Definitely would recommend.",
+            "author": "Mason Yi",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_13": {
+          "type": "review",
+          "settings": {
+            "review": "I highly recommend these guys, had an issue with the shipping but they quickly and professionally resolved it. Good quality product!",
+            "author": "Greeno Charman",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_14": {
+          "type": "review",
+          "settings": {
+            "review": "Highly recommend and super fast service! Will purchase again.",
+            "author": "Shelbyville N",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_15": {
+          "type": "review",
+          "settings": {
+            "review": "Good products, arrived on time and trustworthy. Will be buying from them again.",
+            "author": "kenneth yang",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_16": {
+          "type": "review",
+          "settings": {
+            "review": "Awesome service, great prices, lovely staff. Great communication.",
+            "author": "Indie Richardson",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_17": {
+          "type": "review",
+          "settings": {
+            "review": "A great product, great prices, would highly recommend! Got it for Nitro coffee and it's amazing!",
+            "author": "Josh Harding",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_18": {
+          "type": "review",
+          "settings": {
+            "review": "Great prices and easy to use website. Plus a kiwi company for us kiwis. Definitely will use again.",
+            "author": "Grant Dandy",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_19": {
+          "type": "review",
+          "settings": {
+            "review": "Amazing service and fast shipping, every time and great communication.",
+            "author": "Sarahmisterman",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_20": {
+          "type": "review",
+          "settings": {
+            "review": "Great service. Easy to use website. Fast courier as well.",
+            "author": "Eli Reaves",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_21": {
+          "type": "review",
+          "settings": {
+            "review": "Amazing service and response time, 11 out of 10. Kiwi Catering Supplies go above and beyond.",
+            "author": "I Am",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_home_block_22": {
+          "type": "review",
+          "settings": {
+            "review": "Great company to deal with, fast efficient service, never had a problem.",
+            "author": "Diane Den Boester",
+            "meta": "",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "google_reviews_home_block_1",
+        "google_reviews_home_block_2",
+        "google_reviews_home_block_3",
+        "google_reviews_home_block_4",
+        "google_reviews_home_block_5",
+        "google_reviews_home_block_6",
+        "google_reviews_home_block_7",
+        "google_reviews_home_block_8",
+        "google_reviews_home_block_9",
+        "google_reviews_home_block_10",
+        "google_reviews_home_block_11",
+        "google_reviews_home_block_12",
+        "google_reviews_home_block_13",
+        "google_reviews_home_block_14",
+        "google_reviews_home_block_15",
+        "google_reviews_home_block_16",
+        "google_reviews_home_block_17",
+        "google_reviews_home_block_18",
+        "google_reviews_home_block_19",
+        "google_reviews_home_block_20",
+        "google_reviews_home_block_21",
+        "google_reviews_home_block_22"
+      ]
     },
     "value_props": {
       "type": "multicolumn",
@@ -509,6 +750,7 @@
     "value_props",
     "collection_tiles",
     "hero_product",
+    "google_reviews_home",
     "journal",
     "story_section",
     "brand_video",

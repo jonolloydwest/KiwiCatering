@@ -8,8 +8,11 @@
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
     {%- assign shop_navigation = linklists['shop-menu'] -%}
+    {%- assign recipes_navigation = linklists['recipes'] -%}
+    {%- assign recipes_blog = blogs['recipes'] -%}
     {%- for link in section.settings.menu.links -%}
       {%- assign is_shop_mega = false -%}
+      {%- assign is_recipes_mega = false -%}
       {%- assign child_links = link.links -%}
       {%- assign child_levels = link.levels -%}
       {%- if shop_navigation != blank and shop_navigation.links != blank -%}
@@ -19,12 +22,20 @@
           {%- assign is_shop_mega = true -%}
         {%- endif -%}
       {%- endif -%}
+      {%- if recipes_navigation != blank and recipes_navigation.links != blank -%}
+        {%- if link.handle == 'recipes' or link.handle == 'recipes-menu' -%}
+          {%- assign child_links = recipes_navigation.links -%}
+          {%- assign child_levels = 2 -%}
+          {%- assign is_recipes_mega = true -%}
+        {%- endif -%}
+      {%- endif -%}
       <li>
         {%- if child_links != blank -%}
           <header-menu>
             <details
               id="Details-HeaderMenu-{{ forloop.index }}"
-              class="mega-menu{% if is_shop_mega %} mega-menu--shop{% endif %}"
+              class="mega-menu{% if is_shop_mega %} mega-menu--shop{% endif %}{% if is_recipes_mega %} mega-menu--recipes{% endif %}"
+              {% if is_shop_mega or is_recipes_mega %}data-hover-open="true"{% endif %}
             >
               <summary
                 id="HeaderMenu-{{ link.handle }}"
@@ -41,7 +52,7 @@
               </summary>
               <div
                 id="MegaMenu-Content-{{ forloop.index }}"
-                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup{% if is_shop_mega %} mega-menu__content--shop{% endif %}"
+                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup{% if is_shop_mega %} mega-menu__content--shop{% endif %}{% if is_recipes_mega %} mega-menu__content--recipes{% endif %}"
                 tabindex="-1"
               >
                 {%- if is_shop_mega -%}
@@ -81,9 +92,12 @@
                               {%- endif -%}
                             {%- endif -%}
                           {%- endif -%}
-                        {%- elsif childlink.type == 'product_link' or childlink.type == 'product' -%}
-                          {%- if childlink.object != blank and childlink.object.featured_image != blank -%}
-                            {%- assign menu_image = childlink.object.featured_image -%}
+                        {%- endif -%}
+                        {%- if menu_collection == blank and menu_image == blank -%}
+                          {%- if childlink.type == 'product_link' or childlink.type == 'product' -%}
+                            {%- if childlink.object != blank and childlink.object.featured_image != blank -%}
+                              {%- assign menu_image = childlink.object.featured_image -%}
+                            {%- endif -%}
                           {%- endif -%}
                         {%- endif -%}
                         {%- assign child_url = childlink.url -%}
@@ -169,6 +183,90 @@
                                 </li>
                               {%- endfor -%}
                             </ul>
+                          {%- endif -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- elsif is_recipes_mega -%}
+                  <div class="mega-menu__panel page-width">
+                    <div class="mega-menu__recipes-grid">
+                      {%- for childlink in child_links -%}
+                        {%- assign recipe_article = blank -%}
+                        {%- assign recipe_image = blank -%}
+                        {%- if childlink.type == 'article_link' or childlink.type == 'article' -%}
+                          {%- assign recipe_article = childlink.object -%}
+                        {%- endif -%}
+                        {%- if recipe_article == blank and recipes_blog != blank and childlink.handle != blank -%}
+                          {%- assign recipe_article = recipes_blog.articles | where: 'handle', childlink.handle | first -%}
+                        {%- endif -%}
+                        {%- if recipe_article != blank -%}
+                          {%- if recipe_article.image != blank -%}
+                            {%- assign recipe_image = recipe_article.image -%}
+                          {%- elsif recipe_article.featured_image != blank -%}
+                            {%- assign recipe_image = recipe_article.featured_image -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        {%- assign recipe_url = childlink.url -%}
+                        {%- if recipe_url == blank and recipe_article != blank -%}
+                          {%- assign recipe_url = recipe_article.url -%}
+                        {%- endif -%}
+                        {%- assign recipe_excerpt = blank -%}
+                        {%- if recipe_article != blank -%}
+                          {%- assign recipe_excerpt = recipe_article.excerpt | default: recipe_article.excerpt_or_content -%}
+                          {%- if recipe_excerpt != blank -%}
+                            {%- assign recipe_excerpt = recipe_excerpt | strip_html | truncatewords: 12 -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        <div class="mega-menu__recipe-card">
+                          {%- if recipe_url != blank -%}
+                            <a
+                              href="{{ recipe_url }}"
+                              class="mega-menu__recipe-link"
+                              id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                            >
+                              <div class="mega-menu__recipe-image-wrapper">
+                                {%- if recipe_image != blank -%}
+                                  {{
+                                    recipe_image
+                                    | image_url: width: 540
+                                    | image_tag:
+                                      class: 'mega-menu__recipe-image',
+                                      loading: 'lazy',
+                                      alt: childlink.title | escape
+                                  }}
+                                {%- else -%}
+                                  <div class="mega-menu__recipe-placeholder" aria-hidden="true">
+                                    <span>{{ childlink.title | slice: 0, 1 }}</span>
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                              <div class="mega-menu__recipe-body">
+                                <span class="mega-menu__recipe-title">{{ childlink.title | escape }}</span>
+                              </div>
+                            </a>
+                          {%- else -%}
+                            <div class="mega-menu__recipe-link mega-menu__recipe-link--static">
+                              <div class="mega-menu__recipe-image-wrapper">
+                                {%- if recipe_image != blank -%}
+                                  {{
+                                    recipe_image
+                                    | image_url: width: 540
+                                    | image_tag:
+                                      class: 'mega-menu__recipe-image',
+                                      loading: 'lazy',
+                                      alt: childlink.title | escape
+                                  }}
+                                {%- else -%}
+                                  <div class="mega-menu__recipe-placeholder" aria-hidden="true">
+                                    <span>{{ childlink.title | slice: 0, 1 }}</span>
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                              <div class="mega-menu__recipe-body">
+                                <span class="mega-menu__recipe-title">{{ childlink.title | escape }}</span>
+                              </div>
+                            </div>
                           {%- endif -%}
                         </div>
                       {%- endfor -%}
