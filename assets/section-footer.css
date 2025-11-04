@@ -517,7 +517,7 @@
 
 .footer--dev-home .footer__content-bottom {
   padding: 1.5rem 0;
-  margin-top: clamp(3.2rem, 4vw, 4.8rem);
+  margin-top: 0;
 }
 
 .footer--dev-home .footer__copyright {
@@ -1276,6 +1276,11 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
+}
+
+.footer__grid-item--subscribe .footer__column-title {
+  align-self: flex-start;
+  text-align: left;
 }
 
 .footer__column-title::before {

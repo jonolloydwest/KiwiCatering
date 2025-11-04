@@ -63,12 +63,22 @@
                   (min-width: 750px) calc((100vw - {{ desktop_tablet_padding }}) / 2),
                   calc(100vw - {{ mobile_padding }})
                 {%- endcapture -%}
+                {%- liquid
+                  assign collapsible_image_alt = section.settings.image.alt
+                  if collapsible_image_alt == blank and section.settings.heading != blank
+                    assign collapsible_image_alt = section.settings.heading | strip_html
+                  endif
+                  if collapsible_image_alt == blank
+                    assign collapsible_image_alt = shop.name
+                  endif
+                -%}
                 {{
                   section.settings.image
                   | image_url: width: 3200
                   | image_tag:
                     sizes: sizes,
-                    widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200'
+                    widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200',
+                    alt: collapsible_image_alt | escape
                 }}
               </div>
             </div>

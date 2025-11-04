@@ -31,13 +31,26 @@
               {%- assign story_image = blank -%}
             {%- endif -%}
 
+            {%- assign story_loading = 'lazy' -%}
+            {%- assign story_fetch_priority = 'auto' -%}
+            {%- if request.page_type == 'index' and forloop.index0 < 2 -%}
+              {%- assign story_loading = 'eager' -%}
+              {%- assign story_fetch_priority = 'high' -%}
+            {%- endif -%}
+
             {%- if story_link != blank -%}
               <a class="collection-stories__item" href="{{ story_link }}" {{ block.shopify_attributes }}>
                 <span class="collection-stories__image">
                   {%- if story_image != blank -%}
                     {{ story_image
                       | image_url: width: 148, height: 148, crop: 'center'
-                      | image_tag: width: 74, height: 74, loading: 'lazy', alt: story_title, class: 'collection-stories__img'
+                      | image_tag:
+                        width: 74,
+                        height: 74,
+                        loading: story_loading,
+                        fetchpriority: story_fetch_priority,
+                        alt: story_title,
+                        class: 'collection-stories__img'
                     }}
                   {%- else -%}
                     <span class="collection-stories__placeholder" aria-hidden="true">
@@ -53,7 +66,13 @@
                   {%- if story_image != blank -%}
                     {{ story_image
                       | image_url: width: 148, height: 148, crop: 'center'
-                      | image_tag: width: 74, height: 74, loading: 'lazy', alt: story_title, class: 'collection-stories__img'
+                      | image_tag:
+                        width: 74,
+                        height: 74,
+                        loading: story_loading,
+                        fetchpriority: story_fetch_priority,
+                        alt: story_title,
+                        class: 'collection-stories__img'
                     }}
                   {%- else -%}
                     <span class="collection-stories__placeholder" aria-hidden="true">

@@ -1,7 +1,4 @@
 {{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-{{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
-
 {%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
   {%- style -%}
     @media screen and (max-width: 749px) {
@@ -137,18 +134,38 @@
               if section.index == 1
                 assign fetch_priority = 'high'
               endif
+              assign slide_alt = block.settings.image.alt
+              if slide_alt == blank and block.settings.heading != blank
+                assign slide_alt = block.settings.heading | strip_html
+              endif
+              if slide_alt == blank and block.settings.subheading != blank
+                assign slide_alt = block.settings.subheading | strip_html
+              endif
+              if slide_alt == blank
+                assign slide_alt = shop.name
+              endif
             -%}
             {%- if forloop.first %}
               {{
                 block.settings.image
                 | image_url: width: 3840
-                | image_tag: height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                | image_tag:
+                  height: height,
+                  sizes: sizes,
+                  widths: widths,
+                  fetchpriority: fetch_priority,
+                  alt: slide_alt | escape
               }}
             {%- else -%}
               {{
                 block.settings.image
                 | image_url: width: 3840
-                | image_tag: loading: 'lazy', height: height, sizes: sizes, widths: widths
+                | image_tag:
+                  loading: 'lazy',
+                  height: height,
+                  sizes: sizes,
+                  widths: widths,
+                  alt: slide_alt | escape
               }}
             {%- endif -%}
           {%- else -%}

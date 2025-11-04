@@ -138,6 +138,14 @@
   height: 100%;
 }
 
+.collection-list--dev-home .collection-list__tile-inner .card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.8rem;
+}
+
 .collection-list--dev-home .collection-list__tile-inner .card__media {
   margin: 0;
   border-radius: calc(var(--brand-radius-glass) - 0.6rem);

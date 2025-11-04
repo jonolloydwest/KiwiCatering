@@ -31,39 +31,86 @@
     data-section-id="{{ section.id }}"
     data-product-id="{{ product.id }}"
   >
-    {% if recommendations.performed and recommendations.products_count > 0 %}
-      <h2 class="related-products__heading inline-richtext {{ section.settings.heading_size }}">
-        {{ section.settings.heading }}
-      </h2>
-      <ul
-        class="grid product-grid related-products__grid--dev grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-        role="list"
-      >
-        {% assign skip_card_product_styles = false %}
-        {% for recommendation in recommendations.products %}
-          <li class="grid__item">
-            {% capture card_markup %}
-              {% render 'card-product',
-                card_product: recommendation,
-                media_aspect_ratio: section.settings.image_ratio,
-                image_shape: section.settings.image_shape,
-                show_secondary_image: section.settings.show_secondary_image,
-                show_vendor: section.settings.show_vendor,
-                show_rating: section.settings.show_rating,
-                skip_styles: skip_card_product_styles,
-                quick_add: 'standard',
-                section_id: section.id
-              %}
-            {% endcapture %}
-            {% if card_markup contains 'card card-wrapper' %}
-              {{ card_markup }}
-            {% else %}
-              {{ card_markup | replace_first: 'card-wrapper', 'card card-wrapper' }}
+    {% if recommendations.performed %}
+      {% assign max_products = section.settings.products_to_show | default: 4 %}
+      {% assign render_count = 0 %}
+      {% assign skip_card_product_styles = false %}
+      {% assign rendered_product_ids = '' %}
+      {% capture rendered_product_ids %}|{{ product.id }}|{% endcapture %}
+      {% capture cards %}
+        {% if recommendations.products_count > 0 %}
+          {% assign shuffled_recommendations = recommendations.products | shuffle %}
+          {% for recommendation in shuffled_recommendations %}
+            {% if render_count == max_products %}
+              {% break %}
             {% endif %}
-          </li>
-          {%- assign skip_card_product_styles = true -%}
-        {% endfor %}
-      </ul>
+            {% unless rendered_product_ids contains '|{{ recommendation.id }}|' %}
+              {% capture card_markup %}
+                {% render 'card-product',
+                  card_product: recommendation,
+                  media_aspect_ratio: section.settings.image_ratio,
+                  image_shape: section.settings.image_shape,
+                  show_secondary_image: section.settings.show_secondary_image,
+                  show_vendor: section.settings.show_vendor,
+                  show_rating: section.settings.show_rating,
+                  skip_styles: skip_card_product_styles,
+                  quick_add: 'standard',
+                  section_id: section.id
+                %}
+              {% endcapture %}
+              <li class="grid__item">
+                {{ card_markup }}
+              </li>
+              {% assign render_count = render_count | plus: 1 %}
+              {% capture rendered_product_ids %}{{ rendered_product_ids }}|{{ recommendation.id }}|{% endcapture %}
+              {% assign skip_card_product_styles = true %}
+            {% endunless %}
+          {% endfor %}
+        {% endif %}
+        {% if render_count < max_products %}
+          {% assign fallback_collection = collections['all'] %}
+          {% if fallback_collection != blank %}
+            {% assign fallback_products = fallback_collection.products | where: 'available', true | shuffle %}
+            {% for fallback_product in fallback_products %}
+              {% if render_count == max_products %}
+                {% break %}
+              {% endif %}
+              {% unless rendered_product_ids contains '|{{ fallback_product.id }}|' %}
+                {% capture card_markup %}
+                  {% render 'card-product',
+                    card_product: fallback_product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    image_shape: section.settings.image_shape,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    skip_styles: skip_card_product_styles,
+                    quick_add: 'standard',
+                    section_id: section.id
+                  %}
+                {% endcapture %}
+                <li class="grid__item">
+                  {{ card_markup }}
+                </li>
+                {% assign render_count = render_count | plus: 1 %}
+                {% capture rendered_product_ids %}{{ rendered_product_ids }}|{{ fallback_product.id }}|{% endcapture %}
+                {% assign skip_card_product_styles = true %}
+              {% endunless %}
+            {% endfor %}
+          {% endif %}
+        {% endif %}
+      {% endcapture %}
+      {% if render_count > 0 %}
+        <h2 class="related-products__heading inline-richtext {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+        <ul
+          class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+          role="list"
+        >
+          {{ cards | strip }}
+        </ul>
+      {% endif %}
     {% endif %}
   </product-recommendations>
   {% if section.settings.image_shape == 'arch' %}

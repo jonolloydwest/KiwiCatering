@@ -15,6 +15,23 @@
   flex-grow: initial;
 }
 
+.collage--dev-scale .card__content {
+  justify-items: center;
+  text-align: center;
+}
+
+.collage--dev-scale .card__content .card__information {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs, var(--space-brand-xs, 0.8rem));
+}
+
+.collage--dev-scale .card__content .card__heading,
+.collage--dev-scale .card__content .card__caption {
+  text-align: center;
+}
+
 @media screen and (max-width: 749px) {
   .collage {
     grid-column-gap: var(--grid-mobile-horizontal-spacing);

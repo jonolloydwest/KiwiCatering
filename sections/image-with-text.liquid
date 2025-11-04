@@ -79,6 +79,18 @@
             {% endif %}
           >
             {%- if section.settings.image != blank -%}
+              {%- liquid
+                assign image_alt = section.settings.image.alt
+                if image_alt == blank
+                  assign heading_block = section.blocks | where: 'type', 'heading' | first
+                  if heading_block and heading_block.settings.heading != blank
+                    assign image_alt = heading_block.settings.heading | strip_html
+                  endif
+                endif
+                if image_alt == blank
+                  assign image_alt = section.settings.eyebrow_text | default: shop.name
+                endif
+              -%}
               {%- if section.settings.image_behavior == 'ambient' or section.settings.image_behavior == 'zoom-in' -%}
                 {%- assign widths = '198, 432, 642, 900, 1284, 1800' -%}
                 {%- capture sizes -%}
@@ -95,7 +107,11 @@
               {{
                 section.settings.image
                 | image_url: width: 1500
-                | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                | image_tag:
+                  sizes: sizes,
+                  widths: widths,
+                  fetchpriority: fetch_priority,
+                  alt: image_alt | escape
               }}
             {%- else -%}
               {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}

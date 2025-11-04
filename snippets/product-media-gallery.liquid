@@ -237,6 +237,12 @@
               aria-controls="GalleryViewer-{{ section.id }}"
               aria-describedby="{{ thumbnail_id }}"
             >
+              {%- liquid
+                assign featured_thumb_alt = featured_media.alt
+                if featured_thumb_alt == blank
+                  assign featured_thumb_alt = product.title | default: shop.name
+                endif
+              -%}
               {{
                 featured_media.preview_image
                 | image_url: width: 416
@@ -245,7 +251,7 @@
                   sizes: sizes,
                   widths: '54, 74, 104, 162, 208, 324, 416',
                   id: thumbnail_id,
-                  alt: featured_media.alt
+                  alt: featured_thumb_alt | escape
                 | escape
               }}
             </button>
@@ -299,6 +305,12 @@
                 aria-controls="GalleryViewer-{{ section.id }}"
                 aria-describedby="{{ thumbnail_id }}"
               >
+                {%- liquid
+                  assign media_thumb_alt = media.alt
+                  if media_thumb_alt == blank
+                    assign media_thumb_alt = product.title | default: shop.name
+                  endif
+                -%}
                 {{
                   media.preview_image
                   | image_url: width: 416
@@ -307,7 +319,7 @@
                     sizes: sizes,
                     widths: '54, 74, 104, 162, 208, 324, 416',
                     id: thumbnail_id,
-                    alt: media.alt
+                    alt: media_thumb_alt | escape
                   | escape
                 }}
               </button>
