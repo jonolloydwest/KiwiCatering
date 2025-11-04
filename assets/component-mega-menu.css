@@ -212,9 +212,13 @@
 
 .mega-menu__recipe-title {
   font-family: var(--font-heading-family);
-  font-size: 1.7rem;
+  font-size: 1.55rem;
   font-weight: 600;
   letter-spacing: 0.015em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mega-menu__recipe-excerpt {
@@ -341,6 +345,10 @@
 
   .mega-menu__category-title {
     font-size: 1.6rem;
+  }
+
+  .mega-menu__recipe-title {
+    font-size: 1.45rem;
   }
 }
 

@@ -146,15 +146,20 @@
               {%- assign icon_markup = '' -%}
               {%- if icon_image != blank or block.settings.icon_url != blank -%}
                 {%- if icon_image != blank -%}
-                  {%- assign icon_markup = icon_image
-                    | image_url: width: 144
-                    | image_tag:
-                      alt: icon_alt_text,
-                      loading: 'lazy',
-                      sizes: '72px',
-                      widths: '72, 96, 144',
-                      class: 'multicolumn-card__icon-image'
-                  -%}
+                  {%- assign icon_src = icon_image | image_url: width: 144 -%}
+                  {%- assign icon_srcset = icon_image | image_srcset: widths: '72, 96, 144' -%}
+                  {%- capture icon_markup -%}
+                    <img
+                      src="{{ icon_src }}"
+                      srcset="{{ icon_srcset }}"
+                      sizes="72px"
+                      alt="{{ icon_alt_text }}"
+                      loading="lazy"
+                      width="72"
+                      height="72"
+                      class="multicolumn-card__icon-image"
+                    >
+                  {%- endcapture -%}
                 {%- else -%}
                   {%- assign icon_url_input = block.settings.icon_url | strip -%}
                   {%- assign icon_src = '' -%}

@@ -68,11 +68,142 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "cream_chargers_faq": {
+      "type": "collection-cream-chargers-faq",
+      "settings": {
+        "heading": "Cream charger FAQs",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "open_first_collapsible_row": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "cream_dispensers_faq": {
+      "type": "collection-cream-dispensers-faq",
+      "settings": {
+        "heading": "Cream dispenser FAQs",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "open_first_collapsible_row": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "palm_leaf_faq": {
+      "type": "collection-palm-leaf-plates-faq",
+      "settings": {
+        "heading": "Palm leaf plates FAQs",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "open_first_collapsible_row": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "birch_cutlery_faq": {
+      "type": "collection-birch-cutlery-faq",
+      "settings": {
+        "heading": "Birch cutlery FAQs",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "open_first_collapsible_row": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "google_reviews": {
+      "type": "google-reviews",
+      "settings": {
+        "eyebrow": "",
+        "heading": "What Our Customers Say",
+        "subtitle": "",
+        "google_profile_url": "",
+        "reviews_feed_url": "",
+        "max_reviews": 6,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 40
+      },
+      "blocks": {
+        "google_reviews_collection_block_1": {
+          "type": "review",
+          "settings": {
+            "review": "Great store! Order online and get same day delivery in a very timely manner. Ordered a cream dispenser as well, which was very reasonably priced and came with different attachments to squirt cream out in different shapes! Can't wait to try them all out and see what they look like. Thanks a bunch kiwi catering supplies",
+            "author": "Rue Rue",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_collection_block_2": {
+          "type": "review",
+          "settings": {
+            "review": "Called them on the phone and they were very friendly and helpful. They even do next-day delivery! They also have the best prices for whipped cream dispensers and chargers. Definitely my go-to option",
+            "author": "Fiona Murphy",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_collection_block_3": {
+          "type": "review",
+          "settings": {
+            "review": "Great product, sturdy packaging, prompt and reliable delivery. Best price for their products compared with other NZ websites. Got my friends on to ordering their catering needs via them too. Highly recommend",
+            "author": "Caitlin Brown",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_collection_block_4": {
+          "type": "review",
+          "settings": {
+            "review": "Wanted to give making a Pavlova for New Year a go, so hopefully buying the right tools will create wonders! So far, website ordering has been straightforward and easy to navigate. Hoping processing and shipping will be quite quick despite the Christmas and New Year holiday period :)",
+            "author": "Dine V.",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_collection_block_5": {
+          "type": "review",
+          "settings": {
+            "review": "Love ordering from them, super cheap! Such great prices, and always get delivered within 3-5 days :)",
+            "author": "Lily Ferris",
+            "meta": "",
+            "rating": 5
+          }
+        },
+        "google_reviews_collection_block_6": {
+          "type": "review",
+          "settings": {
+            "review": "We were regularly purchasing whipped cream cans in our groceries and wanted to make a change to a reusable system using fresh cream. The Kiwi Catering Cream dispenser is perfect for this - we are very happy with this purchase, easy to use, fast delivery (Rural South Island) and affordable - Thank you Kiwi Catering!",
+            "author": "Kylie McEwen",
+            "meta": "",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "google_reviews_collection_block_1",
+        "google_reviews_collection_block_2",
+        "google_reviews_collection_block_3",
+        "google_reviews_collection_block_4",
+        "google_reviews_collection_block_5",
+        "google_reviews_collection_block_6"
+      ]
     }
   },
   "order": [
     "collection_stories",
     "banner",
-    "product-grid"
+    "product-grid",
+    "cream_chargers_faq",
+    "cream_dispensers_faq",
+    "palm_leaf_faq",
+    "birch_cutlery_faq",
+    "google_reviews"
   ]
 }

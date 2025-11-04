@@ -1,0 +1,228 @@
+{%- liquid
+  assign show_section = false
+  if collection
+    assign collection_handle = collection.handle | downcase
+    assign collection_title = collection.title | downcase
+    if collection_handle contains 'birch-cutlery' or collection_title contains 'birch cutlery'
+      assign show_section = true
+    endif
+  endif
+-%}
+
+{%- if show_section -%}
+  {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
+  {{ 'collapsible-content.css' | asset_url | stylesheet_tag }}
+  {{ 'section-related-products.css' | asset_url | stylesheet_tag }}
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+  {%- assign faq_questions = "What is birch cutlery made of, and is it eco-friendly?|||Can birch cutlery handle hot foods and liquids? Will it splinter?|||Is birch cutlery really compostable and biodegradable? How should I dispose of it in NZ?|||Is birch cutlery treated with any chemicals or coatings?|||How sturdy is birch cutlery? Will it break with tougher foods?|||Does wooden cutlery affect the taste of food?|||Is birch cutlery better than PLA bioplastic cutlery? What is the difference?|||Can birch cutlery handle wet or oily foods? Will it get soggy?|||How should I store birch cutlery before use? Does it have a shelf life?|||Are wooden utensils hygienic and safe to eat from?" | split: "|||" -%}
+
+  {%- assign faq_answers = "Birch cutlery is made from natural birch wood with no plastic coating. It is biodegradable, compostable, and sourced from renewable timber. It breaks down like other wood and is a sustainable alternative to single-use plastic.|||Yes. Birch cutlery is safe for hot and cold foods. Quality pieces are smooth and splinter free. Under normal use they will not break or shed fibres; just avoid bending or snapping them deliberately.|||Yes. You can place used birch cutlery in home compost, where it will break down over time, or in kerbside organics where available. If composting is not an option, it can go in general rubbish and will still degrade much faster than plastic. Composting is the best option.|||No. Our birch utensils are not painted or varnished and have no chemical coatings. They are simply cut, sanded, and polished wood for safe contact with food and easy composting.|||Birch cutlery is sturdy for single-use dining. Forks and spoons handle most meals. Knives have light serration suitable for softer items. For very tough foods, performance will not match metal cutlery.|||Birch wood is generally neutral in taste. Most people notice no flavour change. A slight woody note may be detectable with very hot foods, but it is minimal.|||Birch is natural wood that composts in home or industrial settings and clearly signals a sustainable choice. PLA is plant based but typically needs industrial composting and can soften with heat. If easy composting and wider disposal options are priorities, birch is usually the better option.|||Yes. Birch handles wet and oily foods during a normal meal. Utensils may darken slightly where damp but remain solid and usable. If left soaking for hours they will soften, so dispose or compost after use.|||Store in a cool, dry place in the box or a sealed container. Keep away from moisture, direct sun, and strong odours. There is no fixed expiry; for best appearance use within one to two years.|||Yes. Birch cutlery arrives clean, is intended for single use, and meets food contact requirements. Use once and discard or compost. Keep unused cutlery dry and clean before service." | split: "|||" -%}
+
+  <div class="color-{{ section.settings.color_scheme }} gradient">
+    <div class="collapsible-content collapsible-none-layout isolate content-container content-container--full-width">
+      <div class="collapsible-content__wrapper section-{{ section.id }}-padding">
+        <div class="collapsible-content-wrapper-narrow">
+          <div
+            class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            style="text-align: {{ section.settings.heading_alignment }};"
+          >
+            {%- if section.settings.caption != blank -%}
+              <p class="caption-with-letter-spacing">
+                {{ section.settings.caption | escape }}
+              </p>
+            {%- endif -%}
+            {%- if section.settings.heading != blank -%}
+              <h2 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }} related-products__heading">
+                {{ section.settings.heading }}
+              </h2>
+            {%- endif -%}
+            {%- if section.settings.intro_text != blank -%}
+              <div class="cc__intro rte">
+                {{ section.settings.intro_text }}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="grid grid--1-col collapsible-content__grid{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            <div class="grid__item">
+              {%- for question in faq_questions -%}
+                {%- assign answer = faq_answers[forloop.index0] -%}
+                <div class="accordion">
+                  <details
+                    id="Details-{{ section.id }}-{{ forloop.index }}"
+                    {% if section.settings.open_first_collapsible_row and forloop.first %}
+                      open
+                    {% endif %}
+                  >
+                    <summary id="Summary-{{ section.id }}-{{ forloop.index }}" class="cc__summary">
+                      <h3 class="accordion__title inline-richtext h4">
+                        {{ question | strip }}
+                      </h3>
+                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </summary>
+                    <div class="cc__panel">
+                      <div
+                        class="accordion__content rte"
+                        id="CollapsibleAccordion-{{ section.id }}-{{ forloop.index }}"
+                        role="region"
+                        aria-labelledby="Summary-{{ section.id }}-{{ forloop.index }}"
+                      >
+                        <p>{{ answer | strip }}</p>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for question in faq_questions -%}
+          {
+            "@type": "Question",
+            "name": {{ question | strip | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ faq_answers[forloop.index0] | strip | json }}
+            }
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Birch Cutlery FAQ",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Caption"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Birch cutlery FAQs"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Intro text"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h0",
+          "label": "Display"
+        },
+        {
+          "value": "hxl",
+          "label": "Extra large"
+        },
+        {
+          "value": "hxxl",
+          "label": "Extra extra large"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_collapsible_row",
+      "label": "Open first item by default",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Birch cutlery FAQs"
+    }
+  ]
+}
+{% endschema %}

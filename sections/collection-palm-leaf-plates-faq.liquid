@@ -1,0 +1,228 @@
+{%- liquid
+  assign show_section = false
+  if collection
+    assign collection_handle = collection.handle | downcase
+    assign collection_title = collection.title | downcase
+    if collection_handle contains 'palm-leaf-plate' or collection_title contains 'palm leaf plate'
+      assign show_section = true
+    endif
+  endif
+-%}
+
+{%- if show_section -%}
+  {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
+  {{ 'collapsible-content.css' | asset_url | stylesheet_tag }}
+  {{ 'section-related-products.css' | asset_url | stylesheet_tag }}
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+  {%- assign faq_questions = "What are palm leaf plates made from? How are they produced?|||Are palm leaf plates really sturdy? Can they hold heavy or wet foods?|||Can palm leaf plates handle hot foods and drinks? Are they microwave/oven safe?|||Do palm leaf plates have any smell or taste? Will they affect my food's flavour?|||Are palm leaf plates safe for food contact? Are they cleaned or sanitised in production?|||Can I reuse palm leaf plates, or are they strictly one-time use?|||How quickly do palm leaf plates biodegrade?|||Are palm leaf plates suitable for formal events? They look rustic, can they be elegant?" | split: "|||" -%}
+
+  {%- assign faq_answers = "Palm leaf plates are crafted from fallen Areca palm leaves that are cleaned and heat pressed into shape. No chemicals or binders are used. Each plate is a single leaf with natural grain and colour variation.|||Yes. They are more rigid than paper, comfortably hold heavy meals, and resist leaks with wet or oily foods. They are also cut resistant for normal dining.|||Yes. They handle hot foods, are microwave safe for about 2 minutes, and oven safe for around 30-45 minutes up to 180 degrees C. Not suitable for open flame or very high heat.|||They are largely neutral. A mild natural leaf scent may be noticeable on opening, but they do not impart flavour to food.|||Yes. Leaves are washed then heat pressed, which sanitises and sterilises the surface. There are no additives or coatings; store in a clean, dry place.|||They are designed for single use and composting. Light reuse is possible only if clean and dry, but washing is not recommended.|||In home compost they typically break down in about 6-8 weeks, often faster in commercial composting. Actual time varies with heat and moisture.|||Yes. With quality linens and cutlery they present as natural, elegant tableware. The unique grain complements formal settings." | split: "|||" -%}
+
+  <div class="color-{{ section.settings.color_scheme }} gradient">
+    <div class="collapsible-content collapsible-none-layout isolate content-container content-container--full-width">
+      <div class="collapsible-content__wrapper section-{{ section.id }}-padding">
+        <div class="collapsible-content-wrapper-narrow">
+          <div
+            class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            style="text-align: {{ section.settings.heading_alignment }};"
+          >
+            {%- if section.settings.caption != blank -%}
+              <p class="caption-with-letter-spacing">
+                {{ section.settings.caption | escape }}
+              </p>
+            {%- endif -%}
+            {%- if section.settings.heading != blank -%}
+              <h2 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }} related-products__heading">
+                {{ section.settings.heading }}
+              </h2>
+            {%- endif -%}
+            {%- if section.settings.intro_text != blank -%}
+              <div class="cc__intro rte">
+                {{ section.settings.intro_text }}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="grid grid--1-col collapsible-content__grid{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            <div class="grid__item">
+              {%- for question in faq_questions -%}
+                {%- assign answer = faq_answers[forloop.index0] -%}
+                <div class="accordion">
+                  <details
+                    id="Details-{{ section.id }}-{{ forloop.index }}"
+                    {% if section.settings.open_first_collapsible_row and forloop.first %}
+                      open
+                    {% endif %}
+                  >
+                    <summary id="Summary-{{ section.id }}-{{ forloop.index }}" class="cc__summary">
+                      <h3 class="accordion__title inline-richtext h4">
+                        {{ question | strip }}
+                      </h3>
+                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </summary>
+                    <div class="cc__panel">
+                      <div
+                        class="accordion__content rte"
+                        id="CollapsibleAccordion-{{ section.id }}-{{ forloop.index }}"
+                        role="region"
+                        aria-labelledby="Summary-{{ section.id }}-{{ forloop.index }}"
+                      >
+                        <p>{{ answer | strip }}</p>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for question in faq_questions -%}
+          {
+            "@type": "Question",
+            "name": {{ question | strip | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ faq_answers[forloop.index0] | strip | json }}
+            }
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Palm Leaf Plates FAQ",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Caption"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Palm leaf plates FAQs"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Intro text"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h0",
+          "label": "Display"
+        },
+        {
+          "value": "hxl",
+          "label": "Extra large"
+        },
+        {
+          "value": "hxxl",
+          "label": "Extra extra large"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_collapsible_row",
+      "label": "Open first item by default",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Palm leaf plates FAQ"
+    }
+  ]
+}
+{% endschema %}
