@@ -380,6 +380,77 @@
   margin-right: auto;
 }
 
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field {
+  width: 100%;
+  max-width: clamp(28rem, 32vw, 34rem);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(82, 179, 87, 0.2);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field:focus-within {
+  border-color: rgba(82, 179, 87, 0.45);
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__input {
+  border-radius: 999px;
+  padding: 1.4rem 5.4rem 1.4rem 2rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: rgba(var(--brand-color-ink, var(--color-foreground)), 0.9);
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__input:focus,
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__input:not(:placeholder-shown),
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__input:-webkit-autofill {
+  padding: 2rem 5.4rem 0.6rem 2rem;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__input::placeholder {
+  color: rgba(var(--brand-color-ink, var(--color-foreground)), 0.55);
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__label {
+  left: 2rem;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .newsletter-form__button {
+  width: 4.2rem;
+  height: 4.2rem;
+  border-radius: 50%;
+  background: rgba(82, 179, 87, 0.95);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0.8rem;
+  transition: background var(--duration-short) ease, transform var(--duration-short) ease, box-shadow var(--duration-short) ease;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .newsletter-form__button:hover,
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .newsletter-form__button:focus-visible {
+  background: rgb(82, 179, 87);
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 0.6rem 1.6rem rgba(82, 179, 87, 0.28);
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .newsletter-form__button .svg-wrapper,
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .newsletter-form__button svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+#shopify-section-sections--19493626347708__footer .footer__grid-item--subscribe .field__button {
+  right: 1.2rem;
+}
+
 #shopify-section-sections--19493626347708__footer .footer__grid-item--brand {
   align-items: center;
   text-align: center;

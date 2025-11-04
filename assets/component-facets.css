@@ -104,7 +104,7 @@
 }
 
 .facet-filters__sort {
-  background-color: transparent;
+  background-color: rgb(var(--brand-dropdown-surface));
   border: 0;
   border-radius: 0;
   font-size: 1.4rem;
@@ -192,6 +192,14 @@
   margin-right: 3.5rem;
 }
 
+.facet-filters__summary,
+.facets__summary {
+  background-color: rgb(var(--brand-dropdown-surface));
+  border-radius: 999px;
+  padding-left: 1.5rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.12);
+}
+
 .facets__summary {
   color: rgba(var(--color-foreground), 0.75);
   font-size: 1.4rem;
@@ -271,7 +279,7 @@
   border-radius: var(--popup-corner-radius);
   box-shadow: var(--popup-shadow-horizontal-offset) var(--popup-shadow-vertical-offset) var(--popup-shadow-blur-radius)
     rgba(var(--color-shadow), var(--popup-shadow-opacity));
-  background-color: rgb(var(--color-background));
+  background-color: rgb(var(--brand-dropdown-surface));
   position: absolute;
   top: calc(100% + 0.5rem);
   left: -1.2rem;
@@ -288,7 +296,7 @@
   font-size: 1.4rem;
   position: sticky;
   top: 0;
-  background-color: rgb(var(--color-background));
+  background-color: rgb(var(--brand-dropdown-surface));
   z-index: 1;
 }
 
@@ -813,7 +821,7 @@ a.active-facets__button.focused .active-facets__button-inner {
 }
 
 .mobile-facets__inner {
-  background-color: rgb(var(--color-background));
+  background-color: rgb(var(--brand-dropdown-surface));
   width: calc(100% - 5rem);
   margin-left: auto;
   height: 100%;
@@ -848,6 +856,7 @@ a.active-facets__button.focused .active-facets__button-inner {
   position: sticky;
   top: 0;
   z-index: 2;
+  background-color: rgb(var(--brand-dropdown-surface));
 }
 
 .mobile-facets__header-inner {

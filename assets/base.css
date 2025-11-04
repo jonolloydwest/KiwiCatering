@@ -165,6 +165,7 @@
   --brand-color-surface-muted: 249, 251, 248;
   --brand-color-surface-border: 206, 212, 205;
   --brand-color-focus: 82, 179, 87;
+  --brand-dropdown-surface: 243, 247, 242;
   --font-brand-body-family: 'Poppins', sans-serif;
   --font-brand-body-style: normal;
   --font-brand-body-weight: 400;
@@ -291,8 +292,10 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
 }
 
 .utility-bar__grid.page-width {
-  padding-left: 3rem;
-  padding-right: 3rem;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @media screen and (min-width: 750px) {
@@ -300,8 +303,14 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
     padding: 0 5rem;
   }
 
-  .header.page-width,
   .utility-bar__grid.page-width {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .header.page-width {
     padding-left: 3.2rem;
     padding-right: 3.2rem;
   }
@@ -2007,6 +2016,12 @@ details[open] > .share-button__fallback {
   padding: 0 calc(var(--inputs-border-width) + 3rem) 0 2rem;
   margin: var(--inputs-border-width);
   min-height: calc(var(--inputs-border-width) * 2);
+}
+
+.select__select,
+.select,
+.customer select {
+  background-color: rgb(var(--brand-dropdown-surface));
 }
 
 /* Field */
