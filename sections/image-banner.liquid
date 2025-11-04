@@ -31,6 +31,13 @@
 
 {%- liquid
   assign content_width_setting = section.settings.content_width | default: 'default'
+  assign hero_aspect_ratio = 1.78
+  if section.settings.image != blank and section.settings.image.aspect_ratio
+    assign hero_aspect_ratio = section.settings.image.aspect_ratio
+  endif
+  if hero_aspect_ratio <= 0
+    assign hero_aspect_ratio = 1.78
+  endif
 -%}
 {%- assign banner_home_class = '' -%}
 {%- if request.page_type == 'index' -%}
@@ -48,160 +55,81 @@
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__content {
-    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: clamp(1.6rem, 5vw, 3.2rem) clamp(1.6rem, 6vw, 3.2rem) clamp(2.4rem, 6vw, 4rem);
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__content-inner {
-    justify-content: flex-start;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  #Banner-{{ section.id }}.banner--dev-home .banner__box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-brand-sm, 1.6rem);
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    width: min(100%, 48rem);
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__hero {
-    display: grid;
-    gap: 3rem;
-    position: relative;
-    z-index: 3;
-    text-align: left;
-    max-width: 52rem;
-    margin-left: 15%;
-  }
-
-  #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
-    font-size: 3rem;
-    line-height: 1;
-    font-weight: 300;
-    color: {{ section.settings.eyebrow_color | default: '#ffffff' }};
-    margin: 0;
-  }
-
-  #Banner-{{ section.id }}.banner--dev-home .banner__heading {
-    font-family: var(--font-heading, var(--font-heading-family));
-    font-weight: 600;
-    line-height: 1;
-    font-size: 8rem;
-    color: {{ section.settings.heading_color | default: '#ffffff' }};
-    margin: 0;
-  }
-
-  #Banner-{{ section.id }}.banner--dev-home .banner__heading span {
-    display: block;
-    margin-top: 1rem;
-  }
-
-  #Banner-{{ section.id }}.banner--dev-home .banner__text {
-    font-size: 2.4rem;
-    font-weight: 300;
-    color: {{ section.settings.text_color | default: 'rgba(255,255,255,0.85)' }};
-    margin: 0;
-    max-width: 48rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-brand-sm, 1.6rem);
+    align-items: center;
+    justify-content: center;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__buttons {
-    display: flex;
-    gap: 1.6rem;
+    display: inline-flex;
+    gap: var(--space-brand-sm, 1.6rem);
     justify-content: center;
-    align-items: center;
-    margin-top: 3.5rem;
   }
 
   #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button {
     min-width: 14rem;
-    background-color: #ffffff;
-    border: 1px solid #ffffff;
-    color: #0c9e2b;
-    font-size: 1.6rem;
-    font-weight: 600;
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 1.2rem 3rem;
-    border-radius: 3rem;
-  }
-
-  #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button:hover,
-  #Banner-{{ section.id }}.banner--dev-home .banner__buttons .button:focus-visible {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-color: rgba(255, 255, 255, 0.9);
-    color: #0c9e2b;
-  }
-
-  @media screen and (min-width: 1200px) and (max-width: 1599px) {
-    #Banner-{{ section.id }}.banner--dev-home .banner__hero {
-      margin-left: 12%;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
-      font-size: 2.4rem;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__heading {
-      font-size: 5rem;
-    }
-  }
-
-  @media screen and (max-width: 1199px) {
-    #Banner-{{ section.id }}.banner--dev-home .banner__hero {
-      margin-left: 8%;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
-      font-size: 1.8rem;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__heading {
-      font-size: 4rem;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__buttons {
-      margin-top: 2.5rem;
-    }
-  }
-
-  @media screen and (max-width: 991px) {
-    #Banner-{{ section.id }}.banner--dev-home .banner__heading {
-      font-size: 3rem;
-    }
-  }
-
-  @media screen and (max-width: 767px) {
-    #Banner-{{ section.id }}.banner--dev-home .banner__content {
-      padding: 0 1.6rem;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__hero {
-      margin-left: 0;
-      text-align: center;
-      gap: 2.4rem;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__eyebrow {
-      font-size: 1.6rem;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__heading {
-      font-size: 2.4rem;
-    }
-
-    #Banner-{{ section.id }}.banner--dev-home .banner__buttons {
-      justify-content: center;
-    }
   }
 
   {%- case content_width_setting -%}
     {%- when 'narrow' -%}
       #Banner-{{ section.id }}.banner--dev-home .banner__box {
-        max-width: 48rem;
+        width: min(100%, 38rem);
       }
     {%- when 'wide' -%}
       #Banner-{{ section.id }}.banner--dev-home .banner__box {
-        max-width: 72rem;
+        width: min(100%, 72rem);
       }
     {%- when 'full' -%}
       #Banner-{{ section.id }}.banner--dev-home .banner__box {
-        max-width: none;
         width: 100%;
       }
   {%- endcase -%}
+
+  @media screen and (max-width: 767px) {
+    #Banner-{{ section.id }}.banner--dev-home .banner__content {
+      padding: clamp(1.6rem, 6vw, 3.2rem);
+    }
+
+    #Banner-{{ section.id }}.banner--dev-home .banner__box,
+    #Banner-{{ section.id }}.banner--dev-home .banner__hero {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    #Banner-{{ section.id }}.banner--dev-home .banner__content {
+      min-height: calc(100vw / {{ hero_aspect_ratio | round: 4 }});
+    }
+  }
 {%- endstyle -%}
+
 
 {%- liquid
   assign full_width = '100vw'

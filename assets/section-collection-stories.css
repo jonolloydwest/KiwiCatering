@@ -16,12 +16,24 @@
   }
 }
 
+@media (max-width: 749px) {
+  .collection-stories-section .collection-stories__list {
+    --collection-story-gap: clamp(0.5rem, 2vw, 1rem);
+  }
+}
+
 .collection-stories-section .collection-stories__list {
+  --collection-story-columns: 4;
+  --collection-story-gap: clamp(0.4rem, 1.2vw, 0.9rem);
+  --collection-story-item-width: calc(
+    (100% - (var(--collection-story-columns) - 1) * var(--collection-story-gap)) /
+      var(--collection-story-columns)
+  );
   display: flex;
   flex-wrap: nowrap;
-  gap: 2rem 3.2rem;
+  gap: var(--collection-story-gap);
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: center;
   padding-bottom: 0.6rem;
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -40,8 +52,9 @@
   gap: 0.8rem;
   transition: transform var(--duration-short) ease;
   scroll-snap-align: start;
-  flex: 0 0 auto;
-  min-width: 9.6rem;
+  flex: 0 0 var(--collection-story-item-width);
+  max-width: var(--collection-story-item-width);
+  min-width: 74px;
 }
 
 .collection-stories-section .collection-stories__item:hover {
@@ -93,14 +106,9 @@
 
 @media (min-width: 992px) {
   .collection-stories-section .collection-stories__list {
+    --collection-story-gap: clamp(0.6rem, 0.8vw, 1rem);
     overflow-x: visible;
     scroll-snap-type: none;
-    justify-content: center;
-  }
-
-  .collection-stories-section .collection-stories__item,
-  .collection-stories-section .collection-stories__item--no-link {
-    min-width: 9.6rem;
   }
 }
 
@@ -108,27 +116,24 @@
   display: none;
 }
 
-@media (max-width: 1200px) {
-  .collection-stories-section .collection-stories__item,
-  .collection-stories-section .collection-stories__item--no-link {
-    flex: 0 0 calc(12.5% - 2rem);
-  }
-}
-
-@media (max-width: 991px) {
-  .collection-stories-section .collection-stories__item,
-  .collection-stories-section .collection-stories__item--no-link {
-    flex: 0 0 calc(16.66% - 1.8rem);
-  }
-}
-
-@media (max-width: 767px) {
+@media (min-width: 1400px) {
   .collection-stories-section .collection-stories__list {
-    gap: 1.6rem 2rem;
+    --collection-story-gap: clamp(0.6rem, 0.6vw, 0.8rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .collection-stories-section .collection-stories__list {
+    --collection-story-gap: clamp(0.4rem, 2.5vw, 0.7rem);
   }
 
   .collection-stories-section .collection-stories__item,
   .collection-stories-section .collection-stories__item--no-link {
-    flex: 0 0 calc(25% - 1.5rem);
+    min-width: 64px;
+  }
+
+  .collection-stories-section .collection-stories__image {
+    width: 64px;
+    height: 64px;
   }
 }

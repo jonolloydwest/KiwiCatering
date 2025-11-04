@@ -2,6 +2,36 @@
 {{ 'collapsible-content.css' | asset_url | stylesheet_tag }}
 {{ 'section-related-products.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign hero_heading_html = section.settings.hero_heading
+  if hero_heading_html == blank
+    assign hero_heading_html = section.settings.heading
+  endif
+  if hero_heading_html == blank
+    assign hero_heading_html = page.title
+  endif
+  if hero_heading_html == blank
+    assign hero_heading_html = 'Frequently Asked Questions'
+  endif
+  assign hero_heading_text = hero_heading_html | strip_html | strip
+
+  assign hero_eyebrow = section.settings.hero_eyebrow | strip
+  if hero_eyebrow == blank
+    assign hero_eyebrow = 'Help Centre'
+  endif
+
+  assign hero_intro_html = section.settings.hero_intro
+  if hero_intro_html == blank
+    assign hero_intro_html = '<p>Browse quick answers about shipping, billing, and product care. If you still need a hand, contact our Auckland team and we will respond within one business day.</p>'
+  endif
+  assign hero_intro_text = hero_intro_html | strip_html | strip
+
+  assign hero_has_content = false
+  if hero_heading_text != blank or hero_intro_text != blank or hero_eyebrow != blank
+    assign hero_has_content = true
+  endif
+-%}
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -14,69 +44,523 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  .faq-group + .faq-group {
+    margin-top: clamp(48px, 6vw, 72px);
+  }
+  .faq-group .collapsible-content__header {
+    margin-bottom: clamp(16px, 3vw, 32px);
+  }
+  {%- if hero_has_content -%}
+    .page-hero {
+      position: relative;
+      max-width: var(--page-width);
+      margin: 0 auto clamp(32px, 6vw, 64px);
+      padding: clamp(32px, 6vw, 64px) clamp(24px, 6vw, 56px);
+      border-radius: 3.2rem;
+      background: linear-gradient(135deg, rgba(var(--brand-color-primary), 0.13), rgba(var(--brand-color-primary-dark, 6, 26, 12), 0.08));
+      box-shadow: 0 28px 54px -32px rgba(20, 45, 24, 0.32);
+      overflow: hidden;
+    }
+
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.55), transparent 46%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .page-hero__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.2rem, 2vw, 2.6rem);
+      max-width: 60rem;
+    }
+
+    .page-hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(var(--brand-color-primary), 0.16);
+      color: rgb(var(--brand-color-primary-dark, 6, 26, 12));
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      width: max-content;
+    }
+
+    .page-hero__title {
+      margin: 0;
+      font-size: clamp(3.2rem, 5vw, 4.2rem);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .page-hero__intro {
+      margin: 0;
+      color: rgba(var(--color-foreground), 0.78);
+      font-size: 1.6rem;
+      line-height: 1.7;
+      max-width: 54rem;
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 {%- assign faq_questions = "Do you ship nationwide in New Zealand?|||How much does shipping cost, and do you offer free shipping?|||How long will my delivery take to arrive?|||Do you offer order pickup or click-and-collect?|||How can I track my order?|||What is your returns and exchange policy?|||What if my order arrives damaged or with missing items?|||Do your products come with a warranty?|||What payment methods do you accept?|||Are prices inclusive of GST? Can I get a GST invoice?" | split: "|||" -%}
 
 {%- assign faq_answers = "Yes, Kiwi Catering Supplies ships across New Zealand, including both the North and South Islands. Orders are sent via tracked courier and usually arrive within three working days (allow up to five days for rural addresses). Same-day delivery is available for Auckland Central orders, free for large orders over $250. You will receive a tracking link once your order ships. Pickup is also available from our Auckland location by prior arrangement via our Contact page (/pages/contact-us).|||Standard shipping anywhere in New Zealand costs $10 per order, with free shipping on orders over $150. The free shipping threshold is applied automatically at checkout. Same-day Auckland delivery may incur a fee for smaller orders, which is waived for orders over $250 as part of a limited promotion. All shipping costs are shown clearly at checkout.|||Most orders arrive within about three working days after dispatch. Orders placed before 2 pm are usually sent the same day, though this may vary during busy periods. North Island deliveries typically take one to two days, while South Island and rural deliveries can take up to five days. A tracking number will be provided so you can follow your delivery.|||Yes, Click & Collect is available from our Auckland warehouse at 41E Morrin Road. To arrange pickup, select the Pickup option at checkout or contact us beforehand. We will confirm when your order is ready, usually on the same or next business day. Pickup is free. Please bring your order confirmation or ID when collecting.|||When your order ships, you will receive an email with a tracking number and link to the courier's tracking page. Click the link to view delivery progress and estimated arrival. If you have not received tracking details within two business days of ordering, please contact us through our Contact page (/pages/contact-us).|||If an item arrives faulty, damaged, or not as described, we will provide a remedy in line with New Zealand's Consumer Guarantees Act. This may include a replacement, repair, or refund. We do not offer refunds or exchanges for change of mind, so please choose carefully. If there is an issue with your order, contact us and we will help resolve it.|||If your order is damaged or missing items, contact us right away. We may ask for photos of any damage for our courier claim. We will arrange a free replacement or refund for affected items, and any missing products will be sent out as soon as possible at no extra charge.|||All products are covered by New Zealand consumer law guarantees for quality and durability. If a product has a manufacturing fault or is not fit for purpose, we will repair or replace it at no cost. Some items, such as cream dispensers, may also include a manufacturer's warranty. Please check the product page or manual for details. The warranty does not cover misuse or normal wear.|||We accept all major credit and debit cards, including Visa, MasterCard, Amex, and UnionPay. You can also pay using Apple Pay, Google Pay, or Shop Pay. All payments are processed securely, with card data encrypted during transfer. We do not currently offer Afterpay or Laybuy instalment options.|||Yes, all prices include GST (15%). Your order confirmation email serves as a tax invoice showing the GST component. If you need a separate GST invoice with our GST number, contact us and we will provide one. Kiwi Catering Supplies is GST-registered, so business customers can claim back the GST as usual." | split: "|||" -%}
 
+{%- capture birch_questions_raw -%}
+What is birch cutlery made of, and is it eco-friendly?|||
+Can birch cutlery handle hot foods and liquids? Will it splinter?|||
+Is birch cutlery really compostable and biodegradable? How should I dispose of it in NZ?|||
+Is birch cutlery treated with any chemicals or coatings?|||
+How sturdy is birch cutlery? Will it break with tougher foods?|||
+Does wooden cutlery affect the taste of food?|||
+Is birch cutlery better than PLA bioplastic cutlery? What is the difference?|||
+Can birch cutlery handle wet or oily foods? Will it get soggy?|||
+How should I store birch cutlery before use? Does it have a shelf life?|||
+Are wooden utensils hygienic and safe to eat from?
+{%- endcapture -%}
+{%- assign birch_questions = birch_questions_raw | strip | split: "|||" -%}
+
+{%- capture birch_answers_raw -%}
+Birch cutlery is made from natural birch wood with no plastic coating. It is biodegradable, compostable, and sourced from renewable timber. It breaks down like other wood and is a sustainable alternative to single-use plastic.|||
+Yes. Birch cutlery is safe for hot and cold foods. Quality pieces are smooth and splinter free. Under normal use they will not break or shed fibres; just avoid bending or snapping them deliberately.|||
+Yes. You can place used birch cutlery in home compost, where it will break down over time, or in kerbside organics where available. If composting is not an option, it can go in general rubbish and will still degrade much faster than plastic. Composting is the best option.|||
+No. Our birch utensils are not painted or varnished and have no chemical coatings. They are simply cut, sanded, and polished wood for safe contact with food and easy composting.|||
+Birch cutlery is sturdy for single-use dining. Forks and spoons handle most meals. Knives have light serration suitable for softer items. For very tough foods, performance will not match metal cutlery.|||
+Birch wood is generally neutral in taste. Most people notice no flavour change. A slight woody note may be detectable with very hot foods, but it is minimal.|||
+Birch is natural wood that composts in home or industrial settings and clearly signals a sustainable choice. PLA is plant based but typically needs industrial composting and can soften with heat. If easy composting and wider disposal options are priorities, birch is usually the better option.|||
+Yes. Birch handles wet and oily foods during a normal meal. Utensils may darken slightly where damp but remain solid and usable. If left soaking for hours they will soften, so dispose or compost after use.|||
+Store in a cool, dry place in the box or a sealed container. Keep away from moisture, direct sun, and strong odours. There is no fixed expiry; for best appearance use within one to two years.|||
+Yes. Birch cutlery arrives clean, is intended for single use, and meets food contact requirements. Use once and discard or compost. Keep unused cutlery dry and clean before service.
+{%- endcapture -%}
+{%- assign birch_answers = birch_answers_raw | strip | split: "|||" -%}
+
+{%- capture cream_dispensers_questions_raw -%}
+What is a cream dispenser and how does it work?|||
+What materials are cream dispensers made from?|||
+What sizes are available and how much do they hold?|||
+How do I assemble and use a cream dispenser?|||
+How do I clean a cream dispenser?|||
+What maintenance does a cream dispenser need?|||
+Are spare parts available?|||
+Are cream dispensers safe for hot liquids or only cold?|||
+Do cream dispensers have food-safety certifications?|||
+What are common issues and how do I fix them?
+{%- endcapture -%}
+{%- assign cream_dispensers_questions = cream_dispensers_questions_raw | strip | split: "|||" -%}
+
+{%- capture cream_dispensers_answers_raw -%}
+A cream dispenser is a sealed canister with a nozzle and trigger used to whip and serve cream. Fill it with liquid cream, charge it with a nitrous oxide (N2O) cream charger, and the gas dissolves into the cream under pressure. When you press the trigger, the mixture expands into whipped cream. Dispensers are used for whipped cream, foams, and mousses, providing quick, consistent results without hand whisking.|||
+Most dispensers are aluminium or stainless steel. Aluminium models are lightweight and cost-effective for home use, typically with stainless steel tips. Stainless steel models are heavier duty and ideal for frequent or professional use, and they handle warm mixtures better. Both use food-grade materials; choose aluminium for lighter use and stainless steel for durability.|||
+Common sizes are 0.25 L (250 mL), 0.5 L (500 mL), and 1 L (1000 mL). A 0.25 L dispenser holds about one cup of liquid cream. The 0.5 L size is popular for home use and typically yields about 1.5 L of whipped cream. The 1 L size suits commercial use. Always fill only to the marked capacity and use standard 8 g chargers. Most 1 L dispensers need two chargers.|||
+Check the head gasket is seated and fit a nozzle tip. Pour cold cream, with any sugar or flavouring, up to the max line. Screw the head on firmly. Insert an 8 g N2O charger into the holder and screw it on until the gas releases. Shake 5 to 10 times. Invert the dispenser fully and squeeze the trigger to serve. Refrigerate any remaining cream in the dispenser.|||
+Fully release any pressure first. Disassemble the charger holder, head, gasket, nozzle, and any removable valve parts. Wash the bottle with warm soapy water and rinse. Clean the head and small parts by hand with the cleaning brush. Avoid very hot water on rubber or silicone gaskets. Air dry completely before reassembly. Store dry, with no charger fitted.|||
+Inspect the head O-ring regularly and replace if cracked or leaking. Keep the valve and nozzles clean and free of dried cream. Avoid cross-threading the head and bottle. Clean after each use and store dry with the head loose to prevent long-term gasket compression. A small amount of food-safe silicone grease on seals may be used if recommended by the manufacturer.|||
+Yes. Replacement nozzle tips, gaskets (O-rings), charger holders, and some internal valve parts are commonly available for our dispensers. Keeping a spare gasket and tip on hand helps prevent downtime.|||
+Dispensers are primarily for cold whipping. Many stainless steel models can handle warm liquids, but do not use boiling liquids and never heat a pressurised dispenser. If warming, keep below the temperature limit in the manual and maintain temperature with a warm-water bath, not open flames or stovetops. Aluminium models are generally for room-temperature or cooler contents unless stated otherwise.|||
+Our dispensers are made from food-safe materials such as stainless steel or aluminium with BPA-free components and are produced under strict quality controls. Product specifications or conformity documents are available on request.|||
+Gas leaks: reseat or replace the gasket and tighten the head. Liquid output: use very cold, high-fat cream, shake more, and dispense with the canister fully inverted; ensure the charger released gas. Clogged nozzle: fully depressurise, remove the tip, and clean the nozzle and valve. Stuck head: confirm all pressure is released, then gently loosen; never force under pressure. Weak pressure: use a new charger (two for 1 L) or recharge if the cream has sat for a while.
+{%- endcapture -%}
+{%- assign cream_dispensers_answers = cream_dispensers_answers_raw | strip | split: "|||" -%}
+
+{%- capture cream_chargers_questions_raw -%}
+What are cream chargers and what are they used for?|||
+Do I need to be 18 to buy cream chargers in New Zealand?|||
+What type of gas is inside a cream charger, and is it food-safe?|||
+Are cream chargers compatible with all whipped cream dispensers?|||
+How do I use cream chargers to whip cream?|||
+How many chargers should I use for one dispenser, and can I use more for extra fluffiness?|||
+How should I store cream chargers, and do they expire?|||
+How can I tell if a cream charger is leaking or no good?|||
+Can I take cream chargers on a plane or have them air-shipped?|||
+How do I dispose of used cream chargers? Are they recyclable?|||
+What precautions should I take when handling cream chargers?|||
+Why is my whipped cream runny or not dispensing properly?|||
+Why does my whipped cream turn watery quickly?
+{%- endcapture -%}
+{%- assign cream_chargers_questions = cream_chargers_questions_raw | strip | split: "|||" -%}
+
+{%- capture cream_chargers_answers_raw -%}
+Cream chargers are small steel cartridges filled with nitrous oxide (N2O). Used with a whipped cream dispenser, they whip cream and create foams for food service. Each 8 g charger typically whips about 0.5 litre of liquid cream into roughly 1.5 litres of whipped cream. Chargers are for culinary use only.|||
+Yes. You must be 18 or older to buy cream chargers in New Zealand. Retailers may verify age at checkout or on delivery. Selling or supplying nitrous oxide for inhalation or to minors is illegal. By purchasing, you confirm you are 18+ and will use chargers only for food preparation.|||
+Chargers contain nitrous oxide (N2O), a colourless, non-flammable gas used in the food industry as a whipping propellant. The gas is food-grade and highly pure. Use only culinary N2O chargers and never inhale the gas.|||
+Most standard 8 g cream chargers have a universal fitting and work with common 0.25 L, 0.5 L, and 1 L dispensers. Some systems that use larger N2O tanks require specific adapters. Always follow your dispenser's instructions.|||
+Fill the dispenser with cold cream, with any sugar or flavouring, to the max line. Insert one charger into the holder and screw on to release the gas. Shake 5 to 10 times. Invert the dispenser fully and squeeze the trigger to serve. Refrigerate any remaining cream in the dispenser.|||
+Use one charger per 0.5 L dispenser and two chargers for a 1 L dispenser. Do not exceed the manufacturer's guidance. Over-charging can create unsafe pressure and damage seals. For better texture, keep cream very cold and shake adequately rather than adding extra gas.|||
+Store in a cool, dry place away from heat and direct sun. Do not store above 50 degrees C. Chargers have a long shelf life, but seals can degrade over time. Use within about 5 to 7 years for best performance and check for rust or leaks before use.|||
+An unused charger should be sealed and silent. A leaking charger may hiss or feel very cold. Do not use chargers that hiss or show rust, dents, or oil. If a correctly mounted charger releases no gas when pierced, replace it. Dispose of faulty chargers safely.|||
+No. Cream chargers are pressurised gas cartridges and are prohibited on passenger aircraft in both carry-on and checked luggage. We ship within New Zealand by ground courier only. Do not attempt to fly with chargers.|||
+Used chargers are made of steel and are recyclable. Ensure each charger is completely empty before recycling and place it in your household metal recycling bin or take it to a recycling centre. Do not discard full or unused chargers in general waste.|||
+Keep chargers away from children. Never pierce a charger outside a dispenser. Do not heat or incinerate. Do not inhale the gas. Follow your dispenser's manual and treat chargers as you would any pressurised container.|||
+Use very cold, high-fat cream. Shake the dispenser well after charging and dispense with the canister fully inverted. Check that the rubber seal is in good condition, that you have not overfilled past the max line, and that you used a full charger.|||
+Whipped cream softens over time. For longer hold, keep it cold and consider a stabiliser. Avoid over-shaking, which can push the cream toward butter and cause separation. For room-temperature displays, use a stabiliser or heavier cream.
+{%- endcapture -%}
+{%- assign cream_chargers_answers = cream_chargers_answers_raw | strip | split: "|||" -%}
+
+{%- capture palm_leaf_questions_raw -%}
+What are palm leaf plates made from? How are they produced?|||
+Are palm leaf plates really sturdy? Can they hold heavy or wet foods?|||
+Can palm leaf plates handle hot foods and drinks? Are they microwave/oven safe?|||
+Do palm leaf plates have any smell or taste? Will they affect my food's flavour?|||
+Are palm leaf plates safe for food contact? Are they cleaned or sanitised in production?|||
+Can I reuse palm leaf plates, or are they strictly one-time use?|||
+How quickly do palm leaf plates biodegrade?|||
+Are palm leaf plates suitable for formal events? They look rustic, can they be elegant?
+{%- endcapture -%}
+{%- assign palm_leaf_questions = palm_leaf_questions_raw | strip | split: "|||" -%}
+
+{%- capture palm_leaf_answers_raw -%}
+Palm leaf plates are crafted from fallen Areca palm leaves that are cleaned and heat pressed into shape. No chemicals or binders are used. Each plate is a single leaf with natural grain and colour variation.|||
+Yes. They are more rigid than paper, comfortably hold heavy meals, and resist leaks with wet or oily foods. They are also cut resistant for normal dining.|||
+Yes. They handle hot foods, are microwave safe for about 2 minutes, and oven safe for around 30-45 minutes up to 180 degrees C. Not suitable for open flame or very high heat.|||
+They are largely neutral. A mild natural leaf scent may be noticeable on opening, but they do not impart flavour to food.|||
+Yes. Leaves are washed then heat pressed, which sanitises and sterilises the surface. There are no additives or coatings; store in a clean, dry place.|||
+They are designed for single use and composting. Light reuse is possible only if clean and dry, but washing is not recommended.|||
+In home compost they typically break down in about 6-8 weeks, often faster in commercial composting. Actual time varies with heat and moisture.|||
+Yes. With quality linens and cutlery they present as natural, elegant tableware. The unique grain complements formal settings.
+{%- endcapture -%}
+{%- assign palm_leaf_answers = palm_leaf_answers_raw | strip | split: "|||" -%}
+
+{%- assign show_birch_faqs = section.settings.show_birch_faqs -%}
+{%- if show_birch_faqs == nil -%}
+  {%- assign show_birch_faqs = true -%}
+{%- endif -%}
+{%- assign show_cream_dispensers_faqs = section.settings.show_cream_dispensers_faqs -%}
+{%- if show_cream_dispensers_faqs == nil -%}
+  {%- assign show_cream_dispensers_faqs = true -%}
+{%- endif -%}
+{%- assign show_cream_chargers_faqs = section.settings.show_cream_chargers_faqs -%}
+{%- if show_cream_chargers_faqs == nil -%}
+  {%- assign show_cream_chargers_faqs = true -%}
+{%- endif -%}
+{%- assign show_palm_leaf_faqs = section.settings.show_palm_leaf_faqs -%}
+{%- if show_palm_leaf_faqs == nil -%}
+  {%- assign show_palm_leaf_faqs = true -%}
+{%- endif -%}
+
+{%- if hero_has_content -%}
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      {%- if hero_eyebrow != blank -%}
+        <span class="page-hero__eyebrow">{{ hero_eyebrow }}</span>
+      {%- endif -%}
+      {%- if hero_heading_html != blank -%}
+        <h1 class="page-hero__title">{{ hero_heading_html }}</h1>
+      {%- endif -%}
+      {%- if hero_intro_text != blank -%}
+        <div class="page-hero__intro rte">
+          {{ hero_intro_html }}
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{%- assign general_heading_html = section.settings.heading -%}
+{%- assign general_heading_text = general_heading_html | strip_html | strip -%}
+{%- assign general_intro_html = section.settings.intro_text -%}
+{%- assign general_intro_text = general_intro_html | strip_html | strip -%}
+
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <div class="collapsible-content collapsible-none-layout isolate">
     <div class="collapsible-content__wrapper section-{{ section.id }}-padding">
       <div class="collapsible-content-wrapper-narrow">
-        {%- if section.settings.heading != blank -%}
-          <h1 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }} related-products__heading" style="text-align: {{ section.settings.heading_alignment }};">
-            {{ section.settings.heading }}
-          </h1>
-        {%- endif -%}
-        {%- if section.settings.intro_text != blank -%}
-          <div class="cc__intro rte" style="text-align: {{ section.settings.heading_alignment }};">
-            {{ section.settings.intro_text }}
+        <div class="faq-group">
+          <div class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ section.settings.heading_alignment }};">
+            {%- if hero_has_content and general_heading_text == blank -%}
+              <h2 class="visually-hidden">{{ hero_heading_text }}</h2>
+            {%- endif -%}
+            {%- if general_heading_text != blank -%}
+              <h2 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }} related-products__heading">
+                {{ general_heading_html }}
+              </h2>
+            {%- endif -%}
+            {%- if general_intro_text != blank -%}
+              <div class="cc__intro rte">
+                {{ general_intro_html }}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="grid grid--1-col collapsible-content__grid{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            <div class="grid__item">
+              {%- for question in faq_questions -%}
+                {%- assign answer = faq_answers[forloop.index0] -%}
+                <div class="accordion">
+                  <details id="Details-{{ section.id }}-general-{{ forloop.index }}">
+                    <summary id="Summary-{{ section.id }}-general-{{ forloop.index }}" class="cc__summary">
+                      <h3 class="accordion__title inline-richtext h4">
+                        {{ question | strip }}
+                      </h3>
+                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </summary>
+                    <div class="cc__panel">
+                      <div class="accordion__content rte" id="CollapsibleAccordion-{{ section.id }}-general-{{ forloop.index }}" role="region" aria-labelledby="Summary-{{ section.id }}-general-{{ forloop.index }}">
+                        <p>{{ answer | strip }}</p>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+
+        {%- if show_birch_faqs -%}
+          {%- assign birch_heading_html = section.settings.birch_heading | default: 'Birch cutlery FAQs' -%}
+          {%- assign birch_heading_text = birch_heading_html | strip_html | strip -%}
+          <div class="faq-group">
+            <div class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ section.settings.heading_alignment }};">
+              {%- if birch_heading_text != blank -%}
+                <h2 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }} related-products__heading">
+                  {{ birch_heading_html }}
+                </h2>
+              {%- endif -%}
+              {%- if section.settings.birch_intro != blank -%}
+                <div class="cc__intro rte">
+                  {{ section.settings.birch_intro }}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="grid grid--1-col collapsible-content__grid{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              <div class="grid__item">
+                {%- for question in birch_questions -%}
+                  {%- assign answer = birch_answers[forloop.index0] -%}
+                  <div class="accordion">
+                    <details id="Details-{{ section.id }}-birch-{{ forloop.index }}" {% if section.settings.birch_open_first and forloop.first %}open{% endif %}>
+                      <summary id="Summary-{{ section.id }}-birch-{{ forloop.index }}" class="cc__summary">
+                        <h3 class="accordion__title inline-richtext h4">
+                          {{ question | strip }}
+                        </h3>
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </summary>
+                      <div class="cc__panel">
+                        <div class="accordion__content rte" id="CollapsibleAccordion-{{ section.id }}-birch-{{ forloop.index }}" role="region" aria-labelledby="Summary-{{ section.id }}-birch-{{ forloop.index }}">
+                          <p>{{ answer | strip }}</p>
+                        </div>
+                      </div>
+                    </details>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
           </div>
         {%- endif -%}
 
-        <div class="grid grid--1-col collapsible-content__grid">
-          <div class="grid__item">
-            {%- for question in faq_questions -%}
-              {%- assign answer = faq_answers[forloop.index0] -%}
-              <div class="accordion">
-                <details>
-                  <summary class="cc__summary">
-                    <h3 class="accordion__title inline-richtext h4">
-                      {{ question | strip }}
-                    </h3>
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </summary>
-                  <div class="cc__panel">
-                    <div class="accordion__content rte">
-                      <p>{{ answer | strip }}</p>
-                    </div>
+        {%- if show_cream_dispensers_faqs -%}
+          {%- assign cream_dispensers_heading_html = section.settings.cream_dispensers_heading | default: 'Cream dispenser FAQs' -%}
+          {%- assign cream_dispensers_heading_text = cream_dispensers_heading_html | strip_html | strip -%}
+          <div class="faq-group">
+            <div class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ section.settings.heading_alignment }};">
+              {%- if cream_dispensers_heading_text != blank -%}
+                <h2 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }} related-products__heading">
+                  {{ cream_dispensers_heading_html }}
+                </h2>
+              {%- endif -%}
+              {%- if section.settings.cream_dispensers_intro != blank -%}
+                <div class="cc__intro rte">
+                  {{ section.settings.cream_dispensers_intro }}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="grid grid--1-col collapsible-content__grid{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              <div class="grid__item">
+                {%- for question in cream_dispensers_questions -%}
+                  {%- assign answer = cream_dispensers_answers[forloop.index0] -%}
+                  <div class="accordion">
+                    <details id="Details-{{ section.id }}-cream-dispensers-{{ forloop.index }}" {% if section.settings.cream_dispensers_open_first and forloop.first %}open{% endif %}>
+                      <summary id="Summary-{{ section.id }}-cream-dispensers-{{ forloop.index }}" class="cc__summary">
+                        <h3 class="accordion__title inline-richtext h4">
+                          {{ question | strip }}
+                        </h3>
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </summary>
+                      <div class="cc__panel">
+                        <div class="accordion__content rte" id="CollapsibleAccordion-{{ section.id }}-cream-dispensers-{{ forloop.index }}" role="region" aria-labelledby="Summary-{{ section.id }}-cream-dispensers-{{ forloop.index }}">
+                          <p>{{ answer | strip }}</p>
+                        </div>
+                      </div>
+                    </details>
                   </div>
-                </details>
+                {%- endfor -%}
               </div>
-            {%- endfor -%}
+            </div>
           </div>
-        </div>
+        {%- endif -%}
+
+        {%- if show_cream_chargers_faqs -%}
+          {%- assign cream_chargers_heading_html = section.settings.cream_chargers_heading | default: 'Cream charger FAQs' -%}
+          {%- assign cream_chargers_heading_text = cream_chargers_heading_html | strip_html | strip -%}
+          <div class="faq-group">
+            <div class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ section.settings.heading_alignment }};">
+              {%- if cream_chargers_heading_text != blank -%}
+                <h2 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }} related-products__heading">
+                  {{ cream_chargers_heading_html }}
+                </h2>
+              {%- endif -%}
+              {%- if section.settings.cream_chargers_intro != blank -%}
+                <div class="cc__intro rte">
+                  {{ section.settings.cream_chargers_intro }}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="grid grid--1-col collapsible-content__grid{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              <div class="grid__item">
+                {%- for question in cream_chargers_questions -%}
+                  {%- assign answer = cream_chargers_answers[forloop.index0] -%}
+                  <div class="accordion">
+                    <details id="Details-{{ section.id }}-cream-chargers-{{ forloop.index }}" {% if section.settings.cream_chargers_open_first and forloop.first %}open{% endif %}>
+                      <summary id="Summary-{{ section.id }}-cream-chargers-{{ forloop.index }}" class="cc__summary">
+                        <h3 class="accordion__title inline-richtext h4">
+                          {{ question | strip }}
+                        </h3>
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </summary>
+                      <div class="cc__panel">
+                        <div class="accordion__content rte" id="CollapsibleAccordion-{{ section.id }}-cream-chargers-{{ forloop.index }}" role="region" aria-labelledby="Summary-{{ section.id }}-cream-chargers-{{ forloop.index }}">
+                          <p>{{ answer | strip }}</p>
+                        </div>
+                      </div>
+                    </details>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if show_palm_leaf_faqs -%}
+          {%- assign palm_leaf_heading_html = section.settings.palm_leaf_heading | default: 'Palm leaf plates FAQs' -%}
+          {%- assign palm_leaf_heading_text = palm_leaf_heading_html | strip_html | strip -%}
+          <div class="faq-group">
+            <div class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="text-align: {{ section.settings.heading_alignment }};">
+              {%- if palm_leaf_heading_text != blank -%}
+                <h2 class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }} related-products__heading">
+                  {{ palm_leaf_heading_html }}
+                </h2>
+              {%- endif -%}
+              {%- if section.settings.palm_leaf_intro != blank -%}
+                <div class="cc__intro rte">
+                  {{ section.settings.palm_leaf_intro }}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="grid grid--1-col collapsible-content__grid{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              <div class="grid__item">
+                {%- for question in palm_leaf_questions -%}
+                  {%- assign answer = palm_leaf_answers[forloop.index0] -%}
+                  <div class="accordion">
+                    <details id="Details-{{ section.id }}-palm-leaf-{{ forloop.index }}" {% if section.settings.palm_leaf_open_first and forloop.first %}open{% endif %}>
+                      <summary id="Summary-{{ section.id }}-palm-leaf-{{ forloop.index }}" class="cc__summary">
+                        <h3 class="accordion__title inline-richtext h4">
+                          {{ question | strip }}
+                        </h3>
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </summary>
+                      <div class="cc__panel">
+                        <div class="accordion__content rte" id="CollapsibleAccordion-{{ section.id }}-palm-leaf-{{ forloop.index }}" role="region" aria-labelledby="Summary-{{ section.id }}-palm-leaf-{{ forloop.index }}">
+                          <p>{{ answer | strip }}</p>
+                        </div>
+                      </div>
+                    </details>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </div>
 </div>
 
+{%- assign faq_entity_index = 0 -%}
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
       {%- for question in faq_questions -%}
+        {%- assign answer = faq_answers[forloop.index0] -%}
+        {%- if faq_entity_index > 0 -%},{%- endif -%}
         {
           "@type": "Question",
           "name": {{ question | strip | json }},
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": {{ faq_answers[forloop.index0] | strip | json }}
+            "text": {{ answer | strip | json }}
           }
-        }{%- unless forloop.last -%},{%- endunless -%}
+        }
+        {%- assign faq_entity_index = faq_entity_index | plus: 1 -%}
       {%- endfor -%}
+      {%- if show_birch_faqs -%}
+        {%- for question in birch_questions -%}
+          {%- assign answer = birch_answers[forloop.index0] -%}
+          {%- if faq_entity_index > 0 -%},{%- endif -%}
+          {
+            "@type": "Question",
+            "name": {{ question | strip | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ answer | strip | json }}
+            }
+          }
+          {%- assign faq_entity_index = faq_entity_index | plus: 1 -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if show_cream_dispensers_faqs -%}
+        {%- for question in cream_dispensers_questions -%}
+          {%- assign answer = cream_dispensers_answers[forloop.index0] -%}
+          {%- if faq_entity_index > 0 -%},{%- endif -%}
+          {
+            "@type": "Question",
+            "name": {{ question | strip | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ answer | strip | json }}
+            }
+          }
+          {%- assign faq_entity_index = faq_entity_index | plus: 1 -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if show_cream_chargers_faqs -%}
+        {%- for question in cream_chargers_questions -%}
+          {%- assign answer = cream_chargers_answers[forloop.index0] -%}
+          {%- if faq_entity_index > 0 -%},{%- endif -%}
+          {
+            "@type": "Question",
+            "name": {{ question | strip | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ answer | strip | json }}
+            }
+          }
+          {%- assign faq_entity_index = faq_entity_index | plus: 1 -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if show_palm_leaf_faqs -%}
+        {%- for question in palm_leaf_questions -%}
+          {%- assign answer = palm_leaf_answers[forloop.index0] -%}
+          {%- if faq_entity_index > 0 -%},{%- endif -%}
+          {
+            "@type": "Question",
+            "name": {{ question | strip | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ answer | strip | json }}
+            }
+          }
+          {%- assign faq_entity_index = faq_entity_index | plus: 1 -%}
+        {%- endfor -%}
+      {%- endif -%}
     ]
   }
 </script>
@@ -92,6 +576,28 @@
       "id": "heading",
       "label": "Heading",
       "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Hero eyebrow",
+      "default": "Help Centre"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "hero_heading",
+      "label": "Hero heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_intro",
+      "label": "Hero intro",
+      "default": "<p>Browse quick answers about shipping, billing, and product care. If you still need a hand, contact our Auckland team and we will respond within one business day.</p>"
+    },
+    {
+      "type": "header",
+      "content": "General FAQs"
     },
     {
       "type": "select",
@@ -119,7 +625,7 @@
           "label": "Extra extra large"
         }
       ],
-      "default": "h1"
+      "default": "h2"
     },
     {
       "type": "select",
@@ -145,6 +651,114 @@
       "type": "richtext",
       "id": "intro_text",
       "label": "Intro text"
+    },
+    {
+      "type": "header",
+      "content": "Birch cutlery FAQs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_birch_faqs",
+      "label": "Show birch cutlery FAQs",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "birch_heading",
+      "label": "Birch heading",
+      "default": "Birch cutlery FAQs"
+    },
+    {
+      "type": "richtext",
+      "id": "birch_intro",
+      "label": "Birch intro"
+    },
+    {
+      "type": "checkbox",
+      "id": "birch_open_first",
+      "label": "Open first birch item",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Cream dispenser FAQs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cream_dispensers_faqs",
+      "label": "Show cream dispenser FAQs",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "cream_dispensers_heading",
+      "label": "Cream dispenser heading",
+      "default": "Cream dispenser FAQs"
+    },
+    {
+      "type": "richtext",
+      "id": "cream_dispensers_intro",
+      "label": "Cream dispenser intro"
+    },
+    {
+      "type": "checkbox",
+      "id": "cream_dispensers_open_first",
+      "label": "Open first cream dispenser item",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Cream charger FAQs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cream_chargers_faqs",
+      "label": "Show cream charger FAQs",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "cream_chargers_heading",
+      "label": "Cream charger heading",
+      "default": "Cream charger FAQs"
+    },
+    {
+      "type": "richtext",
+      "id": "cream_chargers_intro",
+      "label": "Cream charger intro"
+    },
+    {
+      "type": "checkbox",
+      "id": "cream_chargers_open_first",
+      "label": "Open first cream charger item",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Palm leaf plates FAQs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_palm_leaf_faqs",
+      "label": "Show palm leaf plates FAQs",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "palm_leaf_heading",
+      "label": "Palm leaf heading",
+      "default": "Palm leaf plates FAQs"
+    },
+    {
+      "type": "richtext",
+      "id": "palm_leaf_intro",
+      "label": "Palm leaf intro"
+    },
+    {
+      "type": "checkbox",
+      "id": "palm_leaf_open_first",
+      "label": "Open first palm leaf item",
+      "default": false
     },
     {
       "type": "color_scheme",
