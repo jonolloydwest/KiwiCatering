@@ -106,9 +106,17 @@
 
 @media (min-width: 992px) {
   .collection-stories-section .collection-stories__list {
-    --collection-story-gap: clamp(0.6rem, 0.8vw, 1rem);
+    --collection-story-gap: clamp(0.4rem, 0.5vw, 0.7rem);
     overflow-x: visible;
     scroll-snap-type: none;
+  }
+
+  .collection-stories-section .collection-stories__item,
+  .collection-stories-section .collection-stories__item--no-link {
+    flex: 0 0 auto;
+    max-width: none;
+    flex-basis: auto;
+    width: auto;
   }
 }
 
@@ -118,7 +126,7 @@
 
 @media (min-width: 1400px) {
   .collection-stories-section .collection-stories__list {
-    --collection-story-gap: clamp(0.6rem, 0.6vw, 0.8rem);
+    --collection-story-gap: clamp(0.4rem, 0.4vw, 0.6rem);
   }
 }
 
