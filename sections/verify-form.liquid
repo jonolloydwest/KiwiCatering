@@ -1,0 +1,833 @@
+{%- liquid
+  assign default_intro = "<p>Under New Zealand law, nitrous oxide (N₂O) may only be sold for legitimate culinary or commercial food preparation purposes. Supply for recreational use and/or inhalation is prohibited under the Psychoactive Substances Act 2013, the Medicines Act 1981 and other applicable regulations.</p><p>To comply, we must verify all customers are 18 years or older and that purchases are for culinary use only.</p><p>Verification is fast and secure - simply upload your photo ID and complete the application form below.</p>"
+  assign default_card_body_signed_out = "<p>Log in to your account so we can link the verification result to your profile.</p>"
+
+  assign intro = section.settings.intro | default: default_intro | strip
+  assign card_title_signed_out = section.settings.card_title_signed_out | default: "Sign in to continue"
+  assign card_body_signed_out = section.settings.card_body_signed_out | default: default_card_body_signed_out | strip
+  assign card_button_signed_out_label = section.settings.card_button_signed_out_label | default: "Sign in"
+  assign start_button_label = section.settings.start_button_label | default: "Start ID Check"
+-%}
+{%- capture verify_culinary_source -%}
+home_baking_or_dessert_preparation|Home Baking or Dessert Preparation|For making whipped cream, desserts, or culinary foams at home.
+cafe_or_barista_use|Caf&eacute; or Barista Use|For preparing whipped cream, foams, or toppings for coffee and beverages.
+restaurant_or_bar_use|Restaurant or Bar Use|For culinary foams, dessert preparation, or cocktail infusions in food-service settings.
+catering_or_event_service|Catering or Event Service|For professional food preparation or off-site catering.
+food_product_development_or_training|Food Product Development or Training|For culinary education, product testing, or kitchen demonstrations.
+other_legitimate_culinary_use|Other Legitimate Culinary Use|For any other lawful food-related purpose.
+{%- endcapture -%}
+{%- assign verify_culinary_options = verify_culinary_source | strip | split: "
+" -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .verification-start {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 4rem);
+    padding-inline: clamp(1.6rem, 4vw, 4rem);
+  }
+
+  .verification-start__intro {
+    margin: 0 auto;
+    color: rgba(var(--color-foreground), 0.74);
+    font-size: 1.4rem;
+    line-height: 1.7;
+    max-width: 75ch;
+    text-align: center;
+  }
+
+  .verification-card {
+    background: rgba(var(--color-foreground), 0.02);
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    border-radius: 1.6rem;
+    padding: clamp(2rem, 4vw, 3.2rem);
+    display: grid;
+    gap: 1.2rem;
+    width: 100%;
+    box-shadow: 0 18px 36px -28px rgba(11, 27, 16, 0.4);
+  }
+
+  .verification-card__cta {
+    justify-self: flex-start;
+  }
+  .verification-card__form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .verification-card__mode {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .verification-card__mode legend {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgb(var(--color-foreground));
+    margin: 0;
+  }
+
+  .verification-card__mode-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .verification-form {
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  .verification-form__layout {
+    display: grid;
+    gap: 1.2rem;
+    align-items: stretch;
+  }
+
+  .verification-form__column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    height: 100%;
+  }
+
+  .verification-form__heading {
+    margin: 0;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
+  }
+
+  .verification-form__fields {
+    display: grid;
+    gap: 1.2rem;
+    margin-top: 0.8rem;
+  }
+
+  .verification-form .field {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .verification-form .field__input {
+    background-color: #fff;
+    color: rgb(var(--color-foreground));
+    border: none;
+    border-radius: 1rem;
+    padding: 1.2rem 1.4rem;
+    font-size: 1.4rem;
+    line-height: 1.6;
+    box-shadow: 0 10px 30px rgba(6, 26, 12, 0.07);
+  }
+
+  .verification-form .field__label {
+    position: static;
+    display: inline-block;
+    margin-bottom: 0.35rem;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgb(var(--color-foreground));
+    transform: none;
+    opacity: 1;
+  }
+
+  .verification-form__declarations {
+    display: grid;
+    gap: 1.2rem;
+    padding: 1.2rem;
+    border: 1px solid rgba(var(--color-foreground), 0.15);
+    border-radius: 1rem;
+    background-color: rgba(var(--color-foreground), 0.02);
+    font-size: 1.4rem;
+    line-height: 1.8;
+  }
+
+  .verification-form__column--declarations .verification-form__declarations {
+    flex: 1;
+  }
+
+  .verification-form__column--declarations .verification-card__cta {
+    align-self: center;
+  }
+
+  #verify-errors {
+    margin: 1rem 0 0;
+    color: #b42318;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .field__input.is-invalid {
+    border: 1px solid #b42318;
+    box-shadow: 0 0 0 1px rgba(180, 35, 24, 0.25);
+  }
+
+  .verification-checkbox input.is-invalid {
+    outline: 2px solid #b42318;
+    outline-offset: 4px;
+  }
+
+  .field__error {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #b42318;
+  }
+
+  .field-flash {
+    animation: fieldFlash 0.6s ease;
+  }
+
+  @keyframes fieldFlash {
+    0% {
+      box-shadow: 0 0 0 0 rgba(180, 35, 24, 0.45);
+    }
+    100% {
+      box-shadow: 0 0 0 18px rgba(180, 35, 24, 0);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .verification-form__layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.6rem;
+    }
+  }
+
+  .verification-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    font-size: 1.4rem;
+    line-height: 1.6;
+    padding: 1rem;
+    min-height: 48px;
+    border-radius: 0.8rem;
+    width: 100%;
+    position: relative;
+  }
+
+  .verification-checkbox:focus-within {
+    outline: 2px solid rgba(var(--brand-color-primary, 18, 123, 72), 0.55);
+    outline-offset: 2px;
+  }
+
+  .verification-checkbox span {
+    flex: 1;
+  }
+
+  .verification-checkbox input[type="checkbox"] {
+    margin-top: 0.35rem;
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .verification-mode__option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid rgba(var(--color-foreground), 0.2);
+    border-radius: 999px;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .verification-mode__option input {
+    margin: 0;
+    accent-color: #127b48;
+  }
+
+  .verification-business {
+    display: none;
+    gap: 1.2rem;
+    margin-top: 0.4rem;
+  }
+
+  .verification-form--business .verification-business {
+    display: grid;
+  }
+
+  .verification-card__spinner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .verification-card__spinner-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background-color: rgba(var(--color-foreground), 0.4);
+    animation: verification-card-bounce 1s infinite ease-in-out;
+  }
+
+  .verification-card__spinner-dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .verification-card__spinner-dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes verification-card-bounce {
+    0%,
+    80%,
+    100% {
+      transform: scale(0);
+    }
+    40% {
+      transform: scale(1);
+    }
+  }
+
+  .verification-card__error {
+    color: rgb(185, 28, 28);
+    font-size: 1.3rem;
+    margin: 0;
+  }
+
+  .verification-card__spinner .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+{%- endstyle -%}
+
+<script src="{{ 'verify-form.js' | asset_url }}" defer></script>
+
+<section class="section section-{{ section.id }}-padding">
+  <div class="verification-start">
+    {%- if intro != blank -%}
+      <div class="verification-start__intro rte">{{ intro }}</div>
+    {%- endif -%}
+        {%- liquid
+          assign tag_verified_18 = false
+          assign tag_verified_business = false
+          assign tag_manual_review = false
+        -%}
+        {%- if customer -%}
+          {% comment %} Verification application form starts here {% endcomment %}
+          {%- liquid
+            if customer.tags contains 'Verified-18'
+              assign tag_verified_18 = true
+            endif
+            if customer.tags contains 'Verified-Business'
+              assign tag_verified_business = true
+            endif
+            if customer.tags contains 'Business-Manual-Review'
+              assign tag_manual_review = true
+            endif
+          -%}
+          {%- if tag_verified_18 and tag_verified_business -%}
+            <div class="verification-card verification-card--customer">
+              <p>
+                You're already a verified business 🎉
+                <a href="https://www.kiwicatering.co.nz/pages/contact-us">Contact us</a>
+                if you need to increase your purchase limits or for larger orders.
+                <a href="https://www.kiwicatering.co.nz/collections/cream-chargers">Shop now</a>.
+              </p>
+            </div>
+          {%- elsif tag_verified_18 and tag_manual_review -%}
+            <div class="verification-card verification-card--customer">
+              <p>
+                You're already verified 🎉 We're manually reviewing your business application. You can purchase restricted products
+                subject to reasonable purchase limits.
+                <a href="https://www.kiwicatering.co.nz/collections/cream-chargers">Shop now</a>.
+              </p>
+            </div>
+          {%- else -%}
+            {%- liquid
+              assign app_url = shop.metafields.verification_gateway.app_url
+              assign verify_individual_id = 'cust-type-individual'
+              assign verify_business_id = 'cust-type-business'
+              assign verify_nzbn_id = 'verify-nzbn-' | append: section.id
+              assign verify_trading_name_id = 'verify-business-name-' | append: section.id
+              assign verify_full_name_id = 'verify-full-name-' | append: section.id
+              assign verify_dob_id = 'verify-dob-' | append: section.id
+              assign verify_email_id = 'verify-email-' | append: section.id
+              assign verify_mobile_id = 'verify-mobile-' | append: section.id
+              assign verify_address1_id = 'verify-address-line1-' | append: section.id
+              assign verify_address2_id = 'verify-address-line2-' | append: section.id
+              assign verify_suburb_id = 'verify-suburb-' | append: section.id
+              assign verify_city_id = 'verify-city-' | append: section.id
+              assign verify_postcode_id = 'verify-postcode-' | append: section.id
+              assign verify_culinary_use_id = 'verify-culinary-use-' | append: section.id
+              assign verify_decl_age_identity_id = 'verify-decl-age-identity-' | append: section.id
+              assign verify_decl_purpose_id = 'verify-decl-purpose-' | append: section.id
+              assign verify_decl_prohibited_id = 'verify-decl-prohibited-' | append: section.id
+              assign verify_decl_legal_id = 'verify-decl-legal-' | append: section.id
+              assign verify_decl_disclosure_id = 'verify-decl-disclosure-' | append: section.id
+              assign verify_decl_privacy_id = 'verify-decl-privacy-' | append: section.id
+              assign verify_decl_limits_id = 'verify-decl-limits-' | append: section.id
+              assign show_verified_individual_notice = false
+              if tag_verified_18 and tag_verified_business == false and tag_manual_review == false
+                assign show_verified_individual_notice = true
+              endif
+              assign default_customer_type = 'individual'
+              if show_verified_individual_notice
+                assign default_customer_type = 'business'
+              endif
+            -%}
+            <script>
+              window.__prefill = {
+                full_name: {{ customer.first_name | append: ' ' | append: customer.last_name | json }},
+                email: {{ customer.email | json }},
+                address: {
+                  line1: {{ customer.default_address.address1 | json }},
+                  line2: {{ customer.default_address.address2 | json }},
+                  suburb: {{ customer.default_address.province | json }},
+                  city: {{ customer.default_address.city | json }},
+                  postcode: {{ customer.default_address.zip | json }}
+                },
+                shopify_customer_id: {{ customer.id | json }},
+                shopify_customer_gid: {{ customer.id | prepend: 'gid://shopify/Customer/' | json }}
+              };
+            </script>
+            {%- if show_verified_individual_notice -%}
+              <div class="verification-card verification-card--customer">
+                <p>
+                  You're already verified 🎉 You can purchase restricted products.
+                  <a href="https://www.kiwicatering.co.nz/collections/cream-chargers">Shop now</a>.
+                  Complete the form below only if you need a business account for higher purchase limits.
+                </p>
+              </div>
+            {%- endif -%}
+            <div
+              class="verification-card verification-card--customer"
+              data-verification-start
+              data-app-url="{{ app_url }}"
+            >
+              <div class="verification-card__form" data-verify-root>
+                <form id="verification-form" class="verification-form" data-verify-form novalidate>
+                <div class="verification-form__layout">
+                  <div class="verification-form__column verification-form__column--application">
+                    <h4 class="verification-form__heading">Application Form</h4>
+                    <fieldset class="verification-card__mode">
+                      <legend>Customer Type</legend>
+                      <div class="verification-card__mode-options">
+                        <label class="verification-mode__option" for="{{ verify_individual_id }}">
+                          <input
+                            type="radio"
+                            name="verify-mode"
+                            id="{{ verify_individual_id }}"
+                            value="individual"
+                            {% unless default_customer_type == 'business' %}checked{% endunless %}
+                            {% if show_verified_individual_notice %}disabled{% endif %}
+                          >
+                          <span>Individual</span>
+                        </label>
+                        <label class="verification-mode__option" for="{{ verify_business_id }}">
+                          <input
+                            type="radio"
+                            name="verify-mode"
+                            id="{{ verify_business_id }}"
+                            value="business"
+                            {% if default_customer_type == 'business' %}checked{% endif %}
+                          >
+                          <span>Business</span>
+                        </label>
+                      </div>
+                    </fieldset>
+                    <div
+                      class="alert alert--info verification-card__notice"
+                      data-verified-reminder
+                      role="status"
+                      hidden
+                    >
+                      <p>
+                        You're already verified 🎉 If you need a business account, please select &quot;Business&quot; as your Customer Type for increased purchase limits.
+                        <a href="https://www.kiwicatering.co.nz/collections/cream-chargers">Shop now</a>.
+                      </p>
+                    </div>
+                    <div class="verification-form__fields">
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_full_name_id }}">Full Name (must match your ID)</label>
+                        <input
+                          class="field__input"
+                          type="text"
+                          id="{{ verify_full_name_id }}"
+                          name="full_name"
+                          required
+                          autocomplete="name"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_dob_id }}">Date of Birth</label>
+                        <input
+                          class="field__input"
+                          type="date"
+                          id="{{ verify_dob_id }}"
+                          name="dob"
+                          lang="en-NZ"
+                          placeholder="dd/mm/yyyy"
+                          required
+                          autocomplete="bday"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_email_id }}">Email Address</label>
+                        <input
+                          class="field__input"
+                          type="email"
+                          id="{{ verify_email_id }}"
+                          name="email"
+                          required
+                          autocomplete="email"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_mobile_id }}">Mobile Number</label>
+                        <input
+                          class="field__input"
+                          type="tel"
+                          id="{{ verify_mobile_id }}"
+                          name="mobile"
+                          required
+                          inputmode="tel"
+                          autocomplete="tel"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_address1_id }}">Residential Address (no PO Boxes)</label>
+                        <input
+                          class="field__input"
+                          type="text"
+                          id="{{ verify_address1_id }}"
+                          name="address_line1"
+                          required
+                          autocomplete="address-line1"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_address2_id }}">Address Line 2 (optional)</label>
+                        <input
+                          class="field__input"
+                          type="text"
+                          id="{{ verify_address2_id }}"
+                          name="address_line2"
+                          autocomplete="address-line2"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_suburb_id }}">Suburb</label>
+                        <input
+                          class="field__input"
+                          type="text"
+                          id="{{ verify_suburb_id }}"
+                          name="suburb"
+                          required
+                          autocomplete="address-level3"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_city_id }}">City</label>
+                        <input
+                          class="field__input"
+                          type="text"
+                          id="{{ verify_city_id }}"
+                          name="city"
+                          required
+                          autocomplete="address-level2"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_postcode_id }}">Postcode</label>
+                        <input
+                          class="field__input"
+                          type="text"
+                          id="{{ verify_postcode_id }}"
+                          name="postcode"
+                          required
+                          inputmode="numeric"
+                          autocomplete="postal-code"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_culinary_use_id }}">Intended Culinary Use</label>
+                        <select
+                          class="field__input"
+                          id="{{ verify_culinary_use_id }}"
+                          name="culinary_use"
+                          required
+                        >
+                          <option value="" disabled selected>Select an option</option>
+                          {%- for entry in verify_culinary_options -%}
+                            {%- assign option_parts = entry | split: "|" -%}
+                            {%- assign option_label = option_parts[1] | strip -%}
+                            <option
+                              value="{{ option_label }}"
+                              title="{{ option_parts[2] | strip }}"
+                            >
+                              {{ option_label }}
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                      </div>
+                    </div>
+                    <div
+                      id="biz-fields"
+                      class="verification-business"
+                      data-business-fields
+                      hidden
+                    >
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_nzbn_id }}">NZBN Number</label>
+                        <input
+                          class="field__input"
+                          type="text"
+                          id="{{ verify_nzbn_id }}"
+                          name="nzbn"
+                          inputmode="numeric"
+                          autocomplete="off"
+                          placeholder="e.g. 9429031234567"
+                          data-biz-required
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="{{ verify_trading_name_id }}">Company / Business Name</label>
+                        <input
+                          class="field__input"
+                          type="text"
+                          id="{{ verify_trading_name_id }}"
+                          name="trading_name"
+                          data-biz-required
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="verification-form__column verification-form__column--declarations">
+                    <h4 class="verification-form__heading">Declarations</h4>
+                    <div class="verification-form__declarations">
+                      <label class="verification-checkbox" for="{{ verify_decl_age_identity_id }}">
+                        <input
+                          type="checkbox"
+                          id="{{ verify_decl_age_identity_id }}"
+                          name="decl_age_identity"
+                          required
+                          value="true"
+                        >
+                        <span>I am 18 years of age or older, and my date of birth matches the identification I have provided.</span>
+                      </label>
+                      <label class="verification-checkbox" for="{{ verify_decl_purpose_id }}">
+                        <input
+                          type="checkbox"
+                          id="{{ verify_decl_purpose_id }}"
+                          name="decl_purpose"
+                          required
+                          value="true"
+                        >
+                        <span>I am purchasing food-grade nitrous oxide solely for legitimate culinary use such as whipping cream, creating foams, or other food and beverage preparation purposes.</span>
+                      </label>
+                      <label class="verification-checkbox" for="{{ verify_decl_prohibited_id }}">
+                        <input
+                          type="checkbox"
+                          id="{{ verify_decl_prohibited_id }}"
+                          name="decl_prohibited"
+                          required
+                          value="true"
+                        >
+                        <span>I understand that the Medicines Act 1981 and the Medicines Regulations 1984 prohibit the supply of nitrous oxide for inhalation. I will not use, sell, or supply this product for recreational inhalation or any non-culinary purpose.</span>
+                      </label>
+                      <label class="verification-checkbox" for="{{ verify_decl_legal_id }}">
+                        <input
+                          type="checkbox"
+                          id="{{ verify_decl_legal_id }}"
+                          name="decl_legal"
+                          required
+                          value="true"
+                        >
+                        <span>I understand that supplying or distributing nitrous oxide for recreational use is an offence under the Psychoactive Substances Act 2013, which carries penalties of up to two years&rsquo; imprisonment or a fine of up to $500,000 for companies.</span>
+                      </label>
+                      <label class="verification-checkbox" for="{{ verify_decl_disclosure_id }}">
+                        <input
+                          type="checkbox"
+                          id="{{ verify_decl_disclosure_id }}"
+                          name="decl_disclosure"
+                          required
+                          value="true"
+                        >
+                        <span>By completing this purchase, I confirm that I comply with the above restrictions and consent to my name and address being made available to an officer of the Ministry of Health, if required for compliance purposes.</span>
+                      </label>
+                      <label class="verification-checkbox" for="{{ verify_decl_privacy_id }}">
+                        <input
+                          type="checkbox"
+                          id="{{ verify_decl_privacy_id }}"
+                          name="decl_privacy"
+                          required
+                          value="true"
+                        >
+                        <span>I consent to identity verification and to the secure storage of verification results in accordance with the site&rsquo;s Privacy Policy.</span>
+                      </label>
+                      <label class="verification-checkbox" for="{{ verify_decl_limits_id }}">
+                        <input
+                          type="checkbox"
+                          id="{{ verify_decl_limits_id }}"
+                          name="decl_limits"
+                          required
+                          value="true"
+                        >
+                        <span>I acknowledge that purchase limits apply (on a rolling 30-day basis) and that orders may be declined or refunded if verification fails, limits are exceeded, or if any information provided is found to be false or misleading.</span>
+                      </label>
+                    </div>
+                    <button
+                      id="start-id-check"
+                      type="button"
+                      class="button button--primary verification-card__cta"
+                      data-action="start"
+                      data-verify-start
+                      data-return="{{ request.path | escape }}"
+                    >
+                      {{ start_button_label }}
+                    </button>
+                  </div>
+                </div>
+                <div id="verify-errors" aria-live="polite" hidden></div>
+              </form>
+            </div>
+            <div class="verification-card__spinner" data-spinner hidden>
+              <span class="verification-card__spinner-dot"></span>
+              <span class="verification-card__spinner-dot"></span>
+              <span class="verification-card__spinner-dot"></span>
+              <span class="visually-hidden">Preparing verification...</span>
+            </div>
+            <p class="verification-card__error" data-error role="status" aria-live="polite" hidden></p>
+          </div>
+        {%- endif -%}
+        {%- else -%}
+          <div class="verification-card verification-card--guest">
+            {%- if card_title_signed_out != blank -%}
+              <h3>{{ card_title_signed_out }}</h3>
+            {%- endif -%}
+            {%- if card_body_signed_out != blank -%}
+              <div>
+                {{ card_body_signed_out }}
+              </div>
+            {%- endif -%}
+            <a class="button button--primary verification-card__cta" href="{{ routes.account_login_url }}">
+              {{ card_button_signed_out_label }}
+            </a>
+          </div>
+        {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Verify form",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Application to Purchase Restricted Products"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Supporting text",
+        "default": "<p>Under New Zealand law, nitrous oxide (N₂O) may only be sold for legitimate culinary or commercial food preparation purposes. Supply for recreational use and/or inhalation is prohibited under the Psychoactive Substances Act 2013, the Medicines Act 1981 and other applicable regulations.</p><p>To comply, we must verify all customers are 18 years or older and that purchases are for culinary use only.</p><p>Verification is fast and secure - simply upload your photo ID and complete the application form below.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Signed out content"
+    },
+    {
+      "type": "text",
+      "id": "card_title_signed_out",
+      "label": "Signed out title",
+      "default": "Sign in to continue"
+    },
+    {
+      "type": "richtext",
+      "id": "card_body_signed_out",
+      "label": "Signed out body",
+      "default": "<p>Log in to your account so we can link the verification result to your profile.</p>"
+    },
+    {
+      "type": "text",
+      "id": "card_button_signed_out_label",
+      "label": "Signed out button label",
+      "default": "Sign in"
+    },
+    {
+      "type": "header",
+      "content": "Signed in content"
+    },
+    {
+      "type": "text",
+      "id": "card_title_signed_in",
+      "label": "Signed in title",
+      "default": "Ready to verify?"
+    },
+    {
+      "type": "richtext",
+      "id": "card_body_signed_in",
+      "label": "Signed in body",
+      "default": "<p>We'll open a secure Stripe window to confirm your details. The check usually takes less than two minutes.</p>"
+    },
+    {
+      "type": "text",
+      "id": "start_button_label",
+      "label": "Start button label",
+      "default": "Start ID Check"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Verify form"
+    }
+  ]
+}
+{% endschema %}

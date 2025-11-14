@@ -23,11 +23,16 @@
       </span>
       {{ 'customer.log_out' | t }}
     </a>
+    <nav class="customer-account__links" aria-label="Account navigation">
+      <a class="link underlined-link" href="{{ routes.root_url }}">Shop</a>
+      <a class="link underlined-link" href="https://www.kiwicatering.co.nz/pages/verify">Verify</a>
+      <a class="link underlined-link" href="#account-orders">{{ 'customer.orders.title' | t }}</a>
+    </nav>
   </div>
 
   <div>
     <div>
-      <h2>{{ 'customer.orders.title' | t }}</h2>
+      <h2 id="account-orders">{{ 'customer.orders.title' | t }}</h2>
 
       {% paginate customer.orders by 20 %}
         {%- if customer.orders.size > 0 -%}

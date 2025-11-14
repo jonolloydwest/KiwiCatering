@@ -1,0 +1,140 @@
+{%- liquid
+  assign restricted_tag = 'restricted'
+  assign verified_tag = 'Verified-18'
+  assign is_restricted = false
+  assign is_logged_in = false
+  assign is_verified = false
+
+  if product.tags contains restricted_tag
+    assign is_restricted = true
+  endif
+
+  if customer
+    assign is_logged_in = true
+    if customer.tags contains verified_tag
+      assign is_verified = true
+    endif
+  endif
+-%}
+
+{%- if is_restricted and is_verified == false -%}
+  <div class="product-gate" data-product-gate>
+    {%- if is_logged_in -%}
+      <h2 class="product-gate__title">Age verification required</h2>
+      <p class="product-gate__body">
+        This product is restricted. Please complete identity verification before purchasing.
+      </p>
+      <a class="product-gate__cta" href="/pages/verify">Verify now</a>
+    {%- else -%}
+      <h2 class="product-gate__title">Sign in to continue</h2>
+      <p class="product-gate__body">
+        This product is restricted. Sign in to confirm your age before purchasing.
+      </p>
+      <a class="product-gate__cta" href="{{ routes.account_login_url }}">Sign in</a>
+    {%- endif -%}
+    <p class="product-gate__allowance" data-verify-allowance hidden>
+      <span data-verify-remaining></span> / <span data-verify-limit></span> remaining
+    </p>
+  </div>
+  <script>
+    (function () {
+      var gate = document.currentScript.previousElementSibling;
+      if (!gate || !gate.hasAttribute('data-product-gate')) {
+        return;
+      }
+
+      function hideTargets() {
+        var selectors = [
+          'form[action*="/cart/add"]',
+          'product-form',
+          '.product-form',
+          '.shopify-payment-button',
+          '.product__xr-button',
+          '.product__xr',
+          '.shopify-payment-terms__container',
+          '.product__submit',
+          '.product__info-container .buy-buttons'
+        ];
+
+        selectors.forEach(function (selector) {
+          document.querySelectorAll(selector).forEach(function (el) {
+            if (el) {
+              el.setAttribute('data-product-gate-hidden', 'true');
+              el.style.setProperty('display', 'none', 'important');
+              if (el.tagName === 'FORM') {
+                el.addEventListener('submit', function (event) {
+                  event.preventDefault();
+                });
+              }
+            }
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', hideTargets, { once: true });
+      } else {
+        hideTargets();
+      }
+
+      var allowance = gate.querySelector('[data-verify-allowance]');
+      if (allowance) window.__verify?.getState?.().then(function (state) { if (state?.remaining == null || state?.limit == null) return; allowance.hidden = false; allowance.querySelector('[data-verify-remaining]').textContent = state.remaining; allowance.querySelector('[data-verify-limit]').textContent = state.limit; });
+      window.__verify?.wire?.(gate);
+    })();
+  </script>
+  <style>
+    .product-gate {
+      border: 1px solid rgba(17, 24, 39, 0.1);
+      background: rgba(17, 24, 39, 0.03);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin-block: 1rem 2rem;
+      display: grid;
+      gap: 0.75rem;
+      max-width: 30rem;
+    }
+
+    .product-gate__title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .product-gate__body {
+      margin: 0;
+      color: rgb(75, 85, 99);
+      line-height: 1.5;
+    }
+
+    .product-gate__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      background-color: rgb(17, 24, 39);
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.2s ease-in-out;
+      width: fit-content;
+    }
+
+    .product-gate__cta:hover,
+    .product-gate__cta:focus-visible {
+      background-color: rgb(31, 41, 55);
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product verification gate",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Product verification gate"
+    }
+  ]
+}
+{% endschema %}

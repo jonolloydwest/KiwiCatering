@@ -144,66 +144,102 @@
               {%- assign icon_image = block.settings.image -%}
               {%- assign icon_alt_text = block.settings.icon_alt | default: block.settings.title | strip_html | escape -%}
               {%- assign icon_markup = '' -%}
-              {%- if icon_image != blank or block.settings.icon_url != blank -%}
-                {%- if icon_image != blank -%}
-                  {%- assign icon_src = icon_image | image_url: width: 144 -%}
-                  {%- assign icon_srcset = icon_image | image_srcset: widths: '72, 96, 144' -%}
-                  {%- capture icon_markup -%}
-                    <img
-                      src="{{ icon_src }}"
-                      srcset="{{ icon_srcset }}"
-                      sizes="72px"
-                      alt="{{ icon_alt_text }}"
-                      loading="lazy"
-                      width="72"
-                      height="72"
-                      class="multicolumn-card__icon-image"
-                    >
-                  {%- endcapture -%}
-                {%- else -%}
-                  {%- assign icon_url_input = block.settings.icon_url | strip -%}
-                  {%- assign icon_src = '' -%}
+              {%- if icon_image != blank -%}
+                {%- capture icon_markup -%}
+                  {{
+                    icon_image
+                    | image_url: width: 144
+                    | image_tag:
+                      widths: '72, 96, 144',
+                      sizes: '72px',
+                      loading: 'lazy',
+                      class: 'multicolumn-card__icon-image',
+                      alt: icon_alt_text,
+                      width: 72,
+                      height: 72
+                  }}
+                {%- endcapture -%}
+              {%- elsif block.settings.icon_url != blank -%}
+                {%- assign icon_url_input = block.settings.icon_url | strip -%}
+                {%- capture icon_markup -%}
+                  {%- assign icon_extension = icon_url_input | split: '.' | last | split: '?' | first | downcase -%}
                   {%- if icon_url_input contains '/files/' -%}
                     {%- assign icon_file_handle = icon_url_input | split: '/files/' | last | split: '?' | first -%}
-                    {%- assign icon_extension = icon_file_handle | split: '.' | last | downcase -%}
                     {%- if icon_extension == 'svg' -%}
-                      {%- assign icon_src = icon_file_handle | file_url -%}
-                    {%- else -%}
-                      {%- assign icon_src = icon_file_handle | file_img_url: '144x' -%}
-                    {%- endif -%}
-                  {%- elsif icon_url_input contains '/assets/' -%}
-                    {%- assign icon_asset_handle = icon_url_input | split: '/assets/' | last | split: '?' | first -%}
-                    {%- assign icon_extension = icon_asset_handle | split: '.' | last | downcase -%}
-                    {%- if icon_extension == 'svg' -%}
-                      {%- assign icon_src = icon_asset_handle | asset_url -%}
-                    {%- else -%}
-                      {%- assign icon_src = icon_asset_handle | asset_img_url: '144x' -%}
-                    {%- endif -%}
-                  {%- elsif icon_url_input != blank -%}
-                    {%- assign icon_extension = icon_url_input | split: '.' | last | split: '?' | first | downcase -%}
-                    {%- if icon_url_input contains '://' -%}
-                      {%- assign icon_src = icon_url_input -%}
-                    {%- else -%}
-                      {%- if icon_extension == 'svg' -%}
-                        {%- assign icon_src = icon_url_input | asset_url -%}
-                      {%- else -%}
-                        {%- assign icon_src = icon_url_input | asset_img_url: '144x' -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                  {%- if icon_src != blank -%}
-                    {%- capture icon_markup -%}
                       <img
-                        src="{{ icon_src }}"
+                        src="{{ icon_file_handle | file_url }}"
                         alt="{{ icon_alt_text }}"
                         loading="lazy"
                         width="72"
                         height="72"
                         class="multicolumn-card__icon-image"
                       >
-                    {%- endcapture -%}
+                    {%- else -%}
+                      <img
+                        src="{{ icon_file_handle | file_img_url: '144x' }}"
+                        alt="{{ icon_alt_text }}"
+                        loading="lazy"
+                        width="72"
+                        height="72"
+                        class="multicolumn-card__icon-image"
+                      >
+                    {%- endif -%}
+                  {%- elsif icon_url_input contains '/assets/' -%}
+                    {%- assign icon_asset_handle = icon_url_input | split: '/assets/' | last | split: '?' | first -%}
+                    {%- if icon_extension == 'svg' -%}
+                      <img
+                        src="{{ icon_asset_handle | asset_url }}"
+                        alt="{{ icon_alt_text }}"
+                        loading="lazy"
+                        width="72"
+                        height="72"
+                        class="multicolumn-card__icon-image"
+                      >
+                    {%- else -%}
+                      <img
+                        src="{{ icon_asset_handle | asset_img_url: '144x' }}"
+                        alt="{{ icon_alt_text }}"
+                        loading="lazy"
+                        width="72"
+                        height="72"
+                        class="multicolumn-card__icon-image"
+                      >
+                    {%- endif -%}
+                  {%- elsif icon_url_input contains '://' -%}
+                    {% comment %} theme-check-disable RemoteAsset {% endcomment %}
+                    <img
+                      src="{{ icon_url_input }}"
+                      alt="{{ icon_alt_text }}"
+                      loading="lazy"
+                      width="72"
+                      height="72"
+                      class="multicolumn-card__icon-image"
+                    >
+                    {% comment %} theme-check-enable RemoteAsset {% endcomment %}
+                  {%- else -%}
+                    {%- if icon_extension == 'svg' -%}
+                      <img
+                        src="{{ icon_url_input | asset_url }}"
+                        alt="{{ icon_alt_text }}"
+                        loading="lazy"
+                        width="72"
+                        height="72"
+                        class="multicolumn-card__icon-image"
+                      >
+                    {%- elsif icon_url_input != blank -%}
+                      <img
+                        src="{{ icon_url_input | asset_img_url: '144x' }}"
+                        alt="{{ icon_alt_text }}"
+                        loading="lazy"
+                        width="72"
+                        height="72"
+                        class="multicolumn-card__icon-image"
+                      >
+                    {%- endif -%}
                   {%- endif -%}
-                {%- endif -%}
+                {%- endcapture -%}
+              {%- endif -%}
+              {%- if icon_markup != blank -%}
                 <div class="multicolumn-card__icon multicolumn-card__icon--top">
                   {{ icon_markup | strip }}
                 </div>

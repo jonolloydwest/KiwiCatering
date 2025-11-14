@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "verify_hero": {
+      "type": "verify-hero",
+      "settings": {
+        "hero_pill": "VERIFICATION REQUIRED",
+        "hero_title": "RESTRICTED PRODUCTS APPLICATION",
+        "hero_intro": "<p>We partner with Stripe to keep restricted products safe and compliant. Have a valid photo ID ready and complete the secure check in just a couple of minutes.</p>"
+      }
+    },
+    "main": {
+      "type": "verify-form",
+      "settings": {}
+    }
+  },
+  "order": [
+    "verify_hero",
+    "main"
+  ]
+}

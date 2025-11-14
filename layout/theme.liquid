@@ -33,6 +33,20 @@
     <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'verify-form.js' | asset_url }}" defer="defer"></script>
+    <script>
+      window.__verifyProxyBase = '/apps/verification-gateway';
+      {% if customer %}
+        window.__verifyCustomer = {
+          id: {{ customer.id | json }},
+          gid: {{ customer.id | prepend: 'gid://shopify/Customer/' | json }},
+          email: {{ customer.email | json }},
+          name: {{ customer.name | json }}
+        };
+      {% else %}
+        window.__verifyCustomer = {};
+      {% endif %}
+    </script>
 
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>

@@ -1,3 +1,14 @@
+{%- assign restricted_tag = 'restricted' -%}
+{%- assign cart_has_restricted = false -%}
+{%- if cart != empty -%}
+  {%- for item in cart.items -%}
+    {%- if item.product.tags contains restricted_tag -%}
+      {%- assign cart_has_restricted = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
 {%- capture cart_drawer_markup -%}
   {%- render 'cart-drawer' -%}
 {%- endcapture -%}
@@ -7,6 +18,16 @@
     <div class="cart-drawer__helper rte">
       {{ section.settings.helper_text }}
     </div>
+  {%- endif -%}
+  {%- if cart_has_restricted -%}
+    <div class="verify-cart-note" data-verify-root>
+      Restricted items require verification.
+      <span class="verify-allowance" hidden>Remaining: <span data-verify-remaining></span>/<span data-verify-limit></span></span>
+      <button class="link" type="button" data-verify-start>Verify now</button>
+    </div>
+    <script>
+(()=>{const r=document.currentScript.previousElementSibling;if(!r)return;window.__verify?.getState?.().then((s)=>{if(s?.remaining!=null&&s?.limit!=null){const a=r.querySelector('.verify-allowance');a.hidden=false;a.querySelector('[data-verify-remaining]').textContent=s.remaining;a.querySelector('[data-verify-limit]').textContent=s.limit;}});window.__verify?.wire?.(document.currentScript.parentNode);})();
+    </script>
   {%- endif -%}
 {%- endcapture -%}
 

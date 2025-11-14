@@ -21,6 +21,10 @@
     assign hero_eyebrow = 'Talk to Us'
     assign hero_title = page.title | default: 'Contact Us'
     assign hero_intro = 'Need guidance on product selection, shipping windows, or trade pricing? Our Auckland specialists respond within one business day.'
+  elsif page.handle == 'verify'
+    assign hero_eyebrow = 'ID CHECK'
+    assign hero_title = 'Application to Purchase Restricted Products'
+    assign hero_intro = 'Confirm your age, identity and intended use to unlocked restricted products then return to checkout to finish your order.'
   endif
 
   if is_wholesale_trade_page

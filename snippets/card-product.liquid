@@ -302,14 +302,62 @@
           </div>
         </div>
         {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
-        {% if card_quick_add == 'standard' %}
-          <div class="quick-add no-js-hidden">
-            {%- liquid
-              assign qty_rules = false
-              if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
-                assign qty_rules = true
+        {%- liquid
+          assign qty_rules = false
+          if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
+            assign qty_rules = true
+          endif
+          assign quick_add_restricted_state = ''
+          assign quick_add_restricted_product = false
+          for product_tag in card_product.tags
+            assign product_tag_lower = product_tag | downcase
+            if product_tag_lower == 'restricted'
+              assign quick_add_restricted_product = true
+              break
+            endif
+          endfor
+          assign quick_add_customer_verified_18 = false
+          if customer
+            for customer_tag in customer.tags
+              assign customer_tag_lower = customer_tag | downcase
+              if customer_tag_lower == 'verified-18'
+                assign quick_add_customer_verified_18 = true
+                break
               endif
+            endfor
+          endif
+          if quick_add_restricted_product
+            if customer
+              if quick_add_customer_verified_18
+                assign quick_add_restricted_state = 'verified'
+              else
+                assign quick_add_restricted_state = 'needs_verification'
+              endif
+            else
+              assign quick_add_restricted_state = 'needs_login'
+            endif
+          endif
+        -%}
+        {% if quick_add_restricted_state == 'needs_login' %}
+          <div class="quick-add no-js-hidden">
+            {%- comment -%}Restricted product gating for age verification (quick add){%- endcomment -%}
+            {%- render 'restricted-product-notice',
+              message: 'This restricted product requires an account. Please sign in to continue.',
+              cta_label: 'Sign in',
+              cta_url: routes.account_login_url
             -%}
+          </div>
+        {% elsif quick_add_restricted_state == 'needs_verification' %}
+          <div class="quick-add no-js-hidden">
+            {%- comment -%}Restricted product gating for age verification (quick add){%- endcomment -%}
+            {%- render 'restricted-product-notice',
+              message: 'Verification required to purchase this restricted product.',
+              cta_label: 'Verify now',
+              cta_url: '/pages/verify'
+            -%}
+          </div>
+        {% elsif card_quick_add == 'standard' %}
+          <div class="quick-add no-js-hidden">
             {%- if card_product.variants_count > 1 or qty_rules -%}
               <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
                 <button

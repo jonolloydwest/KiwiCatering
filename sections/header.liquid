@@ -181,6 +181,7 @@
     assign base_logo_height = settings.logo.height
   endif
   assign fallback_logo_file = 'Logo_Green_Words_Only_1_1.png'
+  assign fallback_logo_remote = 'https://cdn.shopify.com/s/files/1/0523/6572/1788/files/Logo_Green_Words_Only_1_1.png?v=1695725960'
   assign header_logo_max_width_setting = section.settings.logo_max_width
   if header_logo_max_width_setting == blank or header_logo_max_width_setting == 0
     assign header_logo_max_width_setting = blank
@@ -300,18 +301,27 @@
           {%- assign fallback_logo_width = header_logo_max_width_setting | default: 220 -%}
           {%- assign fallback_logo_height = header_logo_max_height_setting | default: 80 -%}
           <div class="header__heading-logo-wrapper"{% if header_logo_wrapper_style != blank %} style="{{ header_logo_wrapper_style | strip }}"{% endif %}>
-            {%- capture fallback_logo_url -%}
-              {{ fallback_logo_file | file_img_url: '400x' }}
-            {%- endcapture -%}
-            <img
-              src="{{ fallback_logo_url | strip }}"
-              class="header__heading-logo motion-reduce"
-              width="{{ fallback_logo_width }}"
-              height="{{ fallback_logo_height }}"
-              alt="{{ header_logo_alt }}"
-              loading="eager"
-              style="{{ header_logo_image_style }}"
-            >
+            {%- assign fallback_logo_source = fallback_logo_remote -%}
+            {%- if fallback_logo_source == blank -%}
+              {%- if settings.brand_image != blank -%}
+                {%- assign fallback_logo_source = settings.brand_image -%}
+              {%- elsif fallback_logo_file != blank -%}
+                {%- assign fallback_logo_source = fallback_logo_file | asset_img_url: '400x' -%}
+              {%- endif -%}
+            {%- endif -%}
+            {%- if fallback_logo_source != blank -%}
+              {% comment %} theme-check-disable RemoteAsset {% endcomment %}
+              <img
+                src="{{ fallback_logo_source | strip }}"
+                class="header__heading-logo motion-reduce"
+                width="{{ fallback_logo_width }}"
+                height="{{ fallback_logo_height }}"
+                alt="{{ header_logo_alt }}"
+                loading="eager"
+                style="{{ header_logo_image_style }}"
+              >
+              {% comment %} theme-check-enable RemoteAsset {% endcomment %}
+            {%- endif -%}
           </div>
         {%- endif -%}
       </a>
@@ -355,18 +365,27 @@
           {%- assign fallback_logo_width = header_logo_max_width_setting | default: 220 -%}
           {%- assign fallback_logo_height = header_logo_max_height_setting | default: 80 -%}
           <div class="header__heading-logo-wrapper"{% if header_logo_wrapper_style != blank %} style="{{ header_logo_wrapper_style | strip }}"{% endif %}>
-            {%- capture fallback_logo_url -%}
-              {{ fallback_logo_file | file_img_url: '400x' }}
-            {%- endcapture -%}
-            <img
-              src="{{ fallback_logo_url | strip }}"
-              class="header__heading-logo motion-reduce"
-              width="{{ fallback_logo_width }}"
-              height="{{ fallback_logo_height }}"
-              alt="{{ header_logo_alt }}"
-              loading="eager"
-              style="{{ header_logo_image_style }}"
-            >
+            {%- assign fallback_logo_source = fallback_logo_remote -%}
+            {%- if fallback_logo_source == blank -%}
+              {%- if settings.brand_image != blank -%}
+                {%- assign fallback_logo_source = settings.brand_image -%}
+              {%- elsif fallback_logo_file != blank -%}
+                {%- assign fallback_logo_source = fallback_logo_file | asset_img_url: '400x' -%}
+              {%- endif -%}
+            {%- endif -%}
+            {%- if fallback_logo_source != blank -%}
+              {% comment %} theme-check-disable RemoteAsset {% endcomment %}
+              <img
+                src="{{ fallback_logo_source | strip }}"
+                class="header__heading-logo motion-reduce"
+                width="{{ fallback_logo_width }}"
+                height="{{ fallback_logo_height }}"
+                alt="{{ header_logo_alt }}"
+                loading="eager"
+                style="{{ header_logo_image_style }}"
+              >
+              {% comment %} theme-check-enable RemoteAsset {% endcomment %}
+            {%- endif -%}
           </div>
         {%- endif -%}
       </a>

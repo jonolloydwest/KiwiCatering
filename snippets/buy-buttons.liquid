@@ -69,33 +69,94 @@
             if product.selected_or_first_available_variant.quantity_rule.min > product.selected_or_first_available_variant.inventory_quantity and check_against_inventory
               assign quantity_rule_soldout = true
             endif
+            assign restricted_state = ''
+            assign restricted_product = false
+            for product_tag in product.tags
+              assign normalized_product_tag = product_tag | downcase
+              if normalized_product_tag == 'restricted'
+                assign restricted_product = true
+                break
+              endif
+            endfor
+            assign customer_verified_18 = false
+            if customer
+              for customer_tag in customer.tags
+                assign normalized_customer_tag = customer_tag | downcase
+                if normalized_customer_tag == 'verified-18'
+                  assign customer_verified_18 = true
+                  break
+                endif
+              endfor
+            endif
+            if restricted_product
+              if customer
+                if customer_verified_18
+                  assign restricted_state = 'verified'
+                else
+                  assign restricted_state = 'needs_verification'
+                endif
+              else
+                assign restricted_state = 'needs_login'
+              endif
+            endif
           -%}
-          <button
-            id="ProductSubmitButton-{{ section_id }}"
-            type="submit"
-            name="add"
-            class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
-            {% if product.selected_or_first_available_variant.available == false
-              or quantity_rule_soldout
-              or product.selected_or_first_available_variant == null
-            %}
-              disabled
-            {% endif %}
-          >
-            <span>
-              {%- if product.selected_or_first_available_variant == null -%}
-                {{ 'products.product.unavailable' | t }}
-              {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
-                {{ 'products.product.sold_out' | t }}
-              {%- else -%}
-                {{ 'products.product.add_to_cart' | t }}
+          {%- comment -%}Restricted product gating for age verification{%- endcomment -%}
+          {%- case restricted_state -%}
+            {%- when 'needs_login' -%}
+              {%- render 'restricted-product-notice',
+                message: 'This restricted product requires an account. Please sign in to continue.',
+                cta_label: 'Sign in',
+                cta_url: routes.account_login_url
+              -%}
+            {%- when 'needs_verification' -%}
+              {%- render 'restricted-product-notice',
+                message: 'Verification required to purchase this restricted product.',
+                cta_label: 'Verify now',
+                cta_url: '/pages/verify'
+              -%}
+            {%- else -%}
+              {% if restricted_state == 'verified' %}
+                <div class="verify-allowance" hidden>Remaining: <span data-verify-remaining></span>/<span data-verify-limit></span></div>
+                <script>
+                  (() => {
+                    const info = document.currentScript.previousElementSibling;
+                    if (!info) return;
+                    window.__verify?.getState?.().then((state) => {
+                      if (state?.remaining == null || state?.limit == null) return;
+                      info.hidden = false;
+                      info.querySelector('[data-verify-remaining]').textContent = state.remaining;
+                      info.querySelector('[data-verify-limit]').textContent = state.limit;
+                    });
+                  })();
+                </script>
+              {% endif %}
+              <button
+                id="ProductSubmitButton-{{ section_id }}"
+                type="submit"
+                name="add"
+                class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+                {% if product.selected_or_first_available_variant.available == false
+                  or quantity_rule_soldout
+                  or product.selected_or_first_available_variant == null
+                %}
+                  disabled
+                {% endif %}
+              >
+                <span>
+                  {%- if product.selected_or_first_available_variant == null -%}
+                    {{ 'products.product.unavailable' | t }}
+                  {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- else -%}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {%- endif -%}
+                </span>
+                {%- render 'loading-spinner' -%}
+              </button>
+              {%- if show_dynamic_checkout -%}
+                {{ form | payment_button }}
               {%- endif -%}
-            </span>
-            {%- render 'loading-spinner' -%}
-          </button>
-          {%- if show_dynamic_checkout -%}
-            {{ form | payment_button }}
-          {%- endif -%}
+          {%- endcase -%}
         </div>
       {%- endform -%}
     </product-form>

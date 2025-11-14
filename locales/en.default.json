@@ -291,7 +291,7 @@
       "new_estimated_total": "New estimated total",
       "note": "Order special instructions",
       "checkout": "Check out",
-      "empty": "Your cart is feeling empty - let's fill it with sunshine.",
+      "empty": "Your cart is feeling empty - let's fill it up!",
       "cart_error": "There was an error while updating your cart. Please try again.",
       "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
       "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Duties and taxes included. Discounts and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",

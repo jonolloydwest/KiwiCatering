@@ -1,0 +1,33 @@
+{%- comment -%}
+  Reusable notice that gates restricted products until the visitor signs in or verifies age.
+{%- endcomment -%}
+{%- assign cta_label_downcase = cta_label | strip | downcase -%}
+<div class="restricted-notice" style="background-color:#fff4c4;border:1px solid #f2cf6b;border-radius:4px;padding:1rem;text-align:center;">
+  {%- if message != blank -%}
+    <p>{{ message }}</p>
+  {%- endif -%}
+  <div class="verify-allowance" hidden>Remaining: <span data-verify-remaining></span>/<span data-verify-limit></span></div>
+  {%- if cta_label_downcase == 'verify now' -%}
+    <a class="button button--primary button--full-width" href="/pages/verify">
+      {{ cta_label }}
+    </a>
+  {%- else -%}
+    <a class="button button--primary button--full-width" href="{{ cta_url }}">
+      {{ cta_label }}
+    </a>
+  {%- endif -%}
+</div>
+
+<script>
+  (function(){
+const r=this?.previousElementSibling,a=r?.querySelector('.verify-allowance');
+if(!r||!a)return;
+window.__verify?.getState?.().then((state)=>{
+if(state?.remaining!=null&&state?.limit!=null){
+a.hidden=false;
+r.querySelector('[data-verify-remaining]').textContent=state.remaining;
+r.querySelector('[data-verify-limit]').textContent=state.limit;
+}
+});
+}).call(document.currentScript);
+</script>
